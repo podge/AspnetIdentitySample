@@ -24,7 +24,7 @@ namespace AspnetIdentitySample
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            Database.SetInitializer<MyDbContext>(new MyDbInitializer());
+            //Database.SetInitializer<MyDbContext>(new MyDbInitializer());
         }
     }
 

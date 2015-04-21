@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<AspnetIdentitySample.Models.ToDo>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Pet Index";
 }
 
-<h2>Index</h2>
+<h2>Pet Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -29,9 +29,14 @@
             @Html.DisplayFor(modelItem => item.IsDone)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            <a href="@Url.Action("Edit", "ToDo", new { id = item.Id })" class="btn btn-primary btn-large">Edit</a> 
+            <a href="@Url.Action("Details", "ToDo", new { id = item.Id })" class="btn btn-primary btn-large">Details</a>
+            <a href="@Url.Action("Delete", "ToDo", new { id = item.Id })" class="btn btn-primary btn-large">Delete</a>
+            <a href="@Url.Action("Rabies", "ToDo", new { id = item.Id })" class="btn btn-primary btn-large">Rabies Vax</a>
+            <a href="@Url.Action("Bloodtest", "ToDo", new { id = item.Id })" class="btn btn-primary btn-large">Bloodtest</a>
+            <a href="@Url.Action("Upload", "ToDo", new { id = item.Id })" c class="btn btn-primary btn-large">Upload</a>
+            <a href="@Url.Action("PetCheck", "ToDo", new { id = item.Id })" class="btn btn-primary btn-large">PetCheck</a>
+            <a href="@Url.Action("Cert", "ToDo", new { id = item.Id })" c class="btn btn-primary btn-large">Cert</a>
         </td>
     </tr>
 }
