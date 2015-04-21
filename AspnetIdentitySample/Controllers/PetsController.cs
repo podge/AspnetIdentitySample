@@ -14,11 +14,11 @@ using Microsoft.AspNet.Identity.EntityFramework;
 namespace AspnetIdentitySample.Controllers
 {
     [Authorize]
-    public class ToDoController : Controller
+    public class PetsController : Controller
     {
         private MyDbContext db;
         private UserManager<ApplicationUser> manager;
-        public ToDoController()
+        public PetsController()
         {
             db = new MyDbContext();
             manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
@@ -29,14 +29,14 @@ namespace AspnetIdentitySample.Controllers
         public ActionResult Index()
         {
             var currentUser = manager.FindById(User.Identity.GetUserId());
-            return View(db.ToDoes.ToList().Where(todo => todo.User.Id == currentUser.Id));
+            return View(db.Pets.ToList().Where(todo => todo.User.Id == currentUser.Id));
         }
 
         // GET: /ToDo/All
         [Authorize(Roles="Admin")]
         public async Task<ActionResult> All()
         {
-            return View(await db.ToDoes.ToListAsync());
+            return View(await db.Pets.ToListAsync());
         }
 
         // GET: /ToDo/Details/5
@@ -47,16 +47,16 @@ namespace AspnetIdentitySample.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ToDo todo = await db.ToDoes.FindAsync(id);
-            if (todo == null)
+            Pet pet = await db.Pets.FindAsync(id);
+            if (pet == null)
             {
                 return HttpNotFound();
             }
-            if (todo.User.Id != currentUser.Id)
+            if (pet.User.Id != currentUser.Id)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
-            return View(todo);
+            return View(pet);
         }
 
         // GET: /ToDo/Create
@@ -70,18 +70,18 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include="Id,Description,IsDone")] ToDo todo)
+        public async Task<ActionResult> Create([Bind(Include="Id,Description,IsDone")] Pet pet)
         {
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId()); 
             if (ModelState.IsValid)
             {
-                todo.User = currentUser;
-                db.ToDoes.Add(todo);
+                pet.User = currentUser;
+                db.Pets.Add(pet);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(todo);
+            return View(pet);
         }
 
         // GET: /ToDo/Edit/5
@@ -92,16 +92,16 @@ namespace AspnetIdentitySample.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ToDo todo = await db.ToDoes.FindAsync(id);
-            if (todo == null)
+            Pet pet = await db.Pets.FindAsync(id);
+            if (pet == null)
             {
                 return HttpNotFound();
             }
-            if (todo.User.Id != currentUser.Id)
+            if (pet.User.Id != currentUser.Id)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
-            return View(todo);
+            return View(pet);
         }
 
         // POST: /ToDo/Edit/5
@@ -109,15 +109,15 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include="Id,Description,IsDone")] ToDo todo)
+        public async Task<ActionResult> Edit([Bind(Include="Id,Description,IsDone")] Pet pet)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(todo).State = EntityState.Modified;
+                db.Entry(pet).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(todo);
+            return View(pet);
         }
 
         // GET: /ToDo/Delete/5
@@ -128,16 +128,16 @@ namespace AspnetIdentitySample.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ToDo todo = await db.ToDoes.FindAsync(id);
-            if (todo == null)
+            Pet pet = await db.Pets.FindAsync(id);
+            if (pet == null)
             {
                 return HttpNotFound();
             }
-            if (todo.User.Id != currentUser.Id)
+            if (pet.User.Id != currentUser.Id)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             } 
-            return View(todo);
+            return View(pet);
         }
 
         // POST: /ToDo/Delete/5
@@ -145,8 +145,8 @@ namespace AspnetIdentitySample.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            ToDo todo = await db.ToDoes.FindAsync(id);
-            db.ToDoes.Remove(todo);
+            Pet pet = await db.Pets.FindAsync(id);
+            db.Pets.Remove(pet);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }

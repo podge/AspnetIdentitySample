@@ -1,4 +1,4 @@
-﻿@model AspnetIdentitySample.Models.ToDo
+﻿@model AspnetIdentitySample.Models.Pet
 
 @{
     ViewBag.Title = "Edit Pet";
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>ToDo</h4>
+        <h4>Pet</h4>
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
