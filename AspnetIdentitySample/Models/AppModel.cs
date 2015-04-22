@@ -29,8 +29,25 @@ namespace AspnetIdentitySample.Models
     public class Pet
     {
         public int Id { get; set; }
-        public string Description { get; set; }
-        public bool IsDone { get; set; }
+        //public string Description { get; set; }
+        //public bool IsDone { get; set; }
+        //public virtual ApplicationUser User { get; set; }
+
+        //public int PetID { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        [Display(Name = "Date of Birth")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime DateOfBirth { get; set; }
+        [Required]
+        public string Breed { get; set; }
+        [Required]
+        [StringLength(15, MinimumLength = 9)]
+        public string MicrochipNumber { get; set; }
+        public virtual ICollection<RabiesVaccination> RabiesVaccinations { get; set; }
+        public virtual ICollection<Bloodtest> FAVNBloodTests { get; set; }
         public virtual ApplicationUser User { get; set; }
     }
     public class RabiesVaccination

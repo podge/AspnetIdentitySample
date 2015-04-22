@@ -24,22 +24,22 @@ namespace AspnetIdentitySample.Controllers
             manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
         }
         
-        // GET: /ToDo/
-        // GET ToDo for the logged in user
+        // GET: /Pet/
+        // GET Pet for the logged in user
         public ActionResult Index()
         {
             var currentUser = manager.FindById(User.Identity.GetUserId());
-            return View(db.Pets.ToList().Where(todo => todo.User.Id == currentUser.Id));
+            return View(db.Pets.ToList().Where(pet => pet.User.Id == currentUser.Id));
         }
 
-        // GET: /ToDo/All
+        // GET: /Pet/All
         [Authorize(Roles="Admin")]
         public async Task<ActionResult> All()
         {
             return View(await db.Pets.ToListAsync());
         }
 
-        // GET: /ToDo/Details/5
+        // GET: /Pet/Details/5
         public async Task<ActionResult> Details(int? id)
         {
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId()); 
@@ -59,18 +59,18 @@ namespace AspnetIdentitySample.Controllers
             return View(pet);
         }
 
-        // GET: /ToDo/Create
+        // GET: /Pet/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: /ToDo/Create
+        // POST: /Pet/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include="Id,Description,IsDone")] Pet pet)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,DateOfBirth,Breed,MicrochipNumber")] Pet pet)
         {
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId()); 
             if (ModelState.IsValid)
@@ -84,7 +84,7 @@ namespace AspnetIdentitySample.Controllers
             return View(pet);
         }
 
-        // GET: /ToDo/Edit/5
+        // GET: /Pet/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId()); 
@@ -104,7 +104,7 @@ namespace AspnetIdentitySample.Controllers
             return View(pet);
         }
 
-        // POST: /ToDo/Edit/5
+        // POST: /Pet/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -120,7 +120,7 @@ namespace AspnetIdentitySample.Controllers
             return View(pet);
         }
 
-        // GET: /ToDo/Delete/5
+        // GET: /Pet/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId()); 
@@ -140,7 +140,7 @@ namespace AspnetIdentitySample.Controllers
             return View(pet);
         }
 
-        // POST: /ToDo/Delete/5
+        // POST: /Pet/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)

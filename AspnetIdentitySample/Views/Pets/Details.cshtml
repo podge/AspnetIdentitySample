@@ -7,23 +7,39 @@
 <h2>Pet Details</h2>
 
 <div>
-    <h4>ToDo</h4>
+    <h4>Pet Details</h4>
 	<hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.IsDone)
+            @Html.DisplayNameFor(model => model.Breed)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.IsDone)
+            @Html.DisplayFor(model => model.Breed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MicrochipNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MicrochipNumber)
         </dd>
 
     </dl>
