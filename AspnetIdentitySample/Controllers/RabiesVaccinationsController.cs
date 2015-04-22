@@ -8,18 +8,43 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AspnetIdentitySample.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace AspnetIdentitySample.Controllers
 {
     public class RabiesVaccinationsController : Controller
     {
         private MyDbContext db = new MyDbContext();
+        //private UserManager<ApplicationUser> manager;
+
+        //public RabiesVaccinationsController()
+        //{
+        //    db = new MyDbContext();
+        //    manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+        //}
 
         // GET: RabiesVaccination
-        public async Task<ActionResult> Index()
+        //public async Task<ActionResult> Index()
+        //{
+        //    var rabiesVaccinations = db.RabiesVaccinations.Include(r => r.Pet);
+        //    return View(await rabiesVaccinations.ToListAsync());
+        //}
+
+        // GET: RabiesVaccination/1
+        public async Task<ActionResult> Index(int? id)
         {
+            //var currentUser = manager.FindById(User.Identity.GetUserId());
             var rabiesVaccinations = db.RabiesVaccinations.Include(r => r.Pet);
+            if (id != null)
+            {
+                rabiesVaccinations = rabiesVaccinations.Where(r => r.Pet.Id == id);
+            }            
+
             return View(await rabiesVaccinations.ToListAsync());
+
+            //return View(db.Pets.ToList().Where(pet => pet.User.Id == currentUser.Id));
+            //Need to tighten up rabiesVaccinations for Users and pets so that only rabies vaccinations for a user and pet are shown
         }
 
         // GET: RabiesVaccination/Details/5

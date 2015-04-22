@@ -54,6 +54,13 @@ namespace AspnetIdentitySample
             {
                 var result = UserManager.AddToRole(user.Id, name);
             }
+
+            //Create User=Podge with password=123456
+            user = new ApplicationUser();
+            user.UserName = "Podge";
+            user.HomeTown = "Lucan";
+            user.MyUserInfo = new MyUserInfo() { FirstName = "Padraic", LastName = "Lavin" };
+            adminresult = UserManager.Create(user, "123456");
         }
     }
 }
