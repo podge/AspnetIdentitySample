@@ -1,0 +1,51 @@
+﻿@model IEnumerable<AspnetIdentitySample.Models.RabiesVaccination>
+
+@{
+    ViewBag.Title = "Rabies Vaccinations";
+}
+
+<h2>Rabies Vaccinations</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", new { id = Model.First().Pet.Id })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Pet.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfRabiesVaccination)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfValidityFrom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfValidityTo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pet.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfRabiesVaccination)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfValidityFrom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfValidityTo)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.RabiesVaccinationID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.RabiesVaccinationID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.RabiesVaccinationID })
+        </td>
+    </tr>
+}
+
+</table>

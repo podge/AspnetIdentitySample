@@ -152,8 +152,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BloodtestsController.cs" />
     <Compile Include="Controllers\ClaimsIdentityFactoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RabiesVaccinationsController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\ValidationController.cs" />
@@ -230,6 +232,16 @@
     <Content Include="Views\Home\Profile.cshtml" />
     <Content Include="Views\ClaimsIdentityFactory\Index.cshtml" />
     <Content Include="Views\Validation\Index.cshtml" />
+    <Content Include="Views\RabiesVaccinations\Create.cshtml" />
+    <Content Include="Views\RabiesVaccinations\Delete.cshtml" />
+    <Content Include="Views\RabiesVaccinations\Details.cshtml" />
+    <Content Include="Views\RabiesVaccinations\Edit.cshtml" />
+    <Content Include="Views\RabiesVaccinations\Index.cshtml" />
+    <Content Include="Views\Bloodtests\Create.cshtml" />
+    <Content Include="Views\Bloodtests\Delete.cshtml" />
+    <Content Include="Views\Bloodtests\Details.cshtml" />
+    <Content Include="Views\Bloodtests\Edit.cshtml" />
+    <Content Include="Views\Bloodtests\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

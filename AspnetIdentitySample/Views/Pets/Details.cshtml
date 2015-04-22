@@ -48,3 +48,67 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@if (0 != Model.RabiesVaccinations.Count)
+{
+    <table title="Rabies Vaccinations" class="table-striped">
+        <thead>
+            <tr>
+                <th colspan="3">Rabies Vaccinations</th>
+            </tr>
+            <tr>
+                @foreach (var item in Model.RabiesVaccinations)
+                {
+                    <th>@Html.DisplayNameFor(modelItem => item.DateOfRabiesVaccination)</th>
+                    <th>@Html.DisplayNameFor(modelItem => item.DateOfValidityFrom)</th>
+                    <th>@Html.DisplayNameFor(modelItem => item.DateOfValidityTo)</th>
+                    break;
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.RabiesVaccinations)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.DateOfRabiesVaccination)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DateOfValidityFrom)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DateOfValidityTo)</td>
+                </tr>
+            }
+            <tr>
+                <td colspan="2"><a href="@Url.Action("Create", "RabiesVaccinations", new { id = Model.Id })" class="btn btn-primary btn-large">Add Rabies Vaccination</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+}
+
+@if (0 != Model.FAVNBloodTests.Count)
+{ <table title="FAVN Bloodtests" class="table-striped">
+        <thead>
+            <tr>
+                <th colspan="2">FAVN Bloodtests</th>
+            </tr>
+            <tr>
+                @foreach (var item in Model.FAVNBloodTests)
+                {
+                    <th>@Html.DisplayNameFor(modelItem => item.DateOfBloodtest)</th>
+                    <th>@Html.DisplayNameFor(modelItem => item.Result)</th>
+                    break;
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.FAVNBloodTests)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.DateOfBloodtest)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Result)</td>
+
+                </tr>
+            }
+            <tr>
+                <td colspan="2"><a href="@Url.Action("Create", "Bloodtests", new { id = Model.Id })" class="btn btn-primary btn-large">Add Bloodtest</a></td>
+            </tr>
+        </tbody>
+    </table>
+}

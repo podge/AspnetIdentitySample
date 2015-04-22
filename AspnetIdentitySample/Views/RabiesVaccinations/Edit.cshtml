@@ -1,0 +1,66 @@
+﻿@model AspnetIdentitySample.Models.RabiesVaccination
+
+@{
+    ViewBag.Title = "Edit Rabies Vaccination";
+}
+
+<h2>Edit Rabies Vaccination</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>RabiesVaccination</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.RabiesVaccinationID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateOfRabiesVaccination, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DateOfRabiesVaccination)
+                @Html.ValidationMessageFor(model => model.DateOfRabiesVaccination)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateOfValidityFrom, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DateOfValidityFrom)
+                @Html.ValidationMessageFor(model => model.DateOfValidityFrom)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateOfValidityTo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DateOfValidityTo)
+                @Html.ValidationMessageFor(model => model.DateOfValidityTo)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PetID, "PetID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("PetID", String.Empty)
+                @Html.ValidationMessageFor(model => model.PetID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

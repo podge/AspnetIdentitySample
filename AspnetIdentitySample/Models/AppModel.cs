@@ -110,6 +110,10 @@ namespace AspnetIdentitySample.Models
         public DbSet<Pet> Pets { get; set; }
 
         public DbSet<MyUserInfo> MyUserInfo { get; set; }
+
+        public System.Data.Entity.DbSet<AspnetIdentitySample.Models.RabiesVaccination> RabiesVaccinations { get; set; }
+
+        public System.Data.Entity.DbSet<AspnetIdentitySample.Models.Bloodtest> Bloodtests { get; set; }
     }
 
 

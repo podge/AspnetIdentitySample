@@ -1,0 +1,50 @@
+﻿@model AspnetIdentitySample.Models.RabiesVaccination
+
+@{
+    ViewBag.Title = "Rabies Vaccination Details";
+}
+
+<h2>Rabies Vaccinations Detail</h2>
+
+<div>
+    <h4>RabiesVaccination</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Pet.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pet.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfRabiesVaccination)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfRabiesVaccination)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfValidityFrom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfValidityFrom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfValidityTo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfValidityTo)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.RabiesVaccinationID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
