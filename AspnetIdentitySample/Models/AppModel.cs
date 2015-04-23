@@ -54,6 +54,7 @@ namespace AspnetIdentitySample.Models
     {
         public int RabiesVaccinationID { get; set; }
         [Required]
+        [ValidateDateRange]
         [Display(Name = "Date given")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
@@ -114,6 +115,36 @@ namespace AspnetIdentitySample.Models
         public System.Data.Entity.DbSet<AspnetIdentitySample.Models.RabiesVaccination> RabiesVaccinations { get; set; }
 
         public System.Data.Entity.DbSet<AspnetIdentitySample.Models.Bloodtest> Bloodtests { get; set; }
+    }
+
+    public class ValidateDateRange : ValidationAttribute
+    {
+        private MyDbContext db = new MyDbContext();
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            // your validation logic
+            DateTime DateGiven = (DateTime)value;
+            RabiesVaccination rvax = (RabiesVaccination)validationContext.ObjectInstance;
+            Pet Pet = db.Pets.FirstOrDefault(x => x.Id == rvax.PetID);
+            if (DateGiven >= Pet.DateOfBirth && DateGiven <= DateTime.Today)
+            {
+                return ValidationResult.Success;
+            }
+            else
+            {
+                String error="";
+                if (DateGiven < Pet.DateOfBirth)
+                {
+                    error = "Date must be after the pets date of birth " + Pet.DateOfBirth + ".";
+                }
+                else if (DateGiven > DateTime.Today)
+                {
+                    error = "Date can not be in the future.";
+                }
+            return new ValidationResult(error);                
+            }
+        }
     }
 
 
