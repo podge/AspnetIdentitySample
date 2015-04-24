@@ -69,7 +69,7 @@ namespace AspnetIdentitySample.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOfValidityTo { get; set; }
-
+        [Required]
         [Display(Name = "Pet")]
         public int PetID { get; set; }
 

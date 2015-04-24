@@ -60,6 +60,26 @@ namespace AspnetIdentitySample
             user.UserName = "Podge";
             user.HomeTown = "Lucan";
             user.MyUserInfo = new MyUserInfo() { FirstName = "Padraic", LastName = "Lavin" };
+
+            // Create Pets
+            ICollection<Pet> pets = new List<Pet>();
+
+            Pet Pet = new Pet();
+            Pet.Name = "Rosco";
+            Pet.Breed = "Norwegian Elkhound";
+            Pet.DateOfBirth = new DateTime(2010, 1, 1);
+            Pet.MicrochipNumber = "98512000001234";
+            pets.Add(Pet);
+
+            Pet Pet2 = new Pet();
+            Pet2.Name = "Sparky";
+            Pet2.Breed = "Terrier";
+            Pet2.DateOfBirth = new DateTime(2015, 1, 1);
+            Pet2.MicrochipNumber = "98512000009999";
+            pets.Add(Pet2);
+
+            user.Pets = pets;
+
             adminresult = UserManager.Create(user, "123456");
         }
     }
