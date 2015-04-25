@@ -5,10 +5,8 @@
 }
 
 <h2>Rabies Vaccinations</h2>
-
 <p>
-    @Html.ActionLink("Create New", "Create", 1) @*, new { id = Model.First().Pet.Id }*@
-</p>
+<a href="@Url.Action("Create", "RabiesVaccinations", new { id = ViewContext.RouteData.Values["id"] })" class="btn btn-primary btn-large">Create New</a></p>
 <table class="table">
     <tr>
         <th>

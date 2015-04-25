@@ -63,9 +63,11 @@ namespace AspnetIdentitySample.Controllers
         }
 
         // GET: RabiesVaccination/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.PetID = new SelectList(db.Pets, "Id", "Name");
+            //ViewBag.PetID = new SelectList(db.Pets.Where(r => r.Id == id), "Id", "Name", id);
+            ViewBag.PetID = new SelectList(db.Pets, "Id", "Name", id);
+            ViewBag.id = id;         // Defines ViewBag
             return View();
         }
 
