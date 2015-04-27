@@ -11,8 +11,8 @@ namespace AspnetIdentitySample.Controllers
 {
     public class CertGeneratorController : Controller
     {
-        string originalFile = "c:\\eupp\\Input1.pdf";
-        string copyOfOriginal = "c:\\eupp\\Copy.pdf";
+        string originalFile = "..\\..\\Documents\\pet_cert_blank.pdf";
+        string copyOfOriginal = "..\\..\\Documents\\copy.pdf";
 
         // GET: CertGenerator
         public ActionResult Index(int? id)
@@ -25,7 +25,7 @@ namespace AspnetIdentitySample.Controllers
         {
             using (Document document = new Document())
             {
-                using (PdfSmartCopy copy = new PdfSmartCopy(document, new FileStream(copyOfOriginal, FileMode.Create)))
+                using (PdfSmartCopy copy = new PdfSmartCopy(document, new FileStream(Server.MapPath(copyOfOriginal), FileMode.Create)))
                 {
                     document.Open();
                     for (int i = 1; i <= 1; ++i)
@@ -41,7 +41,7 @@ namespace AspnetIdentitySample.Controllers
 
         public byte[] AddDataSheets(string _data)
         {
-            string pdfTemplatePath = originalFile;
+            string pdfTemplatePath = Server.MapPath(originalFile);
             PdfReader reader = new PdfReader(pdfTemplatePath);
             using (MemoryStream ms = new MemoryStream())
             {
@@ -52,10 +52,10 @@ namespace AspnetIdentitySample.Controllers
                     foreach (string fieldKey in fieldKeys)
                     {
                         //Change some data
-                        if (fieldKey.Contains("name"))
+                        if (fieldKey.Contains("name") || fieldKey.Contains("address"))
                         {
                             form.SetField(fieldKey, _data);
-                            form.SetFieldProperty(fieldKey, "name", 0, null);
+                            //form.SetFieldProperty(fieldKey, "name", 0, null);
                         }
                     }
                     //stamper.FormFlattening = true;
