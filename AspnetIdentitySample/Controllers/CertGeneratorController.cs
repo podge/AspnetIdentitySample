@@ -28,11 +28,13 @@ namespace AspnetIdentitySample.Controllers
                 using (PdfSmartCopy copy = new PdfSmartCopy(document, new FileStream(copyOfOriginal, FileMode.Create)))
                 {
                     document.Open();
-                    for (int i = 0; i < 6; ++i)
+                    for (int i = 1; i <= 9; ++i)
                     {
                         PdfReader reader = new PdfReader(AddDataSheets("Some Text" + i.ToString()));
-                        copy.AddPage(copy.GetImportedPage(reader, i+1));
+                        copy.AddPage(copy.GetImportedPage(reader, i));
+                    
                     }
+                    document.Close();
                 }
             }
         }
