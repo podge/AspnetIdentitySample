@@ -11,7 +11,7 @@ namespace AspnetIdentitySample.Controllers
 {
     public class CertGeneratorController : Controller
     {
-        string originalFile = "c:\\eupp\\pet_cert.pdf";
+        string originalFile = "c:\\eupp\\Input1.pdf";
         string copyOfOriginal = "c:\\eupp\\Copy.pdf";
 
         // GET: CertGenerator
@@ -28,7 +28,7 @@ namespace AspnetIdentitySample.Controllers
                 using (PdfSmartCopy copy = new PdfSmartCopy(document, new FileStream(copyOfOriginal, FileMode.Create)))
                 {
                     document.Open();
-                    for (int i = 1; i <= 9; ++i)
+                    for (int i = 1; i <= 1; ++i)
                     {
                         PdfReader reader = new PdfReader(AddDataSheets("Some Text" + i.ToString()));
                         copy.AddPage(copy.GetImportedPage(reader, i));
@@ -52,12 +52,13 @@ namespace AspnetIdentitySample.Controllers
                     foreach (string fieldKey in fieldKeys)
                     {
                         //Change some data
-                        if (fieldKey.Contains("Address"))
+                        if (fieldKey.Contains("name"))
                         {
                             form.SetField(fieldKey, _data);
+                            form.SetFieldProperty(fieldKey, "name", 0, null);
                         }
                     }
-                    stamper.FormFlattening = true;
+                    //stamper.FormFlattening = true;
                 }
                 return ms.ToArray();
             }
