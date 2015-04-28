@@ -28,6 +28,11 @@ namespace AspnetIdentitySample.Controllers
             return View();
         }
 
+        private void CreateCertificate()
+        {
+
+        }
+
         private void CreatePDFByCopy()
         {
             using (Document document = new Document())

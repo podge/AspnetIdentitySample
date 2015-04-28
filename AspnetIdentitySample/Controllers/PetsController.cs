@@ -62,6 +62,7 @@ namespace AspnetIdentitySample.Controllers
         // GET: /Pet/Create
         public ActionResult Create()
         {
+            ViewBag.SpeciesId = new SelectList(db.Species, "SpeciesId", "SpeciesName");
             return View();
         }
 
@@ -70,8 +71,10 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,DateOfBirth,Breed,MicrochipNumber")] Pet pet)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,SpeciesId,DateOfBirth,Breed,MicrochipNumber")] Pet pet)
         {
+            pet.Species = db.Species.Find(pet.SpeciesId);
+            ViewBag.SpeciesId = new SelectList(db.Species, "SpeciesId", "SpeciesName");
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId()); 
             if (ModelState.IsValid)
             {
@@ -101,6 +104,7 @@ namespace AspnetIdentitySample.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
+            ViewBag.SpeciesId = new SelectList(db.Species, "SpeciesId", "SpeciesName");
             return View(pet);
         }
 
@@ -109,8 +113,9 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include="Id,Description,IsDone")] Pet pet)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,SpeciesId,DateOfBirth,Breed,MicrochipNumber")] Pet pet)
         {
+            ViewBag.SpeciesId = new SelectList(db.Species, "SpeciesId", "SpeciesName");
             if (ModelState.IsValid)
             {
                 db.Entry(pet).State = EntityState.Modified;

@@ -49,6 +49,10 @@ namespace AspnetIdentitySample.Models
         public virtual ICollection<RabiesVaccination> RabiesVaccinations { get; set; }
         public virtual ICollection<Bloodtest> FAVNBloodTests { get; set; }
         public virtual ApplicationUser User { get; set; }
+        [Required]
+        [Display(Name = "Species")]
+        public int SpeciesId { get; set; }
+        public virtual Species Species { get; set; }
     }
     public class RabiesVaccination
     {
@@ -90,6 +94,45 @@ namespace AspnetIdentitySample.Models
 
         public virtual Pet Pet { get; set; }
     }
+    public class Consignor
+    {
+        public int ConsignorId { get; set; }
+        [Required]
+        public String Name { get; set; }
+        [Required]
+        public String Address1 { get; set; }
+        [Required]
+        public String Address2 { get; set; }
+        [Required]
+        public String Address3 { get; set; }
+        [Required]
+        public String Address4 { get; set; }
+        [Required]
+        public String Telephone { get; set; }
+    }
+    public class Consignee
+    {
+        public int ConsigneeId { get; set; }
+        [Required]
+        public String Name { get; set; }
+        [Required]
+        public String Address1 { get; set; }
+        [Required]
+        public String Address2 { get; set; }
+        [Required]
+        public String Address3 { get; set; }
+        [Required]
+        public String Address4 { get; set; }
+        [Required]
+        public String PostCode { get; set; }
+        [Required]
+        public String Telephone { get; set; }
+    }
+    public class Species
+    {
+        public int SpeciesId { get; set; }
+        public String SpeciesName { get; set; }
+    }
     public class MyDbContext : IdentityDbContext<ApplicationUser>
     {
         public MyDbContext()
@@ -115,6 +158,7 @@ namespace AspnetIdentitySample.Models
         public System.Data.Entity.DbSet<AspnetIdentitySample.Models.RabiesVaccination> RabiesVaccinations { get; set; }
 
         public System.Data.Entity.DbSet<AspnetIdentitySample.Models.Bloodtest> Bloodtests { get; set; }
+        public DbSet<Species> Species { get; set; }
     }
 
     public class ValidateDateRange : ValidationAttribute

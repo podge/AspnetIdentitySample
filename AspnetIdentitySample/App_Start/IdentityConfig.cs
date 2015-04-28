@@ -61,6 +61,12 @@ namespace AspnetIdentitySample
             user.HomeTown = "Lucan";
             user.MyUserInfo = new MyUserInfo() { FirstName = "Padraic", LastName = "Lavin" };
 
+            // Create Species
+            Species cat = new Species();
+            cat.SpeciesName = "Cat";
+            Species dog = new Species();
+            dog.SpeciesName = "Dog";
+
             // Create Pets
             ICollection<Pet> pets = new List<Pet>();
 
@@ -69,13 +75,15 @@ namespace AspnetIdentitySample
             Pet.Breed = "Norwegian Elkhound";
             Pet.DateOfBirth = new DateTime(2010, 1, 1);
             Pet.MicrochipNumber = "98512000001234";
+            Pet.Species = dog;
             pets.Add(Pet);
 
             Pet Pet2 = new Pet();
-            Pet2.Name = "Sparky";
-            Pet2.Breed = "Terrier";
+            Pet2.Name = "Puddy";
+            Pet2.Breed = "Tomcat";
             Pet2.DateOfBirth = new DateTime(2015, 1, 1);
             Pet2.MicrochipNumber = "98512000009999";
+            Pet2.Species = cat;
             pets.Add(Pet2);
 
             user.Pets = pets;

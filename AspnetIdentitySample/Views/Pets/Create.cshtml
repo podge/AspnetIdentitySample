@@ -25,6 +25,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.SpeciesId, "Species", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("SpeciesId", String.Empty)
+                @Html.ValidationMessageFor(model => model.SpeciesId)
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.Breed, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Breed)

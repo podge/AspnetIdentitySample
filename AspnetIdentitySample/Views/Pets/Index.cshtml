@@ -15,6 +15,9 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.SpeciesId)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Breed)
         </th>
         <th>
@@ -30,6 +33,9 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Species.SpeciesName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Breed)
