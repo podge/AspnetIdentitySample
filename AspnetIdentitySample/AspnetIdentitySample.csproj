@@ -250,6 +250,7 @@
     <Content Include="Views\Bloodtests\Edit.cshtml" />
     <Content Include="Views\Bloodtests\Index.cshtml" />
     <Content Include="Views\CertGenerator\Index.cshtml" />
+    <Content Include="Views\CertGenerator\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

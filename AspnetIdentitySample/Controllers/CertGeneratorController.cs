@@ -17,7 +17,14 @@ namespace AspnetIdentitySample.Controllers
         // GET: CertGenerator
         public ActionResult Index(int? id)
         {
-            CreatePDFByCopy();
+            //CreatePDFByCopy();
+            return View();
+        }
+
+        // GET: CertGenerator
+        public ActionResult Create()
+        {
+            //CreatePDFByCopy();
             return View();
         }
 
