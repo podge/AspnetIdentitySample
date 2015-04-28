@@ -18,6 +18,9 @@
             @Html.DisplayNameFor(model => model.SpeciesId)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.GenderId)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Breed)
         </th>
         <th>
@@ -38,6 +41,9 @@
             @Html.DisplayFor(modelItem => item.Species.SpeciesName)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Gender.GenderName)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Breed)
         </td>
         <td>
@@ -47,14 +53,14 @@
             @Html.DisplayFor(modelItem => item.MicrochipNumber)
         </td>
         <td>
-            <a href="@Url.Action("Edit", "Pets", new { id = item.Id })" class="btn btn-primary btn-large">Edit</a> 
-            <a href="@Url.Action("Details", "Pets", new { id = item.Id })" class="btn btn-primary btn-large">Details</a>
-            <a href="@Url.Action("Delete", "Pets", new { id = item.Id })" class="btn btn-primary btn-large">Delete</a>
-            <a href="@Url.Action("Index", "RabiesVaccinations", new { id = item.Id })" class="btn btn-primary btn-large">Rabies Vax</a>
-            <a href="@Url.Action("Index", "Bloodtests", new { id = item.Id })" class="btn btn-primary btn-large">Bloodtest</a>
-            <a href="@Url.Action("Upload", "Pets", new { id = item.Id })" c class="btn btn-primary btn-large">Upload</a>
-            <a href="@Url.Action("PetCheck", "Pets", new { id = item.Id })" class="btn btn-primary btn-large">PetCheck</a>
-            <a href="@Url.Action("Index", "CertGenerator", new { id = item.Id })" c class="btn btn-primary btn-large">Cert</a>
+            <a href="@Url.Action("Edit", "Pets", new { id = item.Id })" class="btn btn-primary btn-sm">Edit</a> 
+            <a href="@Url.Action("Details", "Pets", new { id = item.Id })" class="btn btn-primary btn-sm">Details</a>
+            <a href="@Url.Action("Delete", "Pets", new { id = item.Id })" class="btn btn-primary btn-sm">Delete</a>
+            <a href="@Url.Action("Index", "RabiesVaccinations", new { id = item.Id })" class="btn btn-primary btn-sm">Rabies</a>
+            <a href="@Url.Action("Index", "Bloodtests", new { id = item.Id })" class="btn btn-primary btn-sm">Bloodtest</a>
+            <a href="@Url.Action("Upload", "Pets", new { id = item.Id })" c class="btn btn-primary btn-sm">Upload</a>
+            <a href="@Url.Action("PetCheck", "Pets", new { id = item.Id })" class="btn btn-primary btn-sm">Check</a>
+            <a href="@Url.Action("Index", "CertGenerator", new { id = item.Id })" c class="btn btn-primary btn-sm">Cert</a>
         </td>
     </tr>
 }

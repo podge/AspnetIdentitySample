@@ -49,10 +49,14 @@ namespace AspnetIdentitySample.Models
         public virtual ICollection<RabiesVaccination> RabiesVaccinations { get; set; }
         public virtual ICollection<Bloodtest> FAVNBloodTests { get; set; }
         public virtual ApplicationUser User { get; set; }
+        public virtual Species Species { get; set; }
+        public virtual Gender Gender { get; set; }
         [Required]
         [Display(Name = "Species")]
         public int SpeciesId { get; set; }
-        public virtual Species Species { get; set; }
+        [Required]
+        [Display(Name = "Gender")]
+        public int GenderId { get; set; }
     }
     public class RabiesVaccination
     {
@@ -133,6 +137,35 @@ namespace AspnetIdentitySample.Models
         public int SpeciesId { get; set; }
         public String SpeciesName { get; set; }
     }
+    public class Gender
+    {
+        public int GenderId { get; set; }
+        public String GenderName { get; set; }
+    }
+    public class Identification
+    {
+        public int IdentificationId { get; set; }
+        public int IdentificationTypeId { get; set; }
+        public String IdentificationNumber { get; set; }
+        public DateTime IdentificationDate { get; set; }
+    }
+    public class IdentificationType
+    {
+        public int IndentificationTypeId { get; set; }
+        public String IdentificationTypeName { get; set; }
+    }
+    public class Certificate
+    {
+        public int CertId { get; set; }
+        public Consignor Consignor { get; set; }
+        public Consignee Consignee { get; set; }
+        public virtual ICollection<Pet> Pets { get; set; }
+        public String CountryOfOrigin { get; set; }
+        public String ISOCode { get; set; }
+        public String CommodityDescription { get; set; }
+
+
+    }
     public class MyDbContext : IdentityDbContext<ApplicationUser>
     {
         public MyDbContext()
@@ -159,6 +192,7 @@ namespace AspnetIdentitySample.Models
 
         public System.Data.Entity.DbSet<AspnetIdentitySample.Models.Bloodtest> Bloodtests { get; set; }
         public DbSet<Species> Species { get; set; }
+        public DbSet<Gender> Gender { get; set; }
     }
 
     public class ValidateDateRange : ValidationAttribute
