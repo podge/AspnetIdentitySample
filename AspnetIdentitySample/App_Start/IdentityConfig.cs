@@ -80,23 +80,32 @@ namespace AspnetIdentitySample
             // Create Pets
             ICollection<Pet> pets = new List<Pet>();
 
-            Pet Pet = new Pet();
-            Pet.Name = "Rosco";
-            Pet.Breed = "Norwegian Elkhound";
-            Pet.DateOfBirth = new DateTime(2010, 1, 1);
-            Pet.MicrochipNumber = "98512000001234";
-            Pet.Species = dog;
-            Pet.Gender = male;
-            pets.Add(Pet);
 
-            Pet Pet2 = new Pet();
-            Pet2.Name = "Puddy";
-            Pet2.Breed = "Tomcat";
-            Pet2.DateOfBirth = new DateTime(2015, 1, 1);
-            Pet2.MicrochipNumber = "98512000009999";
-            Pet2.Species = cat;
-            Pet2.Gender = female;
-            pets.Add(Pet2);
+            for(int i=1; i<=50; i++){
+                Pet Pet = new Pet();
+                Pet.Name = "Rosco"+i;
+                Pet.Breed = "Norwegian Elkhound";
+                Pet.DateOfBirth = new DateTime(2010, 1, 1);
+                Pet.MicrochipNumber = "9851200000100"+i.ToString("D2");
+                Pet.Species = dog;
+                Pet.Gender = male;
+                //Pet.RabiesVaccinations = new List<RabiesVaccination>();
+                //Pet.RabiesVaccinations.Add(new RabiesVaccination(new DateTime(2011, 01, 01), new DateTime(2011, 01, 01), new DateTime(2012, 01, 01)));
+                //Pet.RabiesVaccinations.Add(new RabiesVaccination(new DateTime(2012, 01, 01), new DateTime(2012, 01, 01), new DateTime(2013, 01, 01)));
+                pets.Add(Pet);
+
+                Pet Pet2 = new Pet();
+                Pet2.Name = "Puddy"+i;
+                Pet2.Breed = "Tomcat";
+                Pet2.DateOfBirth = new DateTime(2012, 1, 1);
+                Pet2.MicrochipNumber = "9851200000200"+i.ToString("D2");
+                Pet2.Species = cat;
+                Pet2.Gender = female;
+                //Pet2.RabiesVaccinations = new List<RabiesVaccination>();
+                //Pet2.RabiesVaccinations.Add(new RabiesVaccination(new DateTime(2012, 01, 01), new DateTime(2012, 01, 01), new DateTime(2013, 01, 01)));
+                //Pet2.RabiesVaccinations.Add(new RabiesVaccination(new DateTime(2013, 01, 01), new DateTime(2013, 01, 01), new DateTime(2014, 01, 01)));
+                pets.Add(Pet2);
+            }
 
             user.Pets = pets;
 

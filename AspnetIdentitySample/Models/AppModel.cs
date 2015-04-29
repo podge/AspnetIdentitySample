@@ -82,6 +82,18 @@ namespace AspnetIdentitySample.Models
         public int PetID { get; set; }
 
         public virtual Pet Pet { get; set; }
+
+        public RabiesVaccination(DateTime dateOfRabiesVaccination, DateTime dateOfValidityFrom, DateTime dateOfValidityTo)
+        {
+            this.DateOfRabiesVaccination = dateOfRabiesVaccination;
+            this.DateOfValidityFrom = dateOfValidityFrom;
+            this.DateOfValidityTo = dateOfValidityTo;
+        }
+
+        public RabiesVaccination()
+        {
+
+        }
     }
     public class Bloodtest
     {
