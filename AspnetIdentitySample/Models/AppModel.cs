@@ -83,11 +83,12 @@ namespace AspnetIdentitySample.Models
 
         public virtual Pet Pet { get; set; }
 
-        public RabiesVaccination(DateTime dateOfRabiesVaccination, DateTime dateOfValidityFrom, DateTime dateOfValidityTo)
+        public RabiesVaccination(DateTime dateOfRabiesVaccination, DateTime dateOfValidityFrom, DateTime dateOfValidityTo, int petId)
         {
             this.DateOfRabiesVaccination = dateOfRabiesVaccination;
             this.DateOfValidityFrom = dateOfValidityFrom;
             this.DateOfValidityTo = dateOfValidityTo;
+            this.PetID = petId;
         }
 
         public RabiesVaccination()
@@ -105,6 +106,7 @@ namespace AspnetIdentitySample.Models
         public DateTime DateOfBloodtest { get; set; }
         public Boolean Result { get; set; }
 
+        [Required]
         [Display(Name = "Pet")]
         public int PetID { get; set; }
 

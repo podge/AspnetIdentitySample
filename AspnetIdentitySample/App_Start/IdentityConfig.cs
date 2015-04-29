@@ -90,8 +90,8 @@ namespace AspnetIdentitySample
                 Pet.Species = dog;
                 Pet.Gender = male;
                 //Pet.RabiesVaccinations = new List<RabiesVaccination>();
-                //Pet.RabiesVaccinations.Add(new RabiesVaccination(new DateTime(2011, 01, 01), new DateTime(2011, 01, 01), new DateTime(2012, 01, 01)));
-                //Pet.RabiesVaccinations.Add(new RabiesVaccination(new DateTime(2012, 01, 01), new DateTime(2012, 01, 01), new DateTime(2013, 01, 01)));
+                //Pet.RabiesVaccinations.Add(new RabiesVaccination(new DateTime(2011, 01, 01), new DateTime(2011, 01, 01), new DateTime(2012, 01, 01), i));
+                //Pet.RabiesVaccinations.Add(new RabiesVaccination(new DateTime(2012, 01, 01), new DateTime(2012, 01, 01), new DateTime(2013, 01, 01), i));
                 pets.Add(Pet);
 
                 Pet Pet2 = new Pet();
@@ -101,15 +101,13 @@ namespace AspnetIdentitySample
                 Pet2.MicrochipNumber = "9851200000200"+i.ToString("D2");
                 Pet2.Species = cat;
                 Pet2.Gender = female;
-                //Pet2.RabiesVaccinations = new List<RabiesVaccination>();
-                //Pet2.RabiesVaccinations.Add(new RabiesVaccination(new DateTime(2012, 01, 01), new DateTime(2012, 01, 01), new DateTime(2013, 01, 01)));
-                //Pet2.RabiesVaccinations.Add(new RabiesVaccination(new DateTime(2013, 01, 01), new DateTime(2013, 01, 01), new DateTime(2014, 01, 01)));
                 pets.Add(Pet2);
             }
 
             user.Pets = pets;
 
             adminresult = UserManager.Create(user, "123456");
+
         }
     }
 }
