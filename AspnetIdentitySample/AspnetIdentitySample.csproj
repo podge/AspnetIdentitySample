@@ -197,6 +197,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Documents\pet_cert.docx" />
     <Content Include="Documents\pet_cert.pdf" />
+    <None Include="Properties\PublishProfiles\Inetpub.pubxml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
