@@ -16,13 +16,13 @@ namespace AspnetIdentitySample.Controllers
     public class RabiesVaccinationsController : Controller
     {
         private MyDbContext db = new MyDbContext();
-        //private UserManager<ApplicationUser> manager;
+        private UserManager<ApplicationUser> manager;
 
-        //public RabiesVaccinationsController()
-        //{
-        //    db = new MyDbContext();
-        //    manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-        //}
+        public RabiesVaccinationsController()
+        {
+            db = new MyDbContext();
+            manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+        }
 
         // GET: RabiesVaccination
         //public async Task<ActionResult> Index()
@@ -34,12 +34,18 @@ namespace AspnetIdentitySample.Controllers
         // GET: RabiesVaccination/1
         public async Task<ActionResult> Index(int? id)
         {
-            //var currentUser = manager.FindById(User.Identity.GetUserId());
+            var currentUser = manager.FindById(User.Identity.GetUserId());
             var rabiesVaccinations = db.RabiesVaccinations.Include(r => r.Pet);
+            ViewBag.PetID = new SelectList(db.Pets, "Id", "Name", id); //.Where(r => r.Pet.User.Id == currentUser.Id);
+            // Only show vaccinations from the current user
+            rabiesVaccinations = rabiesVaccinations.Where(r => r.Pet.User.Id == currentUser.Id);
+
             if (id != null)
             {
                 rabiesVaccinations = rabiesVaccinations.Where(r => r.Pet.Id == id);
-            }            
+            }
+
+            rabiesVaccinations = rabiesVaccinations.OrderBy(r => r.DateOfValidityFrom);
 
             return View(await rabiesVaccinations.ToListAsync());
 

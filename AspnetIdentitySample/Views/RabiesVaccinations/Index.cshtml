@@ -6,6 +6,14 @@
 
 <h2>Rabies Vaccinations</h2>
 <p>
+    <div class="form-group">
+        @Html.LabelFor(model => model, "Select Pet ", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("PetID", String.Empty)
+            @Html.ValidationMessageFor(model => model)
+        </div>
+    </div>
+    <br />
 <a href="@Url.Action("Create", "RabiesVaccinations", new { id = ViewContext.RouteData.Values["id"] })" class="btn btn-primary btn-large">Create New</a></p>
 <table class="table">
     <tr>
