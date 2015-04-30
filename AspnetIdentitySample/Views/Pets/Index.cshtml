@@ -1,4 +1,6 @@
-﻿@model IEnumerable<AspnetIdentitySample.Models.Pet>
+﻿@model PagedList.IPagedList<AspnetIdentitySample.Models.Pet>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Pet Index";
@@ -9,8 +11,15 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+@using (Html.BeginForm("Index", "Pets", FormMethod.Get))
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
 <table class="table">
-    <tr>
+    @*<tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -30,6 +39,28 @@
             @Html.DisplayNameFor(model => model.MicrochipNumber)
         </th>
         <th></th>
+    </tr>*@
+
+    <tr>
+        <th>
+            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            Species
+        </th>
+        <th>
+            Gender
+        </th>
+        <th>
+            Breed
+        </th>
+        <th>
+            @Html.ActionLink("Date of Birth", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            Microchip Number
+        </th>
+        <th>Actions</th>
     </tr>
 
 @foreach (var item in Model) {
@@ -66,3 +97,8 @@
 }
 
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

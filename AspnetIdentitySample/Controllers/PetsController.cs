@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using AspnetIdentitySample.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PagedList;
 
 namespace AspnetIdentitySample.Controllers
 {
@@ -25,11 +26,51 @@ namespace AspnetIdentitySample.Controllers
         }
         
         // GET: /Pet/
-        // GET Pet for the logged in user
-        public ActionResult Index()
+        // GET Pets for the logged in user
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             var currentUser = manager.FindById(User.Identity.GetUserId());
-            return View(db.Pets.ToList().Where(pet => pet.User.Id == currentUser.Id));
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            var pets = from s in db.Pets where (s.User.Id == currentUser.Id)
+                       select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                pets = pets.Where(s => s.Name.Contains(searchString)
+                                       || s.MicrochipNumber.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    pets = pets.OrderByDescending(s => s.Name);
+                    break;
+                case "Date":
+                    pets = pets.OrderBy(s => s.DateOfBirth);
+                    break;
+                case "date_desc":
+                    pets = pets.OrderByDescending(s => s.DateOfBirth);
+                    break;
+                default:  // Name ascending 
+                    pets = pets.OrderBy(s => s.Name);
+                    break;
+            }
+
+            return View(pets.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: /Pet/All
