@@ -99,7 +99,7 @@ else
     <p>No Rabies Vaccinations recorded.</p>
 }
 <p>
-    <td colspan="2"><a href="@Url.Action("Create", "RabiesVaccinations", new { id = Model.Id })" class="btn btn-primary btn-large">Add Rabies Vaccination</a></td>
+    <a href="@Url.Action("Create", "RabiesVaccinations", new { id = Model.Id })" class="btn btn-primary btn-large">Add Rabies Vaccination</a>
 </p>
 @if (0 != Model.FAVNBloodTests.Count)
 { <table title="FAVN Bloodtests" class="table-striped">
@@ -132,4 +132,4 @@ else
 {
     <p>No Rabies Bloodtests recorded.</p>
 }
-<td colspan="2"><a href="@Url.Action("Create", "Bloodtests", new { id = Model.Id })" class="btn btn-primary btn-large">Add Bloodtest</a></td>
+<a href="@Url.Action("Create", "Bloodtests", new { id = Model.Id })" class="btn btn-primary btn-large">Add Bloodtest</a>

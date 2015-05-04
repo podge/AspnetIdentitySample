@@ -158,7 +158,7 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,SpeciesId,DateOfBirth,Breed,MicrochipNumber")] Pet pet)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,MicrochipNumber")] Pet pet)
         {
             ViewBag.SpeciesId = new SelectList(db.Species, "SpeciesId", "SpeciesName");
             ViewBag.GenderId = new SelectList(db.Gender, "GenderId", "GenderName");
