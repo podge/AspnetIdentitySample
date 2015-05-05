@@ -46,10 +46,17 @@ namespace AspnetIdentitySample.Controllers
         public List<String> errors(Pet pet)
         {
             List<String> errorList = new List<string>();
+            List<RabiesVaccination> vaxList = new List<RabiesVaccination>();
+            List<Bloodtest> testList = new List<Bloodtest>();
 
             if (null == pet.RabiesVaccinations || pet.RabiesVaccinations.Count == 0)
             {
                 errorList.Add("No rabies Vaccinations found");
+            }
+            else
+            {
+                // Sort Rabies Vaccinations
+                vaxList = pet.RabiesVaccinations.OrderBy(o => o.DateOfValidityFrom).ToList();
             }
 
             if (null == pet.FAVNBloodTests || pet.FAVNBloodTests.Count == 0)
@@ -58,6 +65,13 @@ namespace AspnetIdentitySample.Controllers
             }
             else
             {
+                // Only get successful blood tests
+                testList = pet.FAVNBloodTests.Where(x => x.Result == true).ToList();
+                // Sort blood tests by date
+                testList = testList.OrderByDescending(o => o.DateOfBloodtest).ToList();
+                // Get most recent successful blood test;
+                errorList.Add("Most recent successful bloodtest " + pet.FAVNBloodTests.First().DateOfBloodtest);
+
                 errorList.Add("Pet is eligible for entry on or after " + pet.FAVNBloodTests.First().DateOfBloodtest.AddMonths(3));
             }
 

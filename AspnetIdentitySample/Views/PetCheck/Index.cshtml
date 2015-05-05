@@ -128,8 +128,9 @@ else
 {
     <p>No Rabies Bloodtests recorded.</p>
 }
-<a href="@Url.Action("Create", "Bloodtests", new { id = Model.Id })" class="btn btn-primary btn-large">Add Bloodtest</a>
-
+<p>
+    <a href="@Url.Action("Create", "Bloodtests", new { id = Model.Id })" class="btn btn-primary btn-large">Add Bloodtest</a>
+</p>
 
 @if (0 != @ViewBag.errorList.Count)
 { <table title="Errors" class="table-striped">
@@ -156,5 +157,5 @@ else
 
 
 <p>
-    <a href="@Url.Action("Index", "Pets")" class="btn btn-primary btn-sm">Back to List</a> 
+    <a href="@Url.Action("Index", "Pets")" class="btn btn-primary btn-large">Back to List</a> 
 </p>
