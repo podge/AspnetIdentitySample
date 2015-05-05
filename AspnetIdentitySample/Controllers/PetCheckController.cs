@@ -51,7 +51,7 @@ namespace AspnetIdentitySample.Controllers
 
             if (null == pet.RabiesVaccinations || pet.RabiesVaccinations.Count == 0)
             {
-                errorList.Add("No rabies Vaccinations found");
+                errorList.Add("No rabies Vaccinations found.");
             }
             else
             {
@@ -61,7 +61,7 @@ namespace AspnetIdentitySample.Controllers
 
             if (null == pet.FAVNBloodTests || pet.FAVNBloodTests.Count == 0)
             {
-                errorList.Add("No bloodtests found");
+                errorList.Add("No bloodtests found.");
             }
             else
             {
