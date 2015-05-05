@@ -1,0 +1,160 @@
+﻿@model AspnetIdentitySample.Models.Pet
+
+@{
+    ViewBag.Title = "Pet Check";
+}
+
+<h2>Pet Check</h2>
+
+<div>
+    <h4>Pet Check for @Html.DisplayFor(model => model.Name)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Gender.GenderName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Gender.GenderName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Species.SpeciesName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Species.SpeciesName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Breed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Breed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MicrochipNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MicrochipNumber)
+        </dd>
+
+    </dl>
+</div>
+@if (0 != Model.RabiesVaccinations.Count)
+{
+    <table title="Rabies Vaccinations" class="table-striped">
+        <thead>
+            <tr>
+                <th colspan="3">Rabies Vaccinations</th>
+            </tr>
+            <tr>
+                @foreach (var item in Model.RabiesVaccinations)
+                {
+                    <th>@Html.DisplayNameFor(modelItem => item.DateOfRabiesVaccination)</th>
+                    <th>@Html.DisplayNameFor(modelItem => item.DateOfValidityFrom)</th>
+                    <th>@Html.DisplayNameFor(modelItem => item.DateOfValidityTo)</th>
+                    break;
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.RabiesVaccinations)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.DateOfRabiesVaccination)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DateOfValidityFrom)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DateOfValidityTo)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <p>No Rabies Vaccinations recorded.</p>
+}
+<p>
+    <a href="@Url.Action("Create", "RabiesVaccinations", new { id = Model.Id })" class="btn btn-primary btn-large">Add Rabies Vaccination</a>
+</p>
+@if (0 != Model.FAVNBloodTests.Count)
+{ <table title="FAVN Bloodtests" class="table-striped">
+        <thead>
+            <tr>
+                <th colspan="2">FAVN Bloodtests</th>
+            </tr>
+            <tr>
+                @foreach (var item in Model.FAVNBloodTests)
+                {
+                    <th>@Html.DisplayNameFor(modelItem => item.DateOfBloodtest)</th>
+                    <th>@Html.DisplayNameFor(modelItem => item.Result)</th>
+                    break;
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.FAVNBloodTests)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.DateOfBloodtest)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Result)</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No Rabies Bloodtests recorded.</p>
+}
+<a href="@Url.Action("Create", "Bloodtests", new { id = Model.Id })" class="btn btn-primary btn-large">Add Bloodtest</a>
+
+
+@if (0 != @ViewBag.errorList.Count)
+{ <table title="Errors" class="table-striped">
+        <thead>
+            <tr>
+                <th>Errors</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in @ViewBag.errorList)
+            {
+                <tr>
+                    <td>@item</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No errors detected.</p>
+}
+
+
+
+<p>
+    <a href="@Url.Action("Index", "Pets")" class="btn btn-primary btn-sm">Back to List</a> 
+</p>

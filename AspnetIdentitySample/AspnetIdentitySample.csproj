@@ -171,6 +171,7 @@
     <Compile Include="Controllers\CertGeneratorController.cs" />
     <Compile Include="Controllers\ClaimsIdentityFactoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PetCheckController.cs" />
     <Compile Include="Controllers\RabiesVaccinationsController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
@@ -330,6 +331,7 @@
     <Content Include="Views\Bloodtests\Index.cshtml" />
     <Content Include="Views\CertGenerator\Index.cshtml" />
     <Content Include="Views\CertGenerator\Create.cshtml" />
+    <Content Include="Views\PetCheck\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
