@@ -11,6 +11,10 @@ using AspnetIdentitySample.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using PagedList;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace AspnetIdentitySample.Controllers
 {
@@ -113,7 +117,7 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,MicrochipNumber")] Pet pet)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,MicrochipNumber")] Pet pet, HttpPostedFileBase upload)
         {
             pet.Species = db.Species.Find(pet.SpeciesId);
             pet.Gender = db.Gender.Find(pet.GenderId);
@@ -122,6 +126,52 @@ namespace AspnetIdentitySample.Controllers
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId()); 
             if (ModelState.IsValid)
             {
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    var avatar = new PetFile
+                    {
+                        FileName = System.IO.Path.GetFileName(upload.FileName),
+                        FileType = FileType.Avatar,
+                        ContentType = upload.ContentType
+                    };
+                    using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                    {
+                        avatar.Content = reader.ReadBytes(upload.ContentLength);
+                        reader.Close();
+                    }
+                    pet.PetFiles = new List<PetFile> { avatar };
+
+                    // Resize Image
+
+                    //attach the uploaded image to the object before saving to Database
+                    pet.ImageMimeType = upload.ContentLength;
+                    pet.Image = new byte[upload.ContentLength];
+                    upload.InputStream.Read(pet.Image, 0, upload.ContentLength);
+
+                    //Save image to file
+                    var filename = upload.FileName;
+                    var filePathOriginal = Server.MapPath("/Content/Uploads/Originals");
+                    var filePathThumbnail = Server.MapPath("/Content/Uploads/Thumbnails");
+                    string savedFileName = Path.Combine(filePathOriginal, filename);
+                    upload.SaveAs(savedFileName);
+
+                    ////Read image back from file and create thumbnail from it
+                    //var imageFile = Path.Combine(Server.MapPath("~/Content/Uploads/Originals"), filename);
+                    //using (var srcImage = Image.FromFile(imageFile))
+                    //using (var newImage = new Bitmap(100, 100))
+                    //using (var graphics = Graphics.FromImage(newImage))
+                    //using (var stream = new MemoryStream())
+                    //{
+                    //    graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    //    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    //    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                    //    graphics.DrawImage(srcImage, new Rectangle(0, 0, 100, 100));
+                    //    newImage.Save(stream, ImageFormat.Png);
+                    //    var thumbNew = File(stream.ToArray(), "image/png");
+                    //    pet.thumbnail = thumbNew.FileContents;
+                    //}
+                    
+                }
                 pet.User = currentUser;
                 db.Pets.Add(pet);
                 await db.SaveChangesAsync();
@@ -129,6 +179,19 @@ namespace AspnetIdentitySample.Controllers
             }
 
             return View(pet);
+        }
+
+        public FileContentResult GetThumbnailImage(int? petID)
+        {
+            Pet Pet = db.Pets.FirstOrDefault(p => p.Id == petID);
+            if (Pet != null)
+            {
+                return File(Pet.thumbnail, Pet.ImageMimeType.ToString());
+            }
+            else
+            {
+                return null;
+            }
         }
 
         // GET: /Pet/Edit/5

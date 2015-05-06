@@ -7,7 +7,7 @@
 <h2>Create Pet</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Pets", null, FormMethod.Post, new {enctype = "multipart/form-data"})) 
 {
     @Html.AntiForgeryToken()
     
@@ -62,6 +62,13 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.MicrochipNumber)
                 @Html.ValidationMessageFor(model => model.MicrochipNumber)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Avatar", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" id="Avatar" name="upload" />
             </div>
         </div>
 

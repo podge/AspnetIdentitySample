@@ -48,6 +48,7 @@ namespace AspnetIdentitySample.Models
         public string MicrochipNumber { get; set; }
         public virtual ICollection<RabiesVaccination> RabiesVaccinations { get; set; }
         public virtual ICollection<Bloodtest> FAVNBloodTests { get; set; }
+        public virtual ICollection<PetFile> PetFiles { get; set; }
         public virtual ApplicationUser User { get; set; }
         public virtual Species Species { get; set; }
         public virtual Gender Gender { get; set; }
@@ -57,6 +58,9 @@ namespace AspnetIdentitySample.Models
         [Required]
         [Display(Name = "Gender")]
         public int GenderId { get; set; }
+        public byte[] Image { get; set; }
+        public int ImageMimeType { get; set; }
+        public byte[] thumbnail { get; set; }
     }
     public class RabiesVaccination
     {
@@ -180,6 +184,18 @@ namespace AspnetIdentitySample.Models
 
 
     }
+    public class PetFile
+    {
+        public int PetFileId { get; set; }
+        [StringLength(255)]
+        public string FileName { get; set; }
+        [StringLength(100)]
+        public string ContentType { get; set; }
+        public byte[] Content { get; set; }
+        public FileType FileType { get; set; }
+        public int PersonId { get; set; }
+        public virtual Pet Pet { get; set; }
+    }
     public class MyDbContext : IdentityDbContext<ApplicationUser>
     {
         public MyDbContext()
@@ -199,12 +215,10 @@ namespace AspnetIdentitySample.Models
         }
 
         public DbSet<Pet> Pets { get; set; }
-
         public DbSet<MyUserInfo> MyUserInfo { get; set; }
-
-        public System.Data.Entity.DbSet<AspnetIdentitySample.Models.RabiesVaccination> RabiesVaccinations { get; set; }
-
-        public System.Data.Entity.DbSet<AspnetIdentitySample.Models.Bloodtest> Bloodtests { get; set; }
+        public DbSet<RabiesVaccination> RabiesVaccinations { get; set; }
+        public DbSet<Bloodtest> Bloodtests { get; set; }
+        public DbSet<PetFile> PetFiles { get; set; }
         public DbSet<Species> Species { get; set; }
         public DbSet<Gender> Gender { get; set; }
     }
