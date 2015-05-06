@@ -14,7 +14,7 @@ namespace AspnetIdentitySample.Controllers
         // GET: /File/
         public ActionResult Index(int id)
         {
-            var fileToRetrieve = db.Files.Find(id);
+            var fileToRetrieve = db.PetFiles.Find(id);
             return File(fileToRetrieve.Content, fileToRetrieve.ContentType);
         }
     }

@@ -338,6 +338,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="bin\" />
+    <Folder Include="Content\Uploads\Originals\" />
+    <Folder Include="Content\Uploads\Thumbnails\" />
     <Folder Include="Views\File\" />
   </ItemGroup>
   <ItemGroup>
