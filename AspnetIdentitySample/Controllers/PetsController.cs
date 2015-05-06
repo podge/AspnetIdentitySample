@@ -113,7 +113,7 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,MicrochipNumber")] Pet pet)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,MicrochipNumber")] Pet pet, HttpPostedFileBase upload)
         {
             pet.Species = db.Species.Find(pet.SpeciesId);
             pet.Gender = db.Gender.Find(pet.GenderId);
@@ -122,6 +122,20 @@ namespace AspnetIdentitySample.Controllers
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId()); 
             if (ModelState.IsValid)
             {
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    var avatar = new File
+                    {
+                        FileName = System.IO.Path.GetFileName(upload.FileName),
+                        FileType = FileType.Avatar,
+                        ContentType = upload.ContentType
+                    };
+                    using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                    {
+                        avatar.Content = reader.ReadBytes(upload.ContentLength);
+                    }
+                    pet.Files = new List<File> { avatar };
+                }
                 pet.User = currentUser;
                 db.Pets.Add(pet);
                 await db.SaveChangesAsync();

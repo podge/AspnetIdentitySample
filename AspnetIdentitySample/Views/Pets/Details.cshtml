@@ -10,6 +10,15 @@
     <h4>Pet Details</h4>
 	<hr />
     <dl class="dl-horizontal">
+        @if (Model.Files.Any(f => f.FileType == AspnetIdentitySample.Models.FileType.Avatar))
+        {
+            <dt>
+                Avatar
+            </dt>
+            <dd>
+                <img src="~/File?id=@Model.Files.First(f => f.FileType == AspnetIdentitySample.Models.FileType.Avatar).FileId" alt="avatar" />
+            </dd>
+        }
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
