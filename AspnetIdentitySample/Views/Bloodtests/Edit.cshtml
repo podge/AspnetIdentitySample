@@ -20,7 +20,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateOfBloodtest, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfBloodtest)
+                @*@Html.EditorFor(model => model.DateOfBloodtest)*@
+                @Html.JQueryUI().DatepickerFor(model => model.DateOfBloodtest)
                 @Html.ValidationMessageFor(model => model.DateOfBloodtest)
             </div>
         </div>

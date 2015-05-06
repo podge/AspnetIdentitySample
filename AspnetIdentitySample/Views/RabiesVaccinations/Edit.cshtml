@@ -20,7 +20,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateOfRabiesVaccination, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfRabiesVaccination)
+                @*@Html.EditorFor(model => model.DateOfRabiesVaccination)*@
+                @Html.JQueryUI().DatepickerFor(model => model.DateOfRabiesVaccination)
                 @Html.ValidationMessageFor(model => model.DateOfRabiesVaccination)
             </div>
         </div>
@@ -28,7 +29,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateOfValidityFrom, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfValidityFrom)
+                @*@Html.EditorFor(model => model.DateOfValidityFrom)*@
+                @Html.JQueryUI().DatepickerFor(model => model.DateOfValidityFrom)
                 @Html.ValidationMessageFor(model => model.DateOfValidityFrom)
             </div>
         </div>
@@ -36,7 +38,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateOfValidityTo, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfValidityTo)
+                @*@Html.EditorFor(model => model.DateOfValidityTo)*@
+                @Html.JQueryUI().DatepickerFor(model => model.DateOfValidityTo)
                 @Html.ValidationMessageFor(model => model.DateOfValidityTo)
             </div>
         </div>
