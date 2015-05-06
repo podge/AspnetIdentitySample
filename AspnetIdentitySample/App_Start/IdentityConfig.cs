@@ -81,7 +81,7 @@ namespace AspnetIdentitySample
             ICollection<Pet> pets = new List<Pet>();
 
 
-            for(int i=1; i<=50; i++){
+            for(int i=1; i<=3; i++){
                 Pet Pet = new Pet();
                 Pet.Name = "Rosco"+i;
                 Pet.Breed = "Norwegian Elkhound";

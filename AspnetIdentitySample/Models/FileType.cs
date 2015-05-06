@@ -7,6 +7,6 @@ namespace AspnetIdentitySample.Models
 {
     public enum FileType
     {
-        Avatar = 1, Photo
+        Avatar = 1, Photo = 2, Thumbnail = 3
     }
 }

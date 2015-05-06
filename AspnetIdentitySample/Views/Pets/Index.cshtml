@@ -43,6 +43,9 @@
 
     <tr>
         <th>
+            Pet
+        </th>
+        <th>
             @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
@@ -66,6 +69,13 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @*<img src="~/File?id=@Model.PetFiles.First(f => f.FileType == AspnetIdentitySample.Models.FileType.Avatar).PetFileId" alt="avatar" width="48" height="48"/>*@
+            @if (item.PetFiles.Any(f => f.FileType == AspnetIdentitySample.Models.FileType.Thumbnail))
+            {
+                <img src="~/File?id=@item.PetFiles.FirstOrDefault(f => f.FileType == AspnetIdentitySample.Models.FileType.Thumbnail).PetFileId" alt="avatar" />
+            }            
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
@@ -83,8 +93,11 @@
         <td>
             @Html.DisplayFor(modelItem => item.MicrochipNumber)
         </td>
-        <td>
-            <a href="@Url.Action("Edit", "Pets", new { id = item.Id })" class="btn btn-primary btn-sm">Edit</a> 
+        
+    </tr>
+    <tr>
+        <td colspan="8">
+            <a href="@Url.Action("Edit", "Pets", new { id = item.Id })" class="btn btn-primary btn-sm">Edit</a>
             <a href="@Url.Action("Details", "Pets", new { id = item.Id })" class="btn btn-primary btn-sm">Details</a>
             <a href="@Url.Action("Delete", "Pets", new { id = item.Id })" class="btn btn-primary btn-sm">Delete</a>
             <a href="@Url.Action("Index", "RabiesVaccinations", new { id = item.Id })" class="btn btn-primary btn-sm">Rabies</a>

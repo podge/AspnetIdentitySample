@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Web.Helpers;
 
 namespace AspnetIdentitySample.Controllers
 {
@@ -28,7 +29,7 @@ namespace AspnetIdentitySample.Controllers
             db = new MyDbContext();
             manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
         }
-        
+
         // GET: /Pet/
         // GET Pets for the logged in user
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -50,7 +51,8 @@ namespace AspnetIdentitySample.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var pets = from s in db.Pets where (s.User.Id == currentUser.Id)
+            var pets = from s in db.Pets
+                       where (s.User.Id == currentUser.Id)
                        select s;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -78,7 +80,7 @@ namespace AspnetIdentitySample.Controllers
         }
 
         // GET: /Pet/All
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> All()
         {
             return View(await db.Pets.ToListAsync());
@@ -87,7 +89,7 @@ namespace AspnetIdentitySample.Controllers
         // GET: /Pet/Details/5
         public async Task<ActionResult> Details(int? id)
         {
-            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId()); 
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -123,7 +125,7 @@ namespace AspnetIdentitySample.Controllers
             pet.Gender = db.Gender.Find(pet.GenderId);
             ViewBag.SpeciesId = new SelectList(db.Species, "SpeciesId", "SpeciesName");
             ViewBag.GenderId = new SelectList(db.Gender, "GenderId", "GenderName");
-            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId()); 
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             if (ModelState.IsValid)
             {
                 if (upload != null && upload.ContentLength > 0)
@@ -137,40 +139,17 @@ namespace AspnetIdentitySample.Controllers
                     using (var reader = new System.IO.BinaryReader(upload.InputStream))
                     {
                         avatar.Content = reader.ReadBytes(upload.ContentLength);
-                        reader.Close();
                     }
                     pet.PetFiles = new List<PetFile> { avatar };
 
-                    // Resize Image
+                    // New Resize
+                    PetFile thumbFile = new PetFile();
+                    thumbFile.Content = ResizeImage(avatar.Content, 100, 100, false);
+                    thumbFile.FileName = "thumb" + avatar.FileName;
+                    thumbFile.FileType = FileType.Thumbnail;
+                    thumbFile.ContentType = avatar.ContentType;
+                    pet.PetFiles.Add(thumbFile);
 
-                    //attach the uploaded image to the object before saving to Database
-                    pet.ImageMimeType = upload.ContentLength;
-                    pet.Image = new byte[upload.ContentLength];
-                    upload.InputStream.Read(pet.Image, 0, upload.ContentLength);
-
-                    //Save image to file
-                    var filename = upload.FileName;
-                    var filePathOriginal = Server.MapPath("/Content/Uploads/Originals");
-                    var filePathThumbnail = Server.MapPath("/Content/Uploads/Thumbnails");
-                    string savedFileName = Path.Combine(filePathOriginal, filename);
-                    upload.SaveAs(savedFileName);
-
-                    ////Read image back from file and create thumbnail from it
-                    //var imageFile = Path.Combine(Server.MapPath("~/Content/Uploads/Originals"), filename);
-                    //using (var srcImage = Image.FromFile(imageFile))
-                    //using (var newImage = new Bitmap(100, 100))
-                    //using (var graphics = Graphics.FromImage(newImage))
-                    //using (var stream = new MemoryStream())
-                    //{
-                    //    graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                    //    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    //    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                    //    graphics.DrawImage(srcImage, new Rectangle(0, 0, 100, 100));
-                    //    newImage.Save(stream, ImageFormat.Png);
-                    //    var thumbNew = File(stream.ToArray(), "image/png");
-                    //    pet.thumbnail = thumbNew.FileContents;
-                    //}
-                    
                 }
                 pet.User = currentUser;
                 db.Pets.Add(pet);
@@ -181,23 +160,99 @@ namespace AspnetIdentitySample.Controllers
             return View(pet);
         }
 
-        public FileContentResult GetThumbnailImage(int? petID)
+        /// <summary>
+        /// Allows for image resizing. if AllowLargerImageCreation = true 
+        /// you want to increase the size of the image
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="NewWidth"></param>
+        /// <param name="MaxHeight"></param>
+        /// <param name="AllowLargerImageCreation"></param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public static byte[] ResizeImage(byte[] bytes, int NewWidth, int MaxHeight, bool AllowLargerImageCreation)
         {
-            Pet Pet = db.Pets.FirstOrDefault(p => p.Id == petID);
-            if (Pet != null)
+
+            Image FullsizeImage = null;
+            Image ResizedImage = null;
+            //Cast bytes to an image
+            FullsizeImage = byteArrayToImage(bytes);
+
+            // Prevent using images internal thumbnail
+            FullsizeImage.RotateFlip(System.Drawing.RotateFlipType.Rotate180FlipNone);
+            FullsizeImage.RotateFlip(System.Drawing.RotateFlipType.Rotate180FlipNone);
+
+            // If we are re sizing upwards to a bigger size
+            if (AllowLargerImageCreation)
             {
-                return File(Pet.thumbnail, Pet.ImageMimeType.ToString());
+                if (FullsizeImage.Width <= NewWidth)
+                {
+                    NewWidth = FullsizeImage.Width;
+                }
             }
-            else
+
+            //Keep aspect ratio
+            int NewHeight = FullsizeImage.Height * NewWidth / FullsizeImage.Width;
+            if (NewHeight > MaxHeight)
             {
-                return null;
+                // Resize with height instead
+                NewWidth = FullsizeImage.Width * MaxHeight / FullsizeImage.Height;
+                NewHeight = MaxHeight;
             }
+
+            //ResizedImage = FullsizeImage.GetThumbnailImage(NewWidth, NewHeight, null, IntPtr.Zero);
+
+            Bitmap result = new Bitmap(NewWidth, NewHeight);
+            //set the resolutions the same to avoid cropping due to resolution differences
+            result.SetResolution(FullsizeImage.HorizontalResolution, FullsizeImage.VerticalResolution);
+
+            //use a graphics object to draw the resized image into the bitmap
+            using (Graphics graphics = Graphics.FromImage(result))
+            {
+                //set the resize quality modes to high quality
+                graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                //draw the image into the target bitmap
+                graphics.DrawImage(FullsizeImage, 0, 0, result.Width, result.Height);
+            }
+
+            // Clear handle to original file so that we can overwrite it if necessary
+            FullsizeImage.Dispose();
+
+            //return imageToByteArray(ResizedImage);
+            return imageToByteArray(result);
+        }
+
+
+        /// <summary>
+        /// convert image to byte array
+        /// </summary>
+        /// <param name="imageIn"></param>
+        /// <returns></returns>
+        private static byte[] imageToByteArray(System.Drawing.Image imageIn)
+        {
+            MemoryStream ms = new MemoryStream();
+            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            return ms.ToArray();
+        }
+
+
+        /// <summary>
+        /// Convert a byte array to an image
+        /// </summary>
+        /// <remarks></remarks>
+        public static Image byteArrayToImage(byte[] byteArrayIn)
+        {
+            MemoryStream ms = new MemoryStream(byteArrayIn);
+            Image returnImage = Image.FromStream(ms);
+            return returnImage;
         }
 
         // GET: /Pet/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
-            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId()); 
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -237,7 +292,7 @@ namespace AspnetIdentitySample.Controllers
         // GET: /Pet/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
-            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId()); 
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -250,7 +305,7 @@ namespace AspnetIdentitySample.Controllers
             if (pet.User.Id != currentUser.Id)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
-            } 
+            }
             return View(pet);
         }
 

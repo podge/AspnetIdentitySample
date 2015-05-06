@@ -58,9 +58,6 @@ namespace AspnetIdentitySample.Models
         [Required]
         [Display(Name = "Gender")]
         public int GenderId { get; set; }
-        public byte[] Image { get; set; }
-        public int ImageMimeType { get; set; }
-        public byte[] thumbnail { get; set; }
     }
     public class RabiesVaccination
     {

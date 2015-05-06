@@ -16,7 +16,6 @@
                 Avatar
             </dt>
             <dd>
-                <img src="@Url.Action("GetThumbnailImage", "Pets", new { id = Model.Id })" alt="Task Image" />
                 <img src="~/File?id=@Model.PetFiles.First(f => f.FileType == AspnetIdentitySample.Models.FileType.Avatar).PetFileId" alt="avatar"/>
             </dd>
         }
