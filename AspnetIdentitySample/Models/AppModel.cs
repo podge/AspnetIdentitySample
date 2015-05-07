@@ -209,6 +209,10 @@ namespace AspnetIdentitySample.Models
                 .ToTable("Users");
             modelBuilder.Entity<ApplicationUser>()
                 .ToTable("Users");
+            //modelBuilder.Entity<Pet>().HasMany(p => p.RabiesVaccinations).WithOptional().WillCascadeOnDelete();
+            //modelBuilder.Entity<Pet>().HasMany(p => p.FAVNBloodTests).WithOptional().WillCascadeOnDelete();
+            modelBuilder.Entity<Pet>().HasMany(p => p.PetFiles).WithOptional().WillCascadeOnDelete();
+
         }
 
         public DbSet<Pet> Pets { get; set; }

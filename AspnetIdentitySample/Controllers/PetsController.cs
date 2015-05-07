@@ -142,7 +142,7 @@ namespace AspnetIdentitySample.Controllers
                     }
                     pet.PetFiles = new List<PetFile> { avatar };
 
-                    // New Resize
+                    // Resize avatar to make thumbnail
                     PetFile thumbFile = new PetFile();
                     thumbFile.Content = ResizeImage(avatar.Content, 100, 100, false);
                     thumbFile.FileName = "thumb" + avatar.FileName;
@@ -174,7 +174,6 @@ namespace AspnetIdentitySample.Controllers
         {
 
             Image FullsizeImage = null;
-            Image ResizedImage = null;
             //Cast bytes to an image
             FullsizeImage = byteArrayToImage(bytes);
 
@@ -199,8 +198,6 @@ namespace AspnetIdentitySample.Controllers
                 NewWidth = FullsizeImage.Width * MaxHeight / FullsizeImage.Height;
                 NewHeight = MaxHeight;
             }
-
-            //ResizedImage = FullsizeImage.GetThumbnailImage(NewWidth, NewHeight, null, IntPtr.Zero);
 
             Bitmap result = new Bitmap(NewWidth, NewHeight);
             //set the resolutions the same to avoid cropping due to resolution differences
@@ -266,6 +263,7 @@ namespace AspnetIdentitySample.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
+
             ViewBag.SpeciesId = new SelectList(db.Species, "SpeciesId", "SpeciesName", pet.SpeciesId);
             ViewBag.GenderId = new SelectList(db.Gender, "GenderId", "GenderName", pet.GenderId);
             return View(pet);
@@ -276,13 +274,59 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,MicrochipNumber")] Pet pet)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,MicrochipNumber")] Pet pet, HttpPostedFileBase upload)
         {
             ViewBag.SpeciesId = new SelectList(db.Species, "SpeciesId", "SpeciesName");
             ViewBag.GenderId = new SelectList(db.Gender, "GenderId", "GenderName");
+
+            Pet petToUpdate = db.Pets.Find(pet.Id);
+
+            if (upload != null && upload.ContentLength > 0)
+            {
+
+                if (petToUpdate.PetFiles.Any(f => f.FileType == FileType.Avatar))
+                {
+                    db.PetFiles.Remove(petToUpdate.PetFiles.First(f => f.FileType == FileType.Avatar));
+                }
+                if (petToUpdate.PetFiles.Any(f => f.FileType == FileType.Thumbnail))
+                {
+                    db.PetFiles.Remove(petToUpdate.PetFiles.First(f => f.FileType == FileType.Thumbnail));
+                }
+
+                var avatar = new PetFile
+                {
+                    FileName = System.IO.Path.GetFileName(upload.FileName),
+                    FileType = FileType.Avatar,
+                    ContentType = upload.ContentType
+                };
+                using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                {
+                    avatar.Content = reader.ReadBytes(upload.ContentLength);
+                }
+
+                // Resize avatar to make thumbnail
+                PetFile thumbFile = new PetFile();
+                thumbFile.Content = ResizeImage(avatar.Content, 100, 100, false);
+                thumbFile.FileName = "thumb" + avatar.FileName;
+                thumbFile.FileType = FileType.Thumbnail;
+                thumbFile.ContentType = avatar.ContentType;
+                
+                petToUpdate.PetFiles = new List<PetFile> { avatar };
+                petToUpdate.PetFiles.Add(thumbFile);
+            }
+
+            petToUpdate.Breed = pet.Breed;
+            petToUpdate.DateOfBirth = pet.DateOfBirth;
+            petToUpdate.Gender = pet.Gender;
+            petToUpdate.GenderId = pet.GenderId;
+            petToUpdate.MicrochipNumber = pet.MicrochipNumber;
+            petToUpdate.Name = pet.Name;
+            petToUpdate.Species = pet.Species;
+            petToUpdate.SpeciesId = pet.SpeciesId;
+
             if (ModelState.IsValid)
             {
-                db.Entry(pet).State = EntityState.Modified;
+                db.Entry(petToUpdate).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

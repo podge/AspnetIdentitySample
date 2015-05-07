@@ -195,6 +195,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\cat_sil_100x100.png" />
+    <Content Include="Content\images\dog_sil_100x100.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -338,8 +340,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="bin\" />
-    <Folder Include="Content\Uploads\Originals\" />
-    <Folder Include="Content\Uploads\Thumbnails\" />
     <Folder Include="Views\File\" />
   </ItemGroup>
   <ItemGroup>

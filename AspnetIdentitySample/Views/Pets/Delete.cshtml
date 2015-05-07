@@ -11,6 +11,15 @@
     <h4>Delete Pet</h4>
     <hr />
     <dl class="dl-horizontal">
+        @if (Model.PetFiles.Any(f => f.FileType == AspnetIdentitySample.Models.FileType.Avatar))
+        {
+            <dt>
+                Avatar
+            </dt>
+            <dd>
+                <img src="~/File?id=@Model.PetFiles.First(f => f.FileType == AspnetIdentitySample.Models.FileType.Avatar).PetFileId" alt="avatar" />
+            </dd>
+        }
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
