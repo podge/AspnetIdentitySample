@@ -259,7 +259,7 @@ namespace AspnetIdentitySample.Controllers
             {
                 return HttpNotFound();
             }
-            if (pet.User.Id != currentUser.Id)
+            if (pet.User.Id != currentUser.Id && currentUser.UserName != "Admin")
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
