@@ -13,6 +13,7 @@
 
 <table class="table">
     <tr>
+        <th>Pet</th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -32,6 +33,20 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td rowspan="2">
+                @if (item.PetFiles.Any(f => f.FileType == AspnetIdentitySample.Models.FileType.Thumbnail))
+                {
+                    <img src="~/File?id=@item.PetFiles.FirstOrDefault(f => f.FileType == AspnetIdentitySample.Models.FileType.Thumbnail).PetFileId" alt="avatar" />
+                }
+                else if (item.Species.SpeciesName == ("Dog"))
+                {
+                    <img src="~/Content/images/dog_sil_100x100.png" alt="avatar" />
+                }
+                else if (item.Species.SpeciesName == ("Cat"))
+                {
+                    <img src="~/Content/images/cat_sil_100x100.png" alt="avatar" />
+                }
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -51,6 +66,18 @@
                 @Html.DisplayFor(modelItem => item.User.HomeTown)
             </td>
         </tr>
+    <tr>
+        <td colspan="6" align="center">
+            <a href="@Url.Action("Edit", "Pets", new { id = item.Id })" class="btn btn-primary btn-sm">Edit</a>
+            <a href="@Url.Action("Details", "Pets", new { id = item.Id })" class="btn btn-primary btn-sm">Details</a>
+            <a href="@Url.Action("Delete", "Pets", new { id = item.Id })" class="btn btn-primary btn-sm">Delete</a>
+            <a href="@Url.Action("Index", "RabiesVaccinations", new { id = item.Id })" class="btn btn-primary btn-sm">Rabies Vaccination</a>
+            <a href="@Url.Action("Index", "Bloodtests", new { id = item.Id })" class="btn btn-primary btn-sm">Bloodtest</a>
+            <a href="@Url.Action("Upload", "Pets", new { id = item.Id })" c class="btn btn-primary btn-sm">Upload Documents</a>
+            <a href="@Url.Action("Index", "PetCheck", new { id = item.Id })" class="btn btn-primary btn-sm">Check</a>
+            <a href="@Url.Action("Index", "CertGenerator", new { id = item.Id })" c class="btn btn-primary btn-sm">Certification</a>
+        </td>
+    </tr>
     }
 
 </table>

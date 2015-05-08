@@ -19,28 +19,6 @@
     </p>
 }
 <table class="table">
-    @*<tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SpeciesId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GenderId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Breed)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateOfBirth)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MicrochipNumber)
-        </th>
-        <th></th>
-    </tr>*@
-
     <tr>
         <th>
             Pet
@@ -68,7 +46,6 @@
 @foreach (var item in Model) {
     <tr>
         <td rowspan="2">
-            @*<img src="~/File?id=@Model.PetFiles.First(f => f.FileType == AspnetIdentitySample.Models.FileType.Avatar).PetFileId" alt="avatar" width="48" height="48"/>*@
             @if (item.PetFiles.Any(f => f.FileType == AspnetIdentitySample.Models.FileType.Thumbnail))
             {
                 <img src="~/File?id=@item.PetFiles.FirstOrDefault(f => f.FileType == AspnetIdentitySample.Models.FileType.Thumbnail).PetFileId" alt="avatar" />
