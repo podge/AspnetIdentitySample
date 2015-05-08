@@ -26,7 +26,8 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.User.UserName)
+                @*@Html.DisplayFor(modelItem => item.User.UserName)*@
+                @Html.DisplayFor(modelItem => item.UserId) - @Html.DisplayFor(modelItem => item.RoleId)
             </td>
         </tr>
     }

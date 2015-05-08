@@ -56,6 +56,7 @@ namespace AspnetIdentitySample.Controllers
         // GET: RabiesVaccination/Details/5
         public async Task<ActionResult> Details(int? id)
         {
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -64,6 +65,10 @@ namespace AspnetIdentitySample.Controllers
             if (rabiesVaccination == null)
             {
                 return HttpNotFound();
+            }
+            if (rabiesVaccination.Pet.User.Id != currentUser.Id && !User.IsInRole("Admin"))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
             return View(rabiesVaccination);
         }
@@ -98,6 +103,7 @@ namespace AspnetIdentitySample.Controllers
         // GET: RabiesVaccination/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -106,6 +112,10 @@ namespace AspnetIdentitySample.Controllers
             if (rabiesVaccination == null)
             {
                 return HttpNotFound();
+            }
+            if (rabiesVaccination.Pet.User.Id != currentUser.Id && !User.IsInRole("Admin"))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
             ViewBag.PetID = new SelectList(db.Pets, "Id", "Name", rabiesVaccination.PetID);
             return View(rabiesVaccination);
@@ -131,6 +141,7 @@ namespace AspnetIdentitySample.Controllers
         // GET: RabiesVaccination/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -139,6 +150,10 @@ namespace AspnetIdentitySample.Controllers
             if (rabiesVaccination == null)
             {
                 return HttpNotFound();
+            }
+            if (rabiesVaccination.Pet.User.Id != currentUser.Id && !User.IsInRole("Admin"))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
             return View(rabiesVaccination);
         }
