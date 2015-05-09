@@ -30,10 +30,13 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("My Profile", "Profile", "Home")</li>
                     <li>@Html.ActionLink("Pets", "Index", "Pets")</li>
-                    <li>@Html.ActionLink("Pets for all user (Admin only)", "All", "Pets")</li>
-                    <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
-                    <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
-                    <li>@Html.ActionLink("Validation", "Index", "Validation")</li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("All Pets", "All", "Pets")</li>
+                        <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
+                        <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
+                        <li>@Html.ActionLink("Validation", "Index", "Validation")</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

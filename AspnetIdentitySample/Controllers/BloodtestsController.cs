@@ -8,23 +8,39 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AspnetIdentitySample.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace AspnetIdentitySample.Controllers
 {
     public class BloodtestsController : Controller
     {
-        private MyDbContext db = new MyDbContext();
+        private MyDbContext db;
+        private UserManager<ApplicationUser> manager;
+
+        public BloodtestsController()
+        {
+            db = new MyDbContext();
+            manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+        }
 
         // GET: Bloodtests
         public async Task<ActionResult> Index()
         {
+            var currentUser = manager.FindById(User.Identity.GetUserId());
             var bloodtests = db.Bloodtests.Include(b => b.Pet);
+            if (!User.IsInRole("Admin"))
+            {
+                bloodtests = bloodtests.Where(b => b.Pet.User.Id == currentUser.Id);
+            }
+            
             return View(await bloodtests.ToListAsync());
         }
 
         // GET: Bloodtests/Details/5
         public async Task<ActionResult> Details(int? id)
         {
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -33,6 +49,10 @@ namespace AspnetIdentitySample.Controllers
             if (bloodtest == null)
             {
                 return HttpNotFound();
+            }
+            if (bloodtest.Pet.User.Id != currentUser.Id && !User.IsInRole("Admin"))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
             return View(bloodtest);
         }
@@ -65,6 +85,7 @@ namespace AspnetIdentitySample.Controllers
         // GET: Bloodtests/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -73,6 +94,10 @@ namespace AspnetIdentitySample.Controllers
             if (bloodtest == null)
             {
                 return HttpNotFound();
+            }
+            if (bloodtest.Pet.User.Id != currentUser.Id && !User.IsInRole("Admin"))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
             ViewBag.PetID = new SelectList(db.Pets, "Id", "Name", bloodtest.PetID);
             return View(bloodtest);
@@ -98,6 +123,7 @@ namespace AspnetIdentitySample.Controllers
         // GET: Bloodtests/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -106,6 +132,10 @@ namespace AspnetIdentitySample.Controllers
             if (bloodtest == null)
             {
                 return HttpNotFound();
+            }
+            if (bloodtest.Pet.User.Id != currentUser.Id && !User.IsInRole("Admin"))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
             return View(bloodtest);
         }

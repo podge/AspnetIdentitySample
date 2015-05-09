@@ -37,8 +37,12 @@ namespace AspnetIdentitySample.Controllers
             var currentUser = manager.FindById(User.Identity.GetUserId());
             var rabiesVaccinations = db.RabiesVaccinations.Include(r => r.Pet);
             ViewBag.PetID = new SelectList(db.Pets, "Id", "Name", id); //.Where(r => r.Pet.User.Id == currentUser.Id);
+
             // Only show vaccinations from the current user
-            rabiesVaccinations = rabiesVaccinations.Where(r => r.Pet.User.Id == currentUser.Id);
+            if (!User.IsInRole("Admin"))
+            {
+                rabiesVaccinations = rabiesVaccinations.Where(r => r.Pet.User.Id == currentUser.Id);
+            }            
 
             if (id != null)
             {

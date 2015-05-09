@@ -10,16 +10,25 @@
     <h4>Pet Check for @Html.DisplayFor(model => model.Name)</h4>
     <hr />
     <dl class="dl-horizontal">
+        @if (Model.PetFiles.Any(f => f.FileType == AspnetIdentitySample.Models.FileType.Avatar))
+        {
+            <dt>
+                Avatar
+            </dt>
+            <dd>
+                <img src="~/File?id=@Model.PetFiles.First(f => f.FileType == AspnetIdentitySample.Models.FileType.Avatar).PetFileId" alt="avatar" />
+            </dd>
+        }
         <dt>
-            @Html.DisplayNameFor(model => model.Gender.GenderName)
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Gender.GenderName)
+            @Html.DisplayFor(model => model.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Species.SpeciesName)
+            @Html.DisplayNameFor(model => model.SpeciesId)
         </dt>
 
         <dd>
@@ -27,11 +36,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.GenderId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Gender.GenderName)
         </dd>
 
         <dt>
