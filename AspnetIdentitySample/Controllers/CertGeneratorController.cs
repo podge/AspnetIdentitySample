@@ -83,10 +83,11 @@ namespace AspnetIdentitySample.Controllers
         //}
 
         // GET: CertGenerator
-        public ActionResult Create()
+        public ActionResult Create(Dictionary<string, object> select)
         {
             //CreatePDFByCopy();
-            var list = Request.Form["selectedPets"];
+            var list = Request.Form.GetEnumerator();
+            while(list.)
             return View();
         }
 

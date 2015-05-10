@@ -8,6 +8,9 @@
 <h2>Generate an Annex IV Certificate</h2>
 <p>In order to create a certificate you must add a consignor and consignee an then add pets you have created previously.</p>
 
+@using (Html.BeginForm("Create","CertGenerator"))
+{ 
+@*@Html.AntiForgeryToken()*@
 <table class="table">
     <tr>
         <th>
@@ -39,7 +42,7 @@
     @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.CheckBox("selectedPets", new Dictionary<string, object> { { "id", item.Id } })
+                @Html.CheckBox("selectedPet_"+item.Id, new Dictionary<string, object> { { "id", item.Id } })
             </td>
             <td>
                 @if (item.PetFiles.Any(f => f.FileType == AspnetIdentitySample.Models.FileType.Thumbnail))
@@ -77,6 +80,13 @@
         </tr>
     }
     </table>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Create" class="btn btn-default" />
+    </div>
+</div>
+}
 
         <a href="@Url.Action("Create", "CertGenerator")" class="btn btn-primary btn-large">Create New Certificate</a>
 
