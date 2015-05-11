@@ -1,6 +1,4 @@
-﻿@model PagedList.IPagedList<AspnetIdentitySample.Models.Pet>
-@using PagedList.Mvc;
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+﻿@model AspnetIdentitySample.Models.Certificate
 @{
     ViewBag.Title = "Generate an Annex IV Certificate";
 }
@@ -8,89 +6,185 @@
 <h2>Generate an Annex IV Certificate</h2>
 <p>In order to create a certificate you must add a consignor and consignee an then add pets you have created previously.</p>
 
-@using (Html.BeginForm("Create","CertGenerator"))
-{ 
-@Html.AntiForgeryToken()
+@using (Html.BeginForm("Create", "CertGenerator"))
+{
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-<table class="table">
-    <tr>
-        <th>
-            Select
-        </th>
-        @*<th>
-            Pet
-        </th>*@
-        <th>
-            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
-        </th>
-        <th>
-            Species
-        </th>
-        <th>
-            Gender
-        </th>
-        <th>
-            Breed
-        </th>
-        <th>
-            @Html.ActionLink("Date of Birth", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
-        </th>
-        <th>
-            Microchip Number
-        </th>
-    </tr>
-
-    @foreach (var item in Model) {
+    <table align="center" width="100%" class="table table-striped table-hover">
+        <tr>
+            <th colspan="2">Owner Details</th>
+        </tr>
+        <tr>
+            <th>Consignor</th>
+            <th>Consignee</th>
+        </tr>
         <tr>
             <td>
-                @*@Html.CheckBox("selectedPet_"+item.Id, false, )*@
-                <input type="checkbox" name="selected_@item.Id" value="@item.Id" /> 
-            </td>
-            @*<td>
-                @if (item.PetFiles.Any(f => f.FileType == AspnetIdentitySample.Models.FileType.Thumbnail))
-            {
-                    <img src="~/File?id=@item.PetFiles.FirstOrDefault(f => f.FileType == AspnetIdentitySample.Models.FileType.Thumbnail).PetFileId" alt="avatar" />
-            }
-            else if (item.Species.SpeciesName == ("Dog"))
-            {
-                <img src="~/Content/images/dog_sil_100x100.png" alt="avatar" />
-            }
-            else if (item.Species.SpeciesName == ("Cat"))
-            {
-                <img src="~/Content/images/cat_sil_100x100.png" alt="avatar" />
-            }
-            </td>*@
-            <td>
-                <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Species.SpeciesName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Gender.GenderName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Breed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MicrochipNumber)
-            </td>
-
-        </tr>
-    }
-
-    <tr>
-        <td>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create Certificate" class="btn btn-default" />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignor.Name, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignor.Name)
+                        @Html.ValidationMessageFor(model => model.Consignor.Name)
+                    </div>
                 </div>
-            </div>
-        </td>
-    </tr>
+            </td>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignee.Name, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignee.Name)
+                        @Html.ValidationMessageFor(model => model.Consignee.Name)
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignor.Address1, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignor.Address1)
+                        @Html.ValidationMessageFor(model => model.Consignor.Address1)
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignee.Address1, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignee.Address1)
+                        @Html.ValidationMessageFor(model => model.Consignee.Address1)
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignor.Address2, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignor.Address2)
+                        @Html.ValidationMessageFor(model => model.Consignor.Address3)
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignee.Address2, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignee.Address2)
+                        @Html.ValidationMessageFor(model => model.Consignee.Address3)
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignor.Address3, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignor.Address3)
+                        @Html.ValidationMessageFor(model => model.Consignor.Address3)
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignee.Address3, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignee.Address3)
+                        @Html.ValidationMessageFor(model => model.Consignee.Address3)
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignor.Address4, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignor.Address4)
+                        @Html.ValidationMessageFor(model => model.Consignor.Address4)
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignee.Address4, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignee.Address4)
+                        @Html.ValidationMessageFor(model => model.Consignee.Address4)
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="table table-striped table-hover">
+        <tr>
+            <th colspan="7">Select Pets</th>
+        </tr>
+        <tr>
+            <th>
+                Select
+            </th>
+            <th>
+                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                Species
+            </th>
+            <th>
+                Gender
+            </th>
+            <th>
+                Breed
+            </th>
+            <th>
+                @Html.ActionLink("Date of Birth", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                Microchip Number
+            </th>
+        </tr>
+
+        @foreach (var item in Model.Pets)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" name="selected_@item.Id" value="@item.Id" />
+                </td>
+                <td>
+                    <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Species.SpeciesName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender.GenderName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Breed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MicrochipNumber)
+                </td>
+
+            </tr>
+        }
+
+        <tr>
+            <td colspan="7">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create Certificate" class="btn btn-default" />
+                    </div>
+                </div>
+            </td>
+        </tr>
     </table>
 }
 

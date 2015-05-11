@@ -115,8 +115,12 @@ namespace AspnetIdentitySample.Models
     }
     public class Consignor
     {
-        public Consignor(string name){
+        public Consignor(string name, string add1, string add2, string add3, string add4){
             this.Name = name;
+            this.Address1 = add1;
+            this.Address2 = add2;
+            this.Address3 = add3;
+            this.Address4 = add4;
         }
         public int ConsignorId { get; set; }
         [Required]
@@ -134,9 +138,12 @@ namespace AspnetIdentitySample.Models
     }
     public class Consignee
     {
-        public Consignee(string name)
-        {
+        public Consignee(string name, string add1, string add2, string add3, string add4){
             this.Name = name;
+            this.Address1 = add1;
+            this.Address2 = add2;
+            this.Address3 = add3;
+            this.Address4 = add4;
         }
         public int ConsigneeId { get; set; }
         [Required]

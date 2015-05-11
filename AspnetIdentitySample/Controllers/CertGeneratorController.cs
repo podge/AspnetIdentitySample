@@ -72,7 +72,12 @@ namespace AspnetIdentitySample.Controllers
                     break;
             }
 
-            return View(pets.ToPagedList(pageNumber, pageSize));
+            Certificate cert = new Certificate();
+            cert.Pets = pets.ToList();
+
+            return View(cert);
+
+            //return View(pets.ToPagedList(pageNumber, pageSize));
         }
 
         //// GET: CertGenerator
@@ -111,9 +116,12 @@ namespace AspnetIdentitySample.Controllers
                 return RedirectToAction("Index", "CertGenerator");
             }
 
+            Consignor consignor = new Consignor(Request.Form["Consignor.Name"], Request.Form["Consignor.Address1"], Request.Form["Consignor.Address2"], Request.Form["Consignor.Address3"], Request.Form["Consignor.Address4"]);
+            Consignee consignee = new Consignee(Request.Form["Consignee.Name"], Request.Form["Consignee.Address1"], Request.Form["Consignee.Address2"], Request.Form["Consignee.Address3"], Request.Form["Consignee.Address4"]);
+            
+            cert.Consignor = consignor;
+            cert.Consignee = consignee;
             cert.Pets = certPets;
-            cert.Consignee = new Consignee("Receiver");
-            cert.Consignor = new Consignor("Sender");
 
             return View(cert);
         }
@@ -128,6 +136,13 @@ namespace AspnetIdentitySample.Controllers
             
         //    return View();
         //}
+
+        public FileResult Download()
+        {
+            byte[] fileBytes = System.IO.File.ReadAllBytes(@"C:\eupp\copy.pdf");
+            string fileName = "copy.pdf";
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
 
         private void CreatePDFByCopy()
         {
