@@ -118,10 +118,16 @@ namespace AspnetIdentitySample.Controllers
             return View(cert);
         }
 
-        private void CreateCertificate()
-        {
-
-        }
+        // POST: /CertGenerator/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "Id,Consignor.Name,SpeciesId,GenderId,DateOfBirth,Breed,MicrochipNumber")] Certificate cert)
+        //{
+            
+        //    return View();
+        //}
 
         private void CreatePDFByCopy()
         {

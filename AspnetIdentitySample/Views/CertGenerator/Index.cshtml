@@ -10,7 +10,7 @@
 
 @using (Html.BeginForm("Create","CertGenerator"))
 { 
-@*@Html.AntiForgeryToken()*@
+@Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 <table class="table">
     <tr>
