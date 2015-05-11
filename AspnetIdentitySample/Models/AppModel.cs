@@ -115,6 +115,9 @@ namespace AspnetIdentitySample.Models
     }
     public class Consignor
     {
+        public Consignor(string name){
+            this.Name = name;
+        }
         public int ConsignorId { get; set; }
         [Required]
         public String Name { get; set; }
@@ -131,6 +134,10 @@ namespace AspnetIdentitySample.Models
     }
     public class Consignee
     {
+        public Consignee(string name)
+        {
+            this.Name = name;
+        }
         public int ConsigneeId { get; set; }
         [Required]
         public String Name { get; set; }

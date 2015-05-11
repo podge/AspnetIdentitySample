@@ -11,14 +11,15 @@
 @using (Html.BeginForm("Create","CertGenerator"))
 { 
 @*@Html.AntiForgeryToken()*@
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 <table class="table">
     <tr>
         <th>
             Select
         </th>
-        <th>
+        @*<th>
             Pet
-        </th>
+        </th>*@
         <th>
             @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
@@ -42,9 +43,10 @@
     @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.CheckBox("selectedPet_"+item.Id, new Dictionary<string, object> { { "id", item.Id } })
+                @*@Html.CheckBox("selectedPet_"+item.Id, false, )*@
+                <input type="checkbox" name="selected_@item.Id" value="@item.Id" /> 
             </td>
-            <td>
+            @*<td>
                 @if (item.PetFiles.Any(f => f.FileType == AspnetIdentitySample.Models.FileType.Thumbnail))
             {
                     <img src="~/File?id=@item.PetFiles.FirstOrDefault(f => f.FileType == AspnetIdentitySample.Models.FileType.Thumbnail).PetFileId" alt="avatar" />
@@ -57,7 +59,7 @@
             {
                 <img src="~/Content/images/cat_sil_100x100.png" alt="avatar" />
             }
-            </td>
+            </td>*@
             <td>
                 <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
             </td>
@@ -79,14 +81,17 @@
 
         </tr>
     }
-    </table>
 
-<div class="form-group">
-    <div class="col-md-offset-2 col-md-10">
-        <input type="submit" value="Create Certificate" class="btn btn-default" />
-    </div>
-</div>
+    <tr>
+        <td>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create Certificate" class="btn btn-default" />
+                </div>
+            </div>
+        </td>
+    </tr>
+    </table>
 }
 
-        <a href="@Url.Action("Create", "CertGenerator")" class="btn btn-primary btn-large">Create New Certificate</a>
 

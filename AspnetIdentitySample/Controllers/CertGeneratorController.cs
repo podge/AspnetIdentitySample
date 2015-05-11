@@ -83,12 +83,39 @@ namespace AspnetIdentitySample.Controllers
         //}
 
         // GET: CertGenerator
-        public ActionResult Create(Dictionary<string, object> select)
+        public ActionResult Create(FormCollection formCollection)
         {
             //CreatePDFByCopy();
-            var list = Request.Form.GetEnumerator();
-            while(list.)
-            return View();
+            Certificate cert = new Certificate();
+            List<Pet> certPets = new List<Pet>();
+
+            foreach (var key in formCollection.AllKeys)
+            {
+                if (key.StartsWith("selected_"))
+                {
+                    string petId = key.Replace("selected_", "");
+                    Pet pet = db.Pets.Find(int.Parse(petId));
+                    certPets.Add(pet);
+                }                
+            }
+            if (certPets.Count == 0)
+            {
+                // Must select at least one pet
+                ModelState.AddModelError(string.Empty, "You must select at least one pet.");
+                return RedirectToAction("Index", "CertGenerator");
+            }
+            else if (certPets.Count > 5)
+            {
+                // A maximum of 5 pets may be selected
+                ModelState.AddModelError(string.Empty, "You cannot select more than five pets.");
+                return RedirectToAction("Index", "CertGenerator");
+            }
+
+            cert.Pets = certPets;
+            cert.Consignee = new Consignee("Receiver");
+            cert.Consignor = new Consignor("Sender");
+
+            return View(cert);
         }
 
         private void CreateCertificate()

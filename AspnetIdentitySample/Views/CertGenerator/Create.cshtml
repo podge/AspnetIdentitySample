@@ -1,4 +1,5 @@
-﻿@{
+﻿@model AspnetIdentitySample.Models.Certificate
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -7,8 +8,90 @@
 }
 
 <h2>Create Certificate</h2>
-<p>Some test</p>
 
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<p>Consignor</p>
+<div class="form-group">
+    @Html.LabelFor(model => model.Consignor.Name, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Consignor.Name)
+        @Html.ValidationMessageFor(model => model.Consignor.Name)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Consignor.Address1, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Consignor.Address1)
+        @Html.ValidationMessageFor(model => model.Consignor.Address1)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Consignor.Address2, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Consignor.Address2)
+        @Html.ValidationMessageFor(model => model.Consignor.Address3)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Consignor.Address3, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Consignor.Address3)
+        @Html.ValidationMessageFor(model => model.Consignor.Address3)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Consignor.Address4, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Consignor.Address4)
+        @Html.ValidationMessageFor(model => model.Consignor.Address4)
+    </div>
+</div>
+
+<p>Consignee</p>
+<div class="form-group">
+    @Html.LabelFor(model => model.Consignee.Name, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Consignee.Name)
+        @Html.ValidationMessageFor(model => model.Consignee.Name)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Consignee.Address1, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Consignee.Address1)
+        @Html.ValidationMessageFor(model => model.Consignee.Address1)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Consignee.Address2, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Consignee.Address2)
+        @Html.ValidationMessageFor(model => model.Consignee.Address3)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Consignee.Address3, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Consignee.Address3)
+        @Html.ValidationMessageFor(model => model.Consignee.Address3)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Consignee.Address4, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Consignee.Address4)
+        @Html.ValidationMessageFor(model => model.Consignee.Address4)
+    </div>
+</div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save Certificate" class="btn btn-default" />
+        </div>
+    </div>
+}
 <a href="@Url.Action("Save", "CertGenerator")" class="btn btn-primary btn-large">Save Certificate</a>
 
 
