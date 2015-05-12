@@ -1,7 +1,7 @@
 ﻿@model AspnetIdentitySample.Models.Certificate
-@{
+@*@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
+}*@
 
 @{
     ViewBag.Title = "Generate an Annex IV Certificate";
@@ -37,6 +37,25 @@
         <tr>
             <td>@Model.Consignor.Address4</td>
             <td>@Model.Consignee.Address4</td>
+        </tr>
+        <tr>
+            <td>@Model.Consignor.Postcode</td>
+            <td>@Model.Consignee.PostCode</td>
+        </tr>
+        <tr>
+            <td>@Model.Consignor.Telephone</td>
+            <td>@Model.Consignee.Telephone</td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model)
+                        @Html.ValidationMessageFor(model => model)
+                    </div>
+                </div>
+            </td>
         </tr>
     </table>
 

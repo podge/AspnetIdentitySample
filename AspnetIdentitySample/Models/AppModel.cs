@@ -115,12 +115,14 @@ namespace AspnetIdentitySample.Models
     }
     public class Consignor
     {
-        public Consignor(string name, string add1, string add2, string add3, string add4){
+        public Consignor(string name, string add1, string add2, string add3, string add4, string postcode, string tel){
             this.Name = name;
             this.Address1 = add1;
             this.Address2 = add2;
             this.Address3 = add3;
             this.Address4 = add4;
+            this.Postcode = postcode;
+            this.Telephone = tel;
         }
         public int ConsignorId { get; set; }
         [Required]
@@ -134,16 +136,20 @@ namespace AspnetIdentitySample.Models
         [Required]
         public String Address4 { get; set; }
         [Required]
+        public String Postcode { get; set; }
+        [Required]
         public String Telephone { get; set; }
     }
     public class Consignee
     {
-        public Consignee(string name, string add1, string add2, string add3, string add4){
+        public Consignee(string name, string add1, string add2, string add3, string add4, string postcode, string tel){
             this.Name = name;
             this.Address1 = add1;
             this.Address2 = add2;
             this.Address3 = add3;
             this.Address4 = add4;
+            this.PostCode = postcode;
+            this.Telephone = tel;
         }
         public int ConsigneeId { get; set; }
         [Required]

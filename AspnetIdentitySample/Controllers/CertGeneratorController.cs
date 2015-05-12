@@ -73,8 +73,9 @@ namespace AspnetIdentitySample.Controllers
             }
 
             Certificate cert = new Certificate();
-            Consignee myConee = new Consignee("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland");
-            Consignor myConor = new Consignor("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland");
+            Consignor myConor = new Consignor("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland", "00000", "353861061676");
+            Consignee myConee = new Consignee("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland", "00000", "353861061676");
+            
             cert.Consignor = myConor;
             cert.Consignee = myConee;
             cert.Pets = pets.ToList();
@@ -120,14 +121,14 @@ namespace AspnetIdentitySample.Controllers
                 return RedirectToAction("Index", "CertGenerator");
             }
 
-            Consignor consignor = new Consignor(Request.Form["Consignor.Name"], Request.Form["Consignor.Address1"], Request.Form["Consignor.Address2"], Request.Form["Consignor.Address3"], Request.Form["Consignor.Address4"]);
-            Consignee consignee = new Consignee(Request.Form["Consignee.Name"], Request.Form["Consignee.Address1"], Request.Form["Consignee.Address2"], Request.Form["Consignee.Address3"], Request.Form["Consignee.Address4"]);
+            Consignor consignor = new Consignor(Request.Form["Consignor.Name"], Request.Form["Consignor.Address1"], Request.Form["Consignor.Address2"], Request.Form["Consignor.Address3"], Request.Form["Consignor.Address4"], Request.Form["Consignor.Postcode"], Request.Form["Consignor.Telephone"]);
+            Consignee consignee = new Consignee(Request.Form["Consignee.Name"], Request.Form["Consignee.Address1"], Request.Form["Consignee.Address2"], Request.Form["Consignee.Address3"], Request.Form["Consignee.Address4"], Request.Form["Consignee.Postcode"], Request.Form["Consignee.Telephone"]);
             
             cert.Consignor = consignor;
             cert.Consignee = consignee;
             cert.Pets = certPets;
 
-            return View(cert);
+            return DownloadFile(cert);
         }
 
         // POST: /CertGenerator/Create
@@ -146,9 +147,9 @@ namespace AspnetIdentitySample.Controllers
         public ActionResult Download(Certificate cert)
         {
             Certificate myCert = new Certificate();
-            Consignee myConee = new Consignee("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland");
-            Consignor myConor = new Consignor("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland");
-
+            Consignor myConor = new Consignor("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland", "00000", "353861061676");
+            Consignee myConee = new Consignee("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland", "00000", "353861061676");
+            
             myCert.Consignor = myConor;
             myCert.Consignee = myConee;
 
@@ -184,24 +185,21 @@ namespace AspnetIdentitySample.Controllers
             // select the font properties
             BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
             cb.SetColorFill(BaseColor.DARK_GRAY);
-            cb.SetFontAndSize(bf, 8);
+            cb.SetFontAndSize(bf, 7);
 
             // write the text in the pdf content
             cb.BeginText();
-            string consignorBox = cert.Consignor.Name + "\r\n" + cert.Consignor.Address1 + "\r\n" + cert.Consignor.Address2 + "\r\n" + cert.Consignor.Address3 + "\r\n" + cert.Consignor.Address4;
-            // put the alignment and coordinates here
             // Consignor
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Name, 120, 663, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address1, 120, 653, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address2, 120, 643, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address3, 120, 633, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address4, 120, 623, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Name, 125, 630, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address1 + ", " + cert.Consignor.Address2, 125, 620, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address3 + ", " + cert.Consignor.Address4, 125, 610, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Telephone, 125, 600, 0);
             // Consignee
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Name, 120, 600, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address1, 120, 590, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address2, 120, 580, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address3, 120, 570, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address4, 120, 560, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Name, 125, 565, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address1 + ", " + cert.Consignee.Address2, 125, 555, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address3 + ", " + cert.Consignee.Address4, 125, 545, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.PostCode, 125, 535, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Telephone, 125, 525, 0);
             cb.EndText();
             cb.BeginText();
             string text = "Other random blabla...";
@@ -213,15 +211,36 @@ namespace AspnetIdentitySample.Controllers
             PdfImportedPage page = writer.GetImportedPage(reader, 1);
             cb.AddTemplate(page, 0, 0);
 
+            // Page 2
+            document.NewPage();
+            page = writer.GetImportedPage(reader, 2);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 3
+            document.NewPage();
+            page = writer.GetImportedPage(reader, 3);
+            cb.AddTemplate(page, 0, 0);
+            
+            // Page 4
+            document.NewPage();
+            page = writer.GetImportedPage(reader, 4);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 5
+            document.NewPage();
+            page = writer.GetImportedPage(reader, 5);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 6
+            document.NewPage();
+            page = writer.GetImportedPage(reader, 6);
+            cb.AddTemplate(page, 0, 0);
+
             // close the streams and voilá the file should be changed :)
             document.Close();
             fs.Close();
             writer.Close();
-            reader.Close();
-
-            // create the new page and add it to the pdf
-            page = writer.GetImportedPage(reader, 1);
-            cb.AddTemplate(page, 0, 0);
+            reader.Close();          
 
             // close the streams and voilá the file should be changed :)
             document.Close();

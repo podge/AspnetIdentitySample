@@ -118,6 +118,46 @@
                 </div>
             </td>
         </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignor.Postcode, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignor.Postcode)
+                        @Html.ValidationMessageFor(model => model.Consignor.Postcode)
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignee.PostCode, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignee.PostCode)
+                        @Html.ValidationMessageFor(model => model.Consignee.PostCode)
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignor.Telephone, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignor.Telephone)
+                        @Html.ValidationMessageFor(model => model.Consignor.Telephone)
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Consignee.Telephone, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Consignee.Telephone)
+                        @Html.ValidationMessageFor(model => model.Consignee.Telephone)
+                    </div>
+                </div>
+            </td>
+        </tr>
     </table>
 
     <table class="table table-striped table-hover">
