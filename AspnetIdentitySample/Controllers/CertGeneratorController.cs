@@ -73,6 +73,10 @@ namespace AspnetIdentitySample.Controllers
             }
 
             Certificate cert = new Certificate();
+            Consignee myConee = new Consignee("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland");
+            Consignor myConor = new Consignor("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland");
+            cert.Consignor = myConor;
+            cert.Consignee = myConee;
             cert.Pets = pets.ToList();
 
             return View(cert);
@@ -137,12 +141,95 @@ namespace AspnetIdentitySample.Controllers
         //    return View();
         //}
 
-        public FileResult Download()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Download(Certificate cert)
         {
-            byte[] fileBytes = System.IO.File.ReadAllBytes(@"C:\eupp\copy.pdf");
-            string fileName = "copy.pdf";
+            Certificate myCert = new Certificate();
+            Consignee myConee = new Consignee("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland");
+            Consignor myConor = new Consignor("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland");
+
+            myCert.Consignor = myConor;
+            myCert.Consignee = myConee;
+
+            return DownloadFile(myCert);
+        }
+
+        public FileResult DownloadFile(Certificate cert)
+        {
+            doPdf(cert);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(@"C:\eupp\newFile.pdf");
+            string fileName = "newFile.pdf";
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }
+
+        private void doPdf(Certificate cert)
+        {
+            string oldFile = @"c:\eupp\pet_cert.pdf";
+            string newFile = @"C:\eupp\newFile.pdf";
+
+            // open the reader
+            PdfReader reader = new PdfReader(oldFile);
+            Rectangle size = reader.GetPageSizeWithRotation(1);
+            Document document = new Document(size);
+
+            // open the writer
+            FileStream fs = new FileStream(newFile, FileMode.Create, FileAccess.Write);
+            PdfWriter writer = PdfWriter.GetInstance(document, fs);
+            document.Open();
+
+            // the pdf content
+            PdfContentByte cb = writer.DirectContent;
+
+            // select the font properties
+            BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            cb.SetColorFill(BaseColor.DARK_GRAY);
+            cb.SetFontAndSize(bf, 8);
+
+            // write the text in the pdf content
+            cb.BeginText();
+            string consignorBox = cert.Consignor.Name + "\r\n" + cert.Consignor.Address1 + "\r\n" + cert.Consignor.Address2 + "\r\n" + cert.Consignor.Address3 + "\r\n" + cert.Consignor.Address4;
+            // put the alignment and coordinates here
+            // Consignor
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Name, 120, 663, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address1, 120, 653, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address2, 120, 643, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address3, 120, 633, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address4, 120, 623, 0);
+            // Consignee
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Name, 120, 600, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address1, 120, 590, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address2, 120, 580, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address3, 120, 570, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address4, 120, 560, 0);
+            cb.EndText();
+            cb.BeginText();
+            string text = "Other random blabla...";
+            // put the alignment and coordinates here
+            cb.ShowTextAligned(2, text, 100, 200, 0);
+            cb.EndText();
+
+            // create the new page and add it to the pdf
+            PdfImportedPage page = writer.GetImportedPage(reader, 1);
+            cb.AddTemplate(page, 0, 0);
+
+            // close the streams and voilá the file should be changed :)
+            document.Close();
+            fs.Close();
+            writer.Close();
+            reader.Close();
+
+            // create the new page and add it to the pdf
+            page = writer.GetImportedPage(reader, 1);
+            cb.AddTemplate(page, 0, 0);
+
+            // close the streams and voilá the file should be changed :)
+            document.Close();
+            fs.Close();
+            writer.Close();
+            reader.Close();
+        }
+
 
         private void CreatePDFByCopy()
         {
@@ -154,7 +241,8 @@ namespace AspnetIdentitySample.Controllers
                     for (int i = 1; i <= 1; ++i)
                     {
                         PdfReader reader = new PdfReader(AddDataSheets("Some Text" + i.ToString()));
-                        copy.AddPage(copy.GetImportedPage(reader, i));
+                        PdfImportedPage impPage = copy.GetImportedPage(reader, i);
+                        copy.AddPage(impPage);
                     
                     }
                     document.Close();

@@ -9,7 +9,7 @@
 
 <h2>Create Certificate</h2>
 
-@using (Html.BeginForm("Download", "CertGenerator"))
+@using (Html.BeginForm("Download", "CertGenerator", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
@@ -164,16 +164,18 @@
                 }
             }
         }
-
+        <tr>
+            <td colspan="6">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save Certificate" class="btn btn-default" />
+                    </div>
+                </div>
+            </td>
+        </tr>
     </table>
 
 
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save Certificate" class="btn btn-default" />
-        </div>
-    </div>
+
 }
-
-
