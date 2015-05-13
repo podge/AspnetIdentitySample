@@ -166,7 +166,7 @@ namespace AspnetIdentitySample.Controllers
 
         private void doPdf(Certificate cert)
         {
-            string oldFile = @"c:\eupp\pet_cert.pdf";
+            string oldFile = @"c:\eupp\celex.pdf";
             string newFile = @"C:\eupp\newFile.pdf";
 
             // open the reader
@@ -208,33 +208,33 @@ namespace AspnetIdentitySample.Controllers
             cb.EndText();
 
             // create the new page and add it to the pdf
-            PdfImportedPage page = writer.GetImportedPage(reader, 1);
+            PdfImportedPage page = writer.GetImportedPage(reader, 4);
             cb.AddTemplate(page, 0, 0);
 
             // Page 2
             document.NewPage();
-            page = writer.GetImportedPage(reader, 2);
+            page = writer.GetImportedPage(reader, 5);
             cb.AddTemplate(page, 0, 0);
 
             // Page 3
             document.NewPage();
-            page = writer.GetImportedPage(reader, 3);
+            page = writer.GetImportedPage(reader, 6);
             cb.AddTemplate(page, 0, 0);
             
             // Page 4
             document.NewPage();
-            page = writer.GetImportedPage(reader, 4);
+            page = writer.GetImportedPage(reader, 7);
             cb.AddTemplate(page, 0, 0);
 
-            // Page 5
-            document.NewPage();
-            page = writer.GetImportedPage(reader, 5);
-            cb.AddTemplate(page, 0, 0);
+            //// Page 5
+            //document.NewPage();
+            //page = writer.GetImportedPage(reader, 5);
+            //cb.AddTemplate(page, 0, 0);
 
-            // Page 6
-            document.NewPage();
-            page = writer.GetImportedPage(reader, 6);
-            cb.AddTemplate(page, 0, 0);
+            //// Page 6
+            //document.NewPage();
+            //page = writer.GetImportedPage(reader, 6);
+            //cb.AddTemplate(page, 0, 0);
 
             // close the streams and voilá the file should be changed :)
             document.Close();
