@@ -185,21 +185,21 @@ namespace AspnetIdentitySample.Controllers
             // select the font properties
             BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
             cb.SetColorFill(BaseColor.DARK_GRAY);
-            cb.SetFontAndSize(bf, 7);
+            cb.SetFontAndSize(bf, 8);
 
             // write the text in the pdf content
             cb.BeginText();
             // Consignor
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Name, 125, 630, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address1 + ", " + cert.Consignor.Address2, 125, 620, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address3 + ", " + cert.Consignor.Address4, 125, 610, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Telephone, 125, 600, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Name, 125, 650, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address1 + ", " + cert.Consignor.Address2, 125, 640, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address3 + ", " + cert.Consignor.Address4, 125, 630, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Telephone, 125, 620, 0);
             // Consignee
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Name, 125, 565, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address1 + ", " + cert.Consignee.Address2, 125, 555, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address3 + ", " + cert.Consignee.Address4, 125, 545, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.PostCode, 125, 535, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Telephone, 125, 525, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Name, 125, 600, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address1 + ", " + cert.Consignee.Address2, 125, 590, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address3 + ", " + cert.Consignee.Address4, 125, 580, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.PostCode, 125, 570, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Telephone, 125, 560, 0);
             cb.EndText();
             cb.BeginText();
             string text = "Other random blabla...";
@@ -225,6 +225,24 @@ namespace AspnetIdentitySample.Controllers
             document.NewPage();
             page = writer.GetImportedPage(reader, 7);
             cb.AddTemplate(page, 0, 0);
+
+            // Coords page
+            document.NewPage();
+            bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            cb.SetColorFill(BaseColor.DARK_GRAY);
+            cb.SetFontAndSize(bf, 8);
+            cb.BeginText();
+            for (int x=0; x <= 600; x += 50)
+            {
+                for (int y=0; y <= 900; y += 50)
+                {
+                    
+                    string coords = x+"x"+y;
+                    // put the alignment and coordinates here
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, coords, x, y, 0);
+                }
+            }
+            cb.EndText();
 
             //// Page 5
             //document.NewPage();
