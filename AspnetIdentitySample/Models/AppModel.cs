@@ -63,6 +63,12 @@ namespace AspnetIdentitySample.Models
     {
         public int RabiesVaccinationID { get; set; }
         [Required]
+        [StringLength(20, MinimumLength = 1)]
+        public string Manufacturer { get; set; }
+        [Required]
+        [StringLength(20, MinimumLength = 1)]
+        public string BatchNo { get; set; }
+        [Required]
         [ValidateDateRange]
         [Display(Name = "Date given")]
         [DataType(DataType.Date)]

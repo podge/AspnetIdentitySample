@@ -20,16 +20,30 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateOfRabiesVaccination, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*@Html.EditorFor(model => model.DateOfRabiesVaccination)*@
                 @Html.JQueryUI().DatepickerFor(model => model.DateOfRabiesVaccination)
                 @Html.ValidationMessageFor(model => model.DateOfRabiesVaccination)
             </div>
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Manufacturer, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Manufacturer)
+                @Html.ValidationMessageFor(model => model.Manufacturer)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BatchNo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BatchNo)
+                @Html.ValidationMessageFor(model => model.BatchNo)
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.DateOfValidityFrom, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*@Html.EditorFor(model => model.DateOfValidityFrom)*@
                 @Html.JQueryUI().DatepickerFor(model => model.DateOfValidityFrom)
                 @Html.ValidationMessageFor(model => model.DateOfValidityFrom)
             </div>
@@ -38,7 +52,6 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateOfValidityTo, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*@Html.EditorFor(model => model.DateOfValidityTo)*@
                 @Html.JQueryUI().DatepickerFor(model => model.DateOfValidityTo)
                 @Html.ValidationMessageFor(model => model.DateOfValidityTo)
             </div>
