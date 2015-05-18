@@ -44,6 +44,10 @@ namespace AspnetIdentitySample.Models
         [Required]
         public string Breed { get; set; }
         [Required]
+        [Display(Name = "Identification System")]
+        public int IdentificationSystemId { get; set; }
+        [Required]
+        [Display(Name = "Identification Number")]
         [StringLength(15, MinimumLength = 9)]
         public string MicrochipNumber { get; set; }
         public virtual ICollection<RabiesVaccination> RabiesVaccinations { get; set; }
@@ -52,6 +56,7 @@ namespace AspnetIdentitySample.Models
         public virtual ApplicationUser User { get; set; }
         public virtual Species Species { get; set; }
         public virtual Gender Gender { get; set; }
+        public virtual IdentificationSystem IdentificationSystem { get; set; }
         [Required]
         [Display(Name = "Species")]
         public int SpeciesId { get; set; }
@@ -183,17 +188,10 @@ namespace AspnetIdentitySample.Models
         public int GenderId { get; set; }
         public String GenderName { get; set; }
     }
-    public class Identification
+    public class IdentificationSystem
     {
-        public int IdentificationId { get; set; }
-        public int IdentificationTypeId { get; set; }
-        public String IdentificationNumber { get; set; }
-        public DateTime IdentificationDate { get; set; }
-    }
-    public class IdentificationType
-    {
-        public int IndentificationTypeId { get; set; }
-        public String IdentificationTypeName { get; set; }
+        public int IdentificationSystemId { get; set; }
+        public String IdentificationSystemName { get; set; }
     }
     public class Certificate
     {
@@ -204,8 +202,6 @@ namespace AspnetIdentitySample.Models
         public String CountryOfOrigin { get; set; }
         public String ISOCode { get; set; }
         public String CommodityDescription { get; set; }
-
-
     }
     public class PetFile
     {
@@ -248,6 +244,7 @@ namespace AspnetIdentitySample.Models
         public DbSet<PetFile> PetFiles { get; set; }
         public DbSet<Species> Species { get; set; }
         public DbSet<Gender> Gender { get; set; }
+        public DbSet<IdentificationSystem> IdentificationSystem { get; set; }
     }
 
     public class ValidateDateRange : ValidationAttribute

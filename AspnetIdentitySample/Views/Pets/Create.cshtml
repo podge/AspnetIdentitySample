@@ -51,9 +51,16 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateOfBirth, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*@Html.EditorFor(model => model.DateOfBirth)*@
                 @Html.JQueryUI().DatepickerFor(model => model.DateOfBirth)
                 @Html.ValidationMessageFor(model => model.DateOfBirth)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdentificationSystemId, "IdentificationSystem", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("IdentificationSystemId", String.Empty)
+                @Html.ValidationMessageFor(model => model.IdentificationSystemId)
             </div>
         </div>
 

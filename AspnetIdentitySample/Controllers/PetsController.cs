@@ -111,6 +111,7 @@ namespace AspnetIdentitySample.Controllers
         {
             ViewBag.SpeciesId = new SelectList(db.Species, "SpeciesId", "SpeciesName");
             ViewBag.GenderId = new SelectList(db.Gender, "GenderId", "GenderName");
+            ViewBag.IdentificationSystemId = new SelectList(db.IdentificationSystem, "IdentificationSystemId", "IdentificationSystemName");
             return View();
         }
 
@@ -119,12 +120,13 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,MicrochipNumber")] Pet pet, HttpPostedFileBase upload)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,IdentificationSystemId,MicrochipNumber")] Pet pet, HttpPostedFileBase upload)
         {
             pet.Species = db.Species.Find(pet.SpeciesId);
             pet.Gender = db.Gender.Find(pet.GenderId);
             ViewBag.SpeciesId = new SelectList(db.Species, "SpeciesId", "SpeciesName");
             ViewBag.GenderId = new SelectList(db.Gender, "GenderId", "GenderName");
+            ViewBag.IdentificationSystemId = new SelectList(db.IdentificationSystem, "IdentificationSystemId", "IdentificationSystemName");
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             if (ModelState.IsValid)
             {
@@ -266,6 +268,7 @@ namespace AspnetIdentitySample.Controllers
 
             ViewBag.SpeciesId = new SelectList(db.Species, "SpeciesId", "SpeciesName", pet.SpeciesId);
             ViewBag.GenderId = new SelectList(db.Gender, "GenderId", "GenderName", pet.GenderId);
+            ViewBag.IdentificationSystemId = new SelectList(db.IdentificationSystem, "IdentificationSystemId", "IdentificationSystemName", pet.IdentificationSystemId);
             return View(pet);
         }
 
@@ -274,11 +277,12 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,MicrochipNumber")] Pet pet, HttpPostedFileBase upload)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,IdentificationSystemId,MicrochipNumber")] Pet pet, HttpPostedFileBase upload)
         {
             ViewBag.SpeciesId = new SelectList(db.Species, "SpeciesId", "SpeciesName");
             ViewBag.GenderId = new SelectList(db.Gender, "GenderId", "GenderName");
-
+            ViewBag.IdentificationSystemId = new SelectList(db.IdentificationSystem, "IdentificationSystemId", "IdentificationSystemName");
+            
             Pet petToUpdate = db.Pets.Find(pet.Id);
 
             if (upload != null && upload.ContentLength > 0)
@@ -319,6 +323,7 @@ namespace AspnetIdentitySample.Controllers
             petToUpdate.DateOfBirth = pet.DateOfBirth;
             petToUpdate.Gender = pet.Gender;
             petToUpdate.GenderId = pet.GenderId;
+            petToUpdate.IdentificationSystemId = pet.IdentificationSystemId;
             petToUpdate.MicrochipNumber = pet.MicrochipNumber;
             petToUpdate.Name = pet.Name;
             petToUpdate.Species = pet.Species;

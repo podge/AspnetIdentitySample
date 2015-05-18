@@ -77,6 +77,13 @@ namespace AspnetIdentitySample
             Gender spayed = new Gender();
             spayed.GenderName = "Female (Spayed)";
 
+            // Create IdentificationSystem
+            IdentificationSystem microchip = new IdentificationSystem();
+            microchip.IdentificationSystemName = "Microchip";
+            IdentificationSystem tattoo = new IdentificationSystem();
+            tattoo.IdentificationSystemName = "Tattoo";
+
+
             // Create Pets
             ICollection<Pet> pets = new List<Pet>();
 
@@ -86,6 +93,7 @@ namespace AspnetIdentitySample
                 Pet.Name = "Rosco"+i;
                 Pet.Breed = "Norwegian Elkhound";
                 Pet.DateOfBirth = new DateTime(2010, 1, 1);
+                Pet.IdentificationSystem = microchip;
                 Pet.MicrochipNumber = "9851200000100"+i.ToString("D2");
                 Pet.Species = dog;
                 Pet.Gender = male;
@@ -98,6 +106,7 @@ namespace AspnetIdentitySample
                 Pet2.Name = "Puddy"+i;
                 Pet2.Breed = "Tomcat";
                 Pet2.DateOfBirth = new DateTime(2012, 1, 1);
+                Pet2.IdentificationSystem = tattoo;
                 Pet2.MicrochipNumber = "9851200000200"+i.ToString("D2");
                 Pet2.Species = cat;
                 Pet2.Gender = female;
