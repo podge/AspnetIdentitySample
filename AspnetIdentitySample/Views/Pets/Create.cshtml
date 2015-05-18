@@ -59,6 +59,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.IdentificationSystemId, "IdentificationSystem", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
+                @*@Html.DropDownList("IdentificationSystemId", (SelectList)ViewBag.IdentificationSystemId, "Please select", new { @class = "form-control" })*@
                 @Html.DropDownList("IdentificationSystemId", String.Empty)
                 @Html.ValidationMessageFor(model => model.IdentificationSystemId)
             </div>
