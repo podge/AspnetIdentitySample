@@ -323,6 +323,7 @@ namespace AspnetIdentitySample.Controllers
             petToUpdate.DateOfBirth = pet.DateOfBirth;
             petToUpdate.Gender = pet.Gender;
             petToUpdate.GenderId = pet.GenderId;
+            petToUpdate.IdentificationSystem = pet.IdentificationSystem;
             petToUpdate.IdentificationSystemId = pet.IdentificationSystemId;
             petToUpdate.MicrochipNumber = pet.MicrochipNumber;
             petToUpdate.Name = pet.Name;
