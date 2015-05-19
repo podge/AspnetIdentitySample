@@ -64,8 +64,10 @@ namespace AspnetIdentitySample
             // Create Species
             Species cat = new Species();
             cat.SpeciesName = "Cat";
+            cat.ScientificName = "Feline";
             Species dog = new Species();
             dog.SpeciesName = "Dog";
+            dog.ScientificName = "Canine";
 
             // Create Gender
             Gender male = new Gender();
@@ -92,9 +94,11 @@ namespace AspnetIdentitySample
                 Pet Pet = new Pet();
                 Pet.Name = "Rosco"+i;
                 Pet.Breed = "Norwegian Elkhound";
+                Pet.Colour = "Grey";
                 Pet.DateOfBirth = new DateTime(2010, 1, 1);
                 Pet.IdentificationSystem = microchip;
                 Pet.MicrochipNumber = "9851200000100"+i.ToString("D2");
+                Pet.DateOfMicrochipping = new DateTime(2010, 2, 1);
                 Pet.Species = dog;
                 Pet.Gender = male;
                 //Pet.RabiesVaccinations = new List<RabiesVaccination>();
@@ -105,9 +109,11 @@ namespace AspnetIdentitySample
                 Pet Pet2 = new Pet();
                 Pet2.Name = "Puddy"+i;
                 Pet2.Breed = "Tomcat";
+                Pet2.Colour = "Tortoiseshell";
                 Pet2.DateOfBirth = new DateTime(2012, 1, 1);
                 Pet2.IdentificationSystem = tattoo;
                 Pet2.MicrochipNumber = "9851200000200"+i.ToString("D2");
+                Pet2.DateOfMicrochipping = new DateTime(2012, 3, 1);
                 Pet2.Species = cat;
                 Pet2.Gender = female;
                 pets.Add(Pet2);

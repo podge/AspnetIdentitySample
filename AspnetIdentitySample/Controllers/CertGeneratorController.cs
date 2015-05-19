@@ -15,8 +15,8 @@ namespace AspnetIdentitySample.Controllers
 {
     public class CertGeneratorController : Controller
     {
-        string originalFile = "..\\..\\Documents\\pet_cert_blank.pdf";
-        string copyOfOriginal = "..\\..\\Documents\\copy.pdf";
+        string originalFile = "~/Documents/uk_cert.pdf";
+        string copyOfOriginal = "~/Documents/newfile.pdf";
 
         private MyDbContext db;
         private UserManager<ApplicationUser> manager;
@@ -159,15 +159,15 @@ namespace AspnetIdentitySample.Controllers
         public FileResult DownloadFile(Certificate cert)
         {
             doPdf(cert);
-            byte[] fileBytes = System.IO.File.ReadAllBytes(@"C:\eupp\newFile.pdf");
+            byte[] fileBytes = System.IO.File.ReadAllBytes(HttpContext.Server.MapPath(copyOfOriginal));
             string fileName = "newFile.pdf";
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }
 
         private void doPdf(Certificate cert)
         {
-            string oldFile = @"c:\eupp\celex.pdf";
-            string newFile = @"C:\eupp\newFile.pdf";
+            string oldFile = HttpContext.Server.MapPath(originalFile);
+            string newFile = HttpContext.Server.MapPath(copyOfOriginal);
 
             // open the reader
             PdfReader reader = new PdfReader(oldFile);
@@ -190,40 +190,71 @@ namespace AspnetIdentitySample.Controllers
             // write the text in the pdf content
             cb.BeginText();
             // Consignor
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Name, 125, 650, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address1 + ", " + cert.Consignor.Address2, 125, 640, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address3 + ", " + cert.Consignor.Address4, 125, 630, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Telephone, 125, 620, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Name, 125, 670, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address1 + ", " + cert.Consignor.Address2, 125, 660, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address3 + ", " + cert.Consignor.Address4, 125, 650, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Telephone, 125, 640, 0);
             // Consignee
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Name, 125, 600, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address1 + ", " + cert.Consignee.Address2, 125, 590, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address3 + ", " + cert.Consignee.Address4, 125, 580, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.PostCode, 125, 570, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Telephone, 125, 560, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Name, 125, 610, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address1 + ", " + cert.Consignee.Address2, 125, 600, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address3 + ", " + cert.Consignee.Address4, 125, 590, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.PostCode, 125, 580, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Telephone, 125, 570, 0);
             cb.EndText();
+
             cb.BeginText();
-            string text = "Other random blabla...";
-            // put the alignment and coordinates here
-            cb.ShowTextAligned(2, text, 100, 200, 0);
+            int yy = 150;
+            foreach (Pet item in cert.Pets)
+            {
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.Species.ScientificName, 60, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.Gender.GenderName, 110, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.IdentificationSystem.IdentificationSystemName, 150, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.Colour, 190, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.Breed, 240, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.DateOfMicrochipping.ToShortDateString(), 320, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.MicrochipNumber, 400, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.DateOfBirth.ToShortDateString(), 480, yy, 0);
+                yy -= 10;
+            }
             cb.EndText();
 
             // create the new page and add it to the pdf
-            PdfImportedPage page = writer.GetImportedPage(reader, 4);
+            PdfImportedPage page = writer.GetImportedPage(reader, 1);
             cb.AddTemplate(page, 0, 0);
 
             // Page 2
             document.NewPage();
-            page = writer.GetImportedPage(reader, 5);
+            page = writer.GetImportedPage(reader, 2);
             cb.AddTemplate(page, 0, 0);
 
             // Page 3
             document.NewPage();
-            page = writer.GetImportedPage(reader, 6);
+            page = writer.GetImportedPage(reader, 3);
             cb.AddTemplate(page, 0, 0);
             
             // Page 4
             document.NewPage();
+            page = writer.GetImportedPage(reader, 4);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 5
+            document.NewPage();
+            page = writer.GetImportedPage(reader, 5);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 6
+            document.NewPage();
+            page = writer.GetImportedPage(reader, 6);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 7
+            document.NewPage();
             page = writer.GetImportedPage(reader, 7);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 8
+            document.NewPage();
+            page = writer.GetImportedPage(reader, 8);
             cb.AddTemplate(page, 0, 0);
 
             // Coords page

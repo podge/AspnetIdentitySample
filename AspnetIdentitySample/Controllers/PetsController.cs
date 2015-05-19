@@ -120,7 +120,7 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,IdentificationSystemId,MicrochipNumber")] Pet pet, HttpPostedFileBase upload)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,Colour,IdentificationSystemId,MicrochipNumber,DateOfMicrochipping")] Pet pet, HttpPostedFileBase upload)
         {
             pet.Species = db.Species.Find(pet.SpeciesId);
             pet.Gender = db.Gender.Find(pet.GenderId);
@@ -277,7 +277,7 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,IdentificationSystemId,MicrochipNumber")] Pet pet, HttpPostedFileBase upload)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,SpeciesId,GenderId,DateOfBirth,Breed,Colour,IdentificationSystemId,MicrochipNumber,DateOfMicrochipping")] Pet pet, HttpPostedFileBase upload)
         {
             ViewBag.SpeciesId = new SelectList(db.Species, "SpeciesId", "SpeciesName");
             ViewBag.GenderId = new SelectList(db.Gender, "GenderId", "GenderName");
@@ -320,12 +320,14 @@ namespace AspnetIdentitySample.Controllers
             }
 
             petToUpdate.Breed = pet.Breed;
+            petToUpdate.Colour = pet.Colour;
             petToUpdate.DateOfBirth = pet.DateOfBirth;
             petToUpdate.Gender = pet.Gender;
             petToUpdate.GenderId = pet.GenderId;
             petToUpdate.IdentificationSystem = pet.IdentificationSystem;
             petToUpdate.IdentificationSystemId = pet.IdentificationSystemId;
             petToUpdate.MicrochipNumber = pet.MicrochipNumber;
+            petToUpdate.DateOfMicrochipping = pet.DateOfMicrochipping;
             petToUpdate.Name = pet.Name;
             petToUpdate.Species = pet.Species;
             petToUpdate.SpeciesId = pet.SpeciesId;

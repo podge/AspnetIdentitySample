@@ -49,6 +49,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Colour, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Colour)
+                @Html.ValidationMessageFor(model => model.Colour)
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.DateOfBirth, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.JQueryUI().DatepickerFor(model => model.DateOfBirth)
@@ -70,6 +78,14 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.MicrochipNumber)
                 @Html.ValidationMessageFor(model => model.MicrochipNumber)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateOfMicrochipping, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.JQueryUI().DatepickerFor(model => model.DateOfMicrochipping)
+                @Html.ValidationMessageFor(model => model.DateOfMicrochipping)
             </div>
         </div>
 

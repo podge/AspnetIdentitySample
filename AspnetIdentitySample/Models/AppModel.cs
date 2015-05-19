@@ -42,7 +42,11 @@ namespace AspnetIdentitySample.Models
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
         [Required]
+        [StringLength(20, MinimumLength = 3)]
         public string Breed { get; set; }
+        [Required]
+        [StringLength(15, MinimumLength = 3)]
+        public string Colour { get; set; }
         [Required]
         [Display(Name = "Identification System")]
         public int IdentificationSystemId { get; set; }
@@ -50,6 +54,10 @@ namespace AspnetIdentitySample.Models
         [Display(Name = "Identification Number")]
         [StringLength(15, MinimumLength = 9)]
         public string MicrochipNumber { get; set; }
+        [Display(Name = "Identification Date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime DateOfMicrochipping { get; set; }
         public virtual ICollection<RabiesVaccination> RabiesVaccinations { get; set; }
         public virtual ICollection<Bloodtest> FAVNBloodTests { get; set; }
         public virtual ICollection<PetFile> PetFiles { get; set; }
@@ -182,6 +190,7 @@ namespace AspnetIdentitySample.Models
     {
         public int SpeciesId { get; set; }
         public String SpeciesName { get; set; }
+        public String ScientificName { get; set; }
     }
     public class Gender
     {
