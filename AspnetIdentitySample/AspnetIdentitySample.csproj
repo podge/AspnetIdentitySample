@@ -166,6 +166,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\CertificatesController.cs" />
+    <Compile Include="Controllers\ConsignorsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BloodtestsController.cs" />
     <Compile Include="Controllers\CertGeneratorController.cs" />
@@ -189,6 +191,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Controllers\PetsController.cs" />
+    <Compile Include="Controllers\ConsigneesController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -335,9 +338,24 @@
     <Content Include="Views\Bloodtests\Details.cshtml" />
     <Content Include="Views\Bloodtests\Edit.cshtml" />
     <Content Include="Views\Bloodtests\Index.cshtml" />
-    <Content Include="Views\CertGenerator\Index.cshtml" />
-    <Content Include="Views\CertGenerator\Create.cshtml" />
+    <Content Include="Views\CertGenerator\Index_old.cshtml" />
+    <Content Include="Views\CertGenerator\Create_old.cshtml" />
     <Content Include="Views\PetCheck\Index.cshtml" />
+    <Content Include="Views\Consignees\Create.cshtml" />
+    <Content Include="Views\Consignees\Delete.cshtml" />
+    <Content Include="Views\Consignees\Details.cshtml" />
+    <Content Include="Views\Consignees\Edit.cshtml" />
+    <Content Include="Views\Consignees\Index.cshtml" />
+    <Content Include="Views\Consignors\Create.cshtml" />
+    <Content Include="Views\Consignors\Delete.cshtml" />
+    <Content Include="Views\Consignors\Details.cshtml" />
+    <Content Include="Views\Consignors\Edit.cshtml" />
+    <Content Include="Views\Consignors\Index.cshtml" />
+    <Content Include="Views\Certificates\Create.cshtml" />
+    <Content Include="Views\Certificates\Delete.cshtml" />
+    <Content Include="Views\Certificates\Details.cshtml" />
+    <Content Include="Views\Certificates\Edit.cshtml" />
+    <Content Include="Views\Certificates\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

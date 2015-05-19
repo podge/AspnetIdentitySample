@@ -85,7 +85,7 @@ namespace AspnetIdentitySample.Controllers
             //return View(pets.ToPagedList(pageNumber, pageSize));
         }
 
-        //// GET: CertGenerator
+        // GET: CertGenerator
         //public ActionResult Index(int? id)
         //{
         //    //CreatePDFByCopy();
@@ -128,7 +128,11 @@ namespace AspnetIdentitySample.Controllers
             cert.Consignee = consignee;
             cert.Pets = certPets;
 
-            return DownloadFile(cert);
+            db.Certificate.Add(cert);
+            db.SaveChangesAsync();
+
+            //return DownloadFile(cert);
+            return View(cert);
         }
 
         // POST: /CertGenerator/Create

@@ -143,6 +143,10 @@ namespace AspnetIdentitySample.Models
             this.Postcode = postcode;
             this.Telephone = tel;
         }
+        public Consignor()
+        {
+
+        }
         public int ConsignorId { get; set; }
         [Required]
         public String Name { get; set; }
@@ -169,6 +173,10 @@ namespace AspnetIdentitySample.Models
             this.Address4 = add4;
             this.PostCode = postcode;
             this.Telephone = tel;
+        }
+        public Consignee()
+        {
+            
         }
         public int ConsigneeId { get; set; }
         [Required]
@@ -204,7 +212,7 @@ namespace AspnetIdentitySample.Models
     }
     public class Certificate
     {
-        public int CertId { get; set; }
+        public int CertificateId { get; set; }
         public Consignor Consignor { get; set; }
         public Consignee Consignee { get; set; }
         public virtual ICollection<Pet> Pets { get; set; }
@@ -254,6 +262,11 @@ namespace AspnetIdentitySample.Models
         public DbSet<Species> Species { get; set; }
         public DbSet<Gender> Gender { get; set; }
         public DbSet<IdentificationSystem> IdentificationSystem { get; set; }
+        public DbSet<Certificate> Certificate { get; set; }
+
+        public System.Data.Entity.DbSet<AspnetIdentitySample.Models.Consignee> Consignees { get; set; }
+
+        public System.Data.Entity.DbSet<AspnetIdentitySample.Models.Consignor> Consignors { get; set; }
     }
 
     public class ValidateDateRange : ValidationAttribute
