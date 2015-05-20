@@ -67,7 +67,7 @@ namespace AspnetIdentitySample.Controllers
                 case "date_desc":
                     pets = pets.OrderByDescending(s => s.DateOfBirth);
                     break;
-                default:  // Name ascending 
+                default:  // ConsignorName ascending 
                     pets = pets.OrderBy(s => s.Name);
                     break;
             }
@@ -121,8 +121,8 @@ namespace AspnetIdentitySample.Controllers
                 return RedirectToAction("Index", "CertGenerator");
             }
 
-            Consignor consignor = new Consignor(Request.Form["Consignor.Name"], Request.Form["Consignor.Address1"], Request.Form["Consignor.Address2"], Request.Form["Consignor.Address3"], Request.Form["Consignor.Address4"], Request.Form["Consignor.Postcode"], Request.Form["Consignor.Telephone"]);
-            Consignee consignee = new Consignee(Request.Form["Consignee.Name"], Request.Form["Consignee.Address1"], Request.Form["Consignee.Address2"], Request.Form["Consignee.Address3"], Request.Form["Consignee.Address4"], Request.Form["Consignee.Postcode"], Request.Form["Consignee.Telephone"]);
+            Consignor consignor = new Consignor(Request.Form["Consignor.ConsignorName"], Request.Form["Consignor.Address1"], Request.Form["Consignor.Address2"], Request.Form["Consignor.Address3"], Request.Form["Consignor.Address4"], Request.Form["Consignor.Postcode"], Request.Form["Consignor.Telephone"]);
+            Consignee consignee = new Consignee(Request.Form["Consignee.ConsignorName"], Request.Form["Consignee.Address1"], Request.Form["Consignee.Address2"], Request.Form["Consignee.Address3"], Request.Form["Consignee.Address4"], Request.Form["Consignee.Postcode"], Request.Form["Consignee.Telephone"]);
             
             cert.Consignor = consignor;
             cert.Consignee = consignee;
@@ -140,7 +140,7 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "Id,Consignor.Name,SpeciesId,GenderId,DateOfBirth,Breed,MicrochipNumber")] Certificate cert)
+        //public ActionResult Create([Bind(Include = "Id,Consignor.ConsignorName,SpeciesId,GenderId,DateOfBirth,Breed,MicrochipNumber")] Certificate cert)
         //{
             
         //    return View();
@@ -194,15 +194,15 @@ namespace AspnetIdentitySample.Controllers
             // write the text in the pdf content
             cb.BeginText();
             // Consignor
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Name, 125, 670, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.ConsignorName, 125, 670, 0);
             cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address1 + ", " + cert.Consignor.Address2, 125, 660, 0);
             cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address3 + ", " + cert.Consignor.Address4, 125, 650, 0);
             cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Telephone, 125, 640, 0);
             // Consignee
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Name, 125, 610, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.ConsigneeName, 125, 610, 0);
             cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address1 + ", " + cert.Consignee.Address2, 125, 600, 0);
             cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address3 + ", " + cert.Consignee.Address4, 125, 590, 0);
-            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.PostCode, 125, 580, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Postcode, 125, 580, 0);
             cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Telephone, 125, 570, 0);
             cb.EndText();
 

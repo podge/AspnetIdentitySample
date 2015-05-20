@@ -38,6 +38,8 @@ namespace AspnetIdentitySample.Controllers
         // GET: Certificates/Create
         public ActionResult Create()
         {
+            ViewBag.ConsignorId = new SelectList(db.Consignors, "ConsignorId", "DropdownName");
+            ViewBag.ConsigneeId = new SelectList(db.Consignees, "ConsigneeId", "DropdownName");
             return View();
         }
 
@@ -46,8 +48,10 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CertificateId,CountryOfOrigin,ISOCode,CommodityDescription")] Certificate certificate)
+        public ActionResult Create([Bind(Include = "CertificateId,ConsignorId,ConsigneeId,CountryOfOrigin,ISOCode,CommodityDescription")] Certificate certificate)
         {
+            certificate.Consignor = db.Consignors.Find(certificate.ConsignorId);
+            certificate.Consignee = db.Consignees.Find(certificate.ConsigneeId);
             if (ModelState.IsValid)
             {
                 db.Certificate.Add(certificate);

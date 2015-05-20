@@ -71,7 +71,7 @@ namespace AspnetIdentitySample.Controllers
                 case "date_desc":
                     pets = pets.OrderByDescending(s => s.DateOfBirth);
                     break;
-                default:  // Name ascending 
+                default:  // ConsignorName ascending 
                     pets = pets.OrderBy(s => s.Name);
                     break;
             }

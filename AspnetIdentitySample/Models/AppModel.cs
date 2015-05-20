@@ -135,7 +135,7 @@ namespace AspnetIdentitySample.Models
     public class Consignor
     {
         public Consignor(string name, string add1, string add2, string add3, string add4, string postcode, string tel){
-            this.Name = name;
+            this.ConsignorName = name;
             this.Address1 = add1;
             this.Address2 = add2;
             this.Address3 = add3;
@@ -149,7 +149,7 @@ namespace AspnetIdentitySample.Models
         }
         public int ConsignorId { get; set; }
         [Required]
-        public String Name { get; set; }
+        public String ConsignorName { get; set; }
         [Required]
         public String Address1 { get; set; }
         [Required]
@@ -162,16 +162,20 @@ namespace AspnetIdentitySample.Models
         public String Postcode { get; set; }
         [Required]
         public String Telephone { get; set; }
+        public string DropdownName
+        {
+            get { return ConsignorName + " " + Address1 + " " + Address2 + " " + Address3 + " " + Address4 + " " + Postcode; }
+        }
     }
     public class Consignee
     {
         public Consignee(string name, string add1, string add2, string add3, string add4, string postcode, string tel){
-            this.Name = name;
+            this.ConsigneeName = name;
             this.Address1 = add1;
             this.Address2 = add2;
             this.Address3 = add3;
             this.Address4 = add4;
-            this.PostCode = postcode;
+            this.Postcode = postcode;
             this.Telephone = tel;
         }
         public Consignee()
@@ -180,7 +184,7 @@ namespace AspnetIdentitySample.Models
         }
         public int ConsigneeId { get; set; }
         [Required]
-        public String Name { get; set; }
+        public String ConsigneeName { get; set; }
         [Required]
         public String Address1 { get; set; }
         [Required]
@@ -190,9 +194,13 @@ namespace AspnetIdentitySample.Models
         [Required]
         public String Address4 { get; set; }
         [Required]
-        public String PostCode { get; set; }
+        public String Postcode { get; set; }
         [Required]
         public String Telephone { get; set; }
+        public string DropdownName
+        {
+            get{ return ConsigneeName + " " + Address1 + " " + Address2 + " " + Address3 + " " + Address4 + " " + Postcode;}
+        }
     }
     public class Species
     {
@@ -213,6 +221,8 @@ namespace AspnetIdentitySample.Models
     public class Certificate
     {
         public int CertificateId { get; set; }
+        public int ConsignorId { get; set; }
+        public int ConsigneeId { get; set; }
         public Consignor Consignor { get; set; }
         public Consignee Consignee { get; set; }
         public virtual ICollection<Pet> Pets { get; set; }

@@ -23,6 +23,22 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.ConsignorId, "Consignor", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ConsignorId", String.Empty)
+                @Html.ValidationMessageFor(model => model.ConsignorId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConsigneeId, "Consignee", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ConsigneeId", String.Empty)
+                @Html.ValidationMessageFor(model => model.ConsigneeId)
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.ISOCode, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.ISOCode)

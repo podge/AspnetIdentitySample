@@ -46,7 +46,7 @@ namespace AspnetIdentitySample
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ConsignorId,Name,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignor consignor)
+        public ActionResult Create([Bind(Include = "ConsignorId,ConsignorName,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignor consignor)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace AspnetIdentitySample
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ConsignorId,Name,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignor consignor)
+        public ActionResult Edit([Bind(Include = "ConsignorId,ConsignorName,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignor consignor)
         {
             if (ModelState.IsValid)
             {

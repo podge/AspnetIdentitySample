@@ -46,7 +46,7 @@ namespace AspnetIdentitySample.Views.CertGenerator
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ConsigneeId,Name,Address1,Address2,Address3,Address4,PostCode,Telephone")] Consignee consignee)
+        public ActionResult Create([Bind(Include = "ConsigneeId,ConsigneeName,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignee consignee)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace AspnetIdentitySample.Views.CertGenerator
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ConsigneeId,Name,Address1,Address2,Address3,Address4,PostCode,Telephone")] Consignee consignee)
+        public ActionResult Edit([Bind(Include = "ConsigneeId,ConsigneeName,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignee consignee)
         {
             if (ModelState.IsValid)
             {
