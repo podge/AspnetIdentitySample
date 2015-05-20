@@ -134,19 +134,19 @@ namespace AspnetIdentitySample.Models
     }
     public class Consignor
     {
-        public Consignor(string name, string add1, string add2, string add3, string add4, string postcode, string tel){
-            this.ConsignorName = name;
-            this.Address1 = add1;
-            this.Address2 = add2;
-            this.Address3 = add3;
-            this.Address4 = add4;
-            this.Postcode = postcode;
-            this.Telephone = tel;
-        }
-        public Consignor()
-        {
+        //public Consignor(string name, string add1, string add2, string add3, string add4, string postcode, string tel){
+        //    this.ConsignorName = name;
+        //    this.Address1 = add1;
+        //    this.Address2 = add2;
+        //    this.Address3 = add3;
+        //    this.Address4 = add4;
+        //    this.Postcode = postcode;
+        //    this.Telephone = tel;
+        //}
+        //public Consignor()
+        //{
 
-        }
+        //}
         public int ConsignorId { get; set; }
         [Required]
         public String ConsignorName { get; set; }
@@ -162,6 +162,7 @@ namespace AspnetIdentitySample.Models
         public String Postcode { get; set; }
         [Required]
         public String Telephone { get; set; }
+        public virtual ApplicationUser User { get; set; }
         public string DropdownName
         {
             get { return ConsignorName + " " + Address1 + " " + Address2 + " " + Address3 + " " + Address4 + " " + Postcode; }
@@ -169,19 +170,19 @@ namespace AspnetIdentitySample.Models
     }
     public class Consignee
     {
-        public Consignee(string name, string add1, string add2, string add3, string add4, string postcode, string tel){
-            this.ConsigneeName = name;
-            this.Address1 = add1;
-            this.Address2 = add2;
-            this.Address3 = add3;
-            this.Address4 = add4;
-            this.Postcode = postcode;
-            this.Telephone = tel;
-        }
-        public Consignee()
-        {
+        //public Consignee(string name, string add1, string add2, string add3, string add4, string postcode, string tel){
+        //    this.ConsigneeName = name;
+        //    this.Address1 = add1;
+        //    this.Address2 = add2;
+        //    this.Address3 = add3;
+        //    this.Address4 = add4;
+        //    this.Postcode = postcode;
+        //    this.Telephone = tel;
+        //}
+        //public Consignee()
+        //{
             
-        }
+        //}
         public int ConsigneeId { get; set; }
         [Required]
         public String ConsigneeName { get; set; }
@@ -197,6 +198,7 @@ namespace AspnetIdentitySample.Models
         public String Postcode { get; set; }
         [Required]
         public String Telephone { get; set; }
+        public virtual ApplicationUser User { get; set; }
         public string DropdownName
         {
             get{ return ConsigneeName + " " + Address1 + " " + Address2 + " " + Address3 + " " + Address4 + " " + Postcode;}
@@ -229,6 +231,7 @@ namespace AspnetIdentitySample.Models
         public String CountryOfOrigin { get; set; }
         public String ISOCode { get; set; }
         public String CommodityDescription { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
     public class PetFile
     {
