@@ -7,17 +7,28 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AspnetIdentitySample.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Threading.Tasks;
 
 namespace AspnetIdentitySample.Views.CertGenerator
 {
     public class ConsigneesController : Controller
     {
-        private MyDbContext db = new MyDbContext();
+        private MyDbContext db;
+        private UserManager<ApplicationUser> manager;
+
+        public ConsigneesController()
+        {
+            db = new MyDbContext();
+            manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+        }
 
         // GET: Consignees
         public ActionResult Index()
         {
-            return View(db.Consignees.ToList());
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+            return View(db.Consignees.ToList().Where(s => s.User.Id == currentUser.Id));
         }
 
         // GET: Consignees/Details/5
@@ -46,8 +57,10 @@ namespace AspnetIdentitySample.Views.CertGenerator
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ConsigneeId,ConsigneeName,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignee consignee)
+        public async Task<ActionResult> Create([Bind(Include = "ConsigneeId,ConsigneeName,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignee consignee)
         {
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
+            consignee.User = currentUser;
             if (ModelState.IsValid)
             {
                 db.Consignees.Add(consignee);

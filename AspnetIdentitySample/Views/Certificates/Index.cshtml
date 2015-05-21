@@ -6,9 +6,19 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (ViewBag.pets > 0 && ViewBag.consignors > 0 && ViewBag.consignees > 0)
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+else
+{
+    <p>
+        You must create at least one pet, consignor and consignee in order to create a certificate. You have created @ViewBag.pets pets, @ViewBag.consignors consignors and @ViewBag.consignees consignees.
+    </p>
+}
+
 <table class="table">
     <tr>
         <th>
@@ -23,23 +33,24 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CountryOfOrigin)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ISOCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CommodityDescription)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CertificateId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.CertificateId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CertificateId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CountryOfOrigin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ISOCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommodityDescription)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.CertificateId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.CertificateId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.CertificateId })
+            </td>
+        </tr>
+    }
 
 </table>

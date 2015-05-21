@@ -7,17 +7,27 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AspnetIdentitySample.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Threading.Tasks;
 
 namespace AspnetIdentitySample
 {
     public class ConsignorsController : Controller
     {
-        private MyDbContext db = new MyDbContext();
+        private MyDbContext db;
+        private UserManager<ApplicationUser> manager;
+        public ConsignorsController()
+        {
+            db = new MyDbContext();
+            manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+        }
 
         // GET: Consignors
         public ActionResult Index()
         {
-            return View(db.Consignors.ToList());
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+            return View(db.Consignors.ToList().Where(s => s.User.Id == currentUser.Id));
         }
 
         // GET: Consignors/Details/5
@@ -46,8 +56,10 @@ namespace AspnetIdentitySample
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ConsignorId,ConsignorName,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignor consignor)
+        public async Task<ActionResult> Create([Bind(Include = "ConsignorId,ConsignorName,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignor consignor)
         {
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
+            consignor.User = currentUser;
             if (ModelState.IsValid)
             {
                 db.Consignors.Add(consignor);

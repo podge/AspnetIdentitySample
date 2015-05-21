@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using AspnetIdentitySample.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Threading.Tasks;
 
 namespace AspnetIdentitySample.Controllers
 {
@@ -31,15 +32,11 @@ namespace AspnetIdentitySample.Controllers
             // Get pets, consignors and consignees for current user
             // Warn if user needs to create any of these objects
 
-            var petList = from s in db.Pets where (s.User.Id == currentUser.Id) select s;
-            var consignors = db.Consignors.Any(c => c.User.Id == currentUser.Id);
-            var consignees = db.Consignees.Any(c => c.User.Id == currentUser.Id);
-
-            if (petList.c) { ModelState.AddModelError(string.Empty, "No pets created."); }
-            if (consignors == null) { ModelState.AddModelError(string.Empty, "No consignors created."); }
-            if (consignees == null) { ModelState.AddModelError(string.Empty, "No consignees created."); }
-
-            return View(db.Certificate.ToList());
+            ViewBag.pets = db.Pets.Count(s => s.User.Id == currentUser.Id);
+            ViewBag.consignors = db.Consignors.Count(s => s.User.Id == currentUser.Id);
+            ViewBag.consignees = db.Consignees.Count(s => s.User.Id == currentUser.Id);
+            
+            return View(db.Certificate.ToList().Where(s => s.User.Id == currentUser.Id));
         }
 
         // GET: Certificates/Details/5
@@ -61,8 +58,8 @@ namespace AspnetIdentitySample.Controllers
         public ActionResult Create()
         {
             var currentUser = manager.FindById(User.Identity.GetUserId());
-            ViewBag.ConsignorId = new SelectList(db.Consignors, "ConsignorId", "DropdownName");
-            ViewBag.ConsigneeId = new SelectList(db.Consignees, "ConsigneeId", "DropdownName");
+            ViewBag.ConsignorId = new SelectList(db.Consignors.Where(s => s.User.Id == currentUser.Id), "ConsignorId", "DropdownName");
+            ViewBag.ConsigneeId = new SelectList(db.Consignees.Where(s => s.User.Id == currentUser.Id), "ConsigneeId", "DropdownName");
             var pets = from s in db.Pets
                        where (s.User.Id == currentUser.Id)
                        select s;
@@ -78,8 +75,11 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CertificateId,ConsignorId,ConsigneeId,CountryOfOrigin,ISOCode,CommodityDescription")] Certificate certificate)
+        public async Task<ActionResult> Create([Bind(Include = "CertificateId,ConsignorId,ConsigneeId,CountryOfOrigin,ISOCode,CommodityDescription")] Certificate certificate)
         {
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
+            certificate.User = currentUser;
+            
             certificate.Consignor = db.Consignors.Find(certificate.ConsignorId);
             certificate.Consignee = db.Consignees.Find(certificate.ConsigneeId);
             if (ModelState.IsValid)
