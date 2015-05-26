@@ -34,7 +34,6 @@ namespace AspnetIdentitySample.Controllers
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
-            int pageSize = 10;
             int pageNumber = (page ?? 1);
             if (searchString != null)
             {
@@ -73,16 +72,9 @@ namespace AspnetIdentitySample.Controllers
             }
 
             Certificate cert = new Certificate();
-            //Consignor myConor = new Consignor("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland", "00000", "353861061676");
-            //Consignee myConee = new Consignee("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland", "00000", "353861061676");
-            
-            //cert.Consignor = myConor;
-            //cert.Consignee = myConee;
             cert.Pets = pets.ToList();
 
             return View(cert);
-
-            //return View(pets.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: CertGenerator
@@ -121,11 +113,6 @@ namespace AspnetIdentitySample.Controllers
                 return RedirectToAction("Index", "CertGenerator");
             }
 
-            //Consignor consignor = new Consignor(Request.Form["Consignor.ConsignorName"], Request.Form["Consignor.Address1"], Request.Form["Consignor.Address2"], Request.Form["Consignor.Address3"], Request.Form["Consignor.Address4"], Request.Form["Consignor.Postcode"], Request.Form["Consignor.Telephone"]);
-            //Consignee consignee = new Consignee(Request.Form["Consignee.ConsignorName"], Request.Form["Consignee.Address1"], Request.Form["Consignee.Address2"], Request.Form["Consignee.Address3"], Request.Form["Consignee.Address4"], Request.Form["Consignee.Postcode"], Request.Form["Consignee.Telephone"]);
-            
-            //cert.Consignor = consignor;
-            //cert.Consignee = consignee;
             cert.Pets = certPets;
 
             db.Certificate.Add(cert);
@@ -151,11 +138,6 @@ namespace AspnetIdentitySample.Controllers
         public ActionResult Download(Certificate cert)
         {
             Certificate myCert = new Certificate();
-            //Consignor myConor = new Consignor("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland", "00000", "353861061676");
-            //Consignee myConee = new Consignee("Padraic Lavin", "Canonbrook Court", "Lucan", "Co. Dublin", "Ireland", "00000", "353861061676");
-            
-            //myCert.Consignor = myConor;
-            //myCert.Consignee = myConee;
 
             return DownloadFile(myCert);
         }

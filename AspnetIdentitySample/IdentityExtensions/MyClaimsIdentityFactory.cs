@@ -47,8 +47,8 @@ namespace AspnetIdentitySample.IdentityExtensions
             return id;
         }
 
-        public string UserIdClaimType { get; set; }
-        public string UserNameClaimType { get; set; }
+        public new string UserIdClaimType { get; set; }
+        public new string UserNameClaimType { get; set; }
         public string LastLoginTimeType { get; set; }
     }
 }

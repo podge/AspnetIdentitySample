@@ -19,7 +19,7 @@ namespace AspnetIdentitySample.Controllers
 
         // Only Authenticated users can access thier profile
         [Authorize]
-        public ActionResult Profile()
+        public new ActionResult Profile()
         {
             // Instantiate the ASP.NET Identity system
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new MyDbContext()));

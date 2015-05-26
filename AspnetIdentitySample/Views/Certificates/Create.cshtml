@@ -71,7 +71,8 @@
                 {
                     <tr>
                         <td>
-                            <input type="checkbox" name="selected_@item.Id" value="@item.Id" />
+                            @*<input type="checkbox" name="selected_@item.Id" value="@item.Id" />*@
+                            <input type="checkbox" name="PetIDs" value="@item.Id" />
                         </td>
                         <td>
                             <strong>@Html.DisplayFor(modelItem => item.Name)</strong>

@@ -35,7 +35,8 @@ namespace AspnetIdentitySample.Controllers
         public MyDbContext context { get; private set; }
         //
         // GET: /Roles/
-        public async Task<ActionResult> Index()
+        //public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             return View(RoleManager.Roles);
         }

@@ -10,11 +10,16 @@ using AspnetIdentitySample.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using System.IO;
 
 namespace AspnetIdentitySample.Controllers
 {
     public class CertificatesController : Controller
     {
+        string originalFile = "~/Documents/uk_cert.pdf";
+        string copyOfOriginal = "~/Documents/newfile.pdf";
         private MyDbContext db;
         private UserManager<ApplicationUser> manager;
 
@@ -58,8 +63,22 @@ namespace AspnetIdentitySample.Controllers
         public ActionResult Create()
         {
             var currentUser = manager.FindById(User.Identity.GetUserId());
-            ViewBag.ConsignorId = new SelectList(db.Consignors.Where(s => s.User.Id == currentUser.Id), "ConsignorId", "DropdownName");
-            ViewBag.ConsigneeId = new SelectList(db.Consignees.Where(s => s.User.Id == currentUser.Id), "ConsigneeId", "DropdownName");
+
+            IQueryable<Consignor> consignorList = db.Consignors.Where(s => s.User.Id == currentUser.Id);
+            IQueryable<Consignee> consigneeList = db.Consignees.Where(s => s.User.Id == currentUser.Id);
+
+            int selectedConsignor = 0, selectedConsignee = 0;
+
+            if(consignorList.AsQueryable().Count() == 1 ){
+                selectedConsignor = consignorList.First().ConsignorId;
+            }
+
+            if(consigneeList.AsQueryable().Count() == 1 ){
+                selectedConsignee = consigneeList.First().ConsigneeId;
+            }
+
+            ViewBag.ConsignorId = new SelectList(consignorList, "ConsignorId", "DropdownName", selectedConsignor);
+            ViewBag.ConsigneeId = new SelectList(consigneeList, "ConsigneeId", "DropdownName", selectedConsignee);
             var pets = from s in db.Pets
                        where (s.User.Id == currentUser.Id)
                        select s;
@@ -75,20 +94,63 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "CertificateId,ConsignorId,ConsigneeId,CountryOfOrigin,ISOCode,CommodityDescription")] Certificate certificate)
+        public async Task<ActionResult> Create([Bind(Include = "PetIDs,CertificateId,ConsignorId,ConsigneeId,CountryOfOrigin,ISOCode,CommodityDescription")] Certificate certificate)
         {
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             certificate.User = currentUser;
             
             certificate.Consignor = db.Consignors.Find(certificate.ConsignorId);
             certificate.Consignee = db.Consignees.Find(certificate.ConsigneeId);
+
+            if (certificate.PetIDs != null && certificate.PetIDs.Count > 0 && certificate.PetIDs.Count <= 5)
+            {
+                List<Pet> certPets = new List<Pet>();
+                foreach (int item in certificate.PetIDs)
+                {
+                    certPets.Add(db.Pets.Find(item));
+                }
+                certificate.Pets = certPets;
+            }
+            else if (certificate.PetIDs == null || certificate.PetIDs.Count == 0)
+            {
+                ModelState.AddModelError("", "Please select at least one pet.");
+            }
+            else if (certificate.PetIDs.Count > 5)
+            {
+                ModelState.AddModelError("", "You may not select more than five pets.");
+            }
+
             if (ModelState.IsValid)
             {
                 db.Certificate.Add(certificate);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            else
+            {
+                IQueryable<Consignor> consignorList = db.Consignors.Where(s => s.User.Id == currentUser.Id);
+                IQueryable<Consignee> consigneeList = db.Consignees.Where(s => s.User.Id == currentUser.Id);
 
+                int selectedConsignor = 0, selectedConsignee = 0;
+
+                if (consignorList.AsQueryable().Count() == 1)
+                {
+                    selectedConsignor = consignorList.First().ConsignorId;
+                }
+
+                if (consigneeList.AsQueryable().Count() == 1)
+                {
+                    selectedConsignee = consigneeList.First().ConsigneeId;
+                }
+
+                ViewBag.ConsignorId = new SelectList(consignorList, "ConsignorId", "DropdownName", selectedConsignor);
+                ViewBag.ConsigneeId = new SelectList(consigneeList, "ConsigneeId", "DropdownName", selectedConsignee);
+                var pets = from s in db.Pets
+                           where (s.User.Id == currentUser.Id)
+                           select s;
+
+                certificate.Pets = pets.ToList();
+            }
             return View(certificate);
         }
 
@@ -157,5 +219,196 @@ namespace AspnetIdentitySample.Controllers
             }
             base.Dispose(disposing);
         }
+
+        //public FileResult DownloadFile(Certificate cert)
+        //{
+        //    doPdf(cert);
+        //    byte[] fileBytes = System.IO.File.ReadAllBytes(HttpContext.Server.MapPath(copyOfOriginal));
+        //    string fileName = "newFile.pdf";
+        //    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        //}
+
+        public ActionResult Download(int id)
+        {
+            Certificate cert = db.Certificate.Find(id);
+            Consignor Consignor = db.Consignors.Find(cert.ConsignorId);
+            Consignee Consignee = db.Consignees.Find(cert.ConsigneeId);
+
+            return DownloadFile(cert);
+        }
+
+        public FileResult DownloadFile(Certificate cert)
+        {
+            doPdf(cert);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(HttpContext.Server.MapPath(copyOfOriginal));
+            string fileName = "newFile.pdf";
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+
+        private void doPdf(Certificate cert)
+        {
+            string oldFile = HttpContext.Server.MapPath(originalFile);
+            string newFile = HttpContext.Server.MapPath(copyOfOriginal);
+
+            // open the reader
+            PdfReader reader = new PdfReader(oldFile);
+            Rectangle size = reader.GetPageSizeWithRotation(1);
+            Document document = new Document(size);
+
+            // open the writer
+            FileStream fs = new FileStream(newFile, FileMode.Create, FileAccess.Write);
+            PdfWriter writer = PdfWriter.GetInstance(document, fs);
+            document.Open();
+
+            // the pdf content
+            PdfContentByte cb = writer.DirectContent;
+
+            // select the font properties
+            BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            cb.SetColorFill(BaseColor.DARK_GRAY);
+            cb.SetFontAndSize(bf, 8);
+
+            // write the text in the pdf content
+            cb.BeginText();
+            // Consignor
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.ConsignorName, 125, 670, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address1 + ", " + cert.Consignor.Address2, 125, 660, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Address3 + ", " + cert.Consignor.Address4, 125, 650, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignor.Telephone, 125, 640, 0);
+            // Consignee
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.ConsigneeName, 125, 610, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address1 + ", " + cert.Consignee.Address2, 125, 600, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Address3 + ", " + cert.Consignee.Address4, 125, 590, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Postcode, 125, 580, 0);
+            cb.ShowTextAligned(Element.ALIGN_LEFT, cert.Consignee.Telephone, 125, 570, 0);
+            cb.EndText();
+
+            cb.BeginText();
+            int yy = 150;
+            foreach (Pet item in cert.Pets)
+            {
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.Species.ScientificName, 60, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.Gender.GenderName, 110, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.IdentificationSystem.IdentificationSystemName, 145, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.Colour, 190, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.Breed, 240, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.DateOfMicrochipping.ToShortDateString(), 320, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.MicrochipNumber, 400, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.DateOfBirth.ToShortDateString(), 480, yy, 0);
+                yy -= 10;
+            }
+            cb.EndText();
+
+            // create the new page and add it to the pdf
+            PdfImportedPage page = writer.GetImportedPage(reader, 1);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 2
+            document.NewPage();
+            page = writer.GetImportedPage(reader, 2);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 3 Rabies Vaccinations and Bloodtests
+            document.NewPage();
+            cb.SetFontAndSize(bf, 8);
+            cb.BeginText();
+            yy = 515;
+            foreach (Pet item in cert.Pets)
+            {
+                var orderedRVList = item.RabiesVaccinations.OrderByDescending(x => DateTime.Parse(x.DateOfValidityFrom.ToShortDateString())).ToList();
+                var orderedBTList = item.FAVNBloodTests.OrderByDescending(x => DateTime.Parse(x.DateOfBloodtest.ToShortDateString())).ToList();
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.MicrochipNumber, 106, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().DateOfRabiesVaccination.ToShortDateString(), 186, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().Manufacturer, 242, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().BatchNo, 294, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().DateOfValidityFrom.ToShortDateString(), 350, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().DateOfValidityTo.ToShortDateString(), 407, yy, 0);
+                cb.ShowTextAligned(Element.ALIGN_LEFT, orderedBTList.First().DateOfBloodtest.ToShortDateString(), 490, yy, 0);
+
+                yy -= 15;
+            }
+
+            // Anti-Echinococcus Treatment for dogs only
+            yy = 280;
+            foreach (Pet item in cert.Pets.Where(p => p.Species.ScientificName == "Canine"))
+            {
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.MicrochipNumber, 106, yy, 0);
+
+                yy -= 15;
+            }
+            
+            cb.EndText();
+            page = writer.GetImportedPage(reader, 3);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 4
+            document.NewPage();
+            page = writer.GetImportedPage(reader, 4);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 5
+            document.NewPage();
+            page = writer.GetImportedPage(reader, 5);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 6
+            document.NewPage();
+            page = writer.GetImportedPage(reader, 6);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 7
+            document.NewPage();
+            cb.SetFontAndSize(bf, 10);
+            cb.BeginText();
+            
+            // Written Declaration
+            yy = 505;
+            foreach (Pet item in cert.Pets)
+            {
+                cb.ShowTextAligned(Element.ALIGN_LEFT, item.MicrochipNumber, 120, yy, 0);
+
+                yy -= 18;
+            }
+
+            cb.EndText();
+            page = writer.GetImportedPage(reader, 7);
+            cb.AddTemplate(page, 0, 0);
+
+            // Page 8
+            //document.NewPage();
+            //page = writer.GetImportedPage(reader, 8);
+            //cb.AddTemplate(page, 0, 0);
+
+            //// Coords page
+            //document.NewPage();
+            //bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            //cb.SetColorFill(BaseColor.DARK_GRAY);
+            //cb.SetFontAndSize(bf, 8);
+            //cb.BeginText();
+            //for (int x = 0; x <= 600; x += 50)
+            //{
+            //    for (int y = 0; y <= 900; y += 50)
+            //    {
+
+            //        string coords = x + "x" + y;
+            //        // put the alignment and coordinates here
+            //        cb.ShowTextAligned(Element.ALIGN_LEFT, coords, x, y, 0);
+            //    }
+            //}
+            //cb.EndText();
+
+            // close the streams and voilá the file should be changed :)
+            document.Close();
+            fs.Close();
+            writer.Close();
+            reader.Close();
+
+            // close the streams and voilá the file should be changed :)
+            document.Close();
+            fs.Close();
+            writer.Close();
+            reader.Close();
+        }
+
     }
 }

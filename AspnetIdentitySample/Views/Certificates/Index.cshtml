@@ -48,7 +48,8 @@ else
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.CertificateId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.CertificateId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.CertificateId })
+                @Html.ActionLink("Delete", "Delete", new { id = item.CertificateId }) |
+                @Html.ActionLink("Download Cert", "Download", new { id = item.CertificateId })
             </td>
         </tr>
     }

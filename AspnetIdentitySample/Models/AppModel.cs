@@ -103,12 +103,15 @@ namespace AspnetIdentitySample.Models
 
         public virtual Pet Pet { get; set; }
 
-        public RabiesVaccination(DateTime dateOfRabiesVaccination, DateTime dateOfValidityFrom, DateTime dateOfValidityTo, int petId)
+        public RabiesVaccination(DateTime dateOfRabiesVaccination, DateTime dateOfValidityFrom, DateTime dateOfValidityTo, Pet pet, string batchNo, string manufacturer)
         {
             this.DateOfRabiesVaccination = dateOfRabiesVaccination;
             this.DateOfValidityFrom = dateOfValidityFrom;
             this.DateOfValidityTo = dateOfValidityTo;
-            this.PetID = petId;
+            this.BatchNo = batchNo;
+            this.Manufacturer = manufacturer;
+            this.PetID = pet.Id;
+            this.Pet = pet;
         }
 
         public RabiesVaccination()
@@ -134,19 +137,6 @@ namespace AspnetIdentitySample.Models
     }
     public class Consignor
     {
-        //public Consignor(string name, string add1, string add2, string add3, string add4, string postcode, string tel){
-        //    this.ConsignorName = name;
-        //    this.Address1 = add1;
-        //    this.Address2 = add2;
-        //    this.Address3 = add3;
-        //    this.Address4 = add4;
-        //    this.Postcode = postcode;
-        //    this.Telephone = tel;
-        //}
-        //public Consignor()
-        //{
-
-        //}
         public int ConsignorId { get; set; }
         [Required]
         public String ConsignorName { get; set; }
@@ -170,19 +160,6 @@ namespace AspnetIdentitySample.Models
     }
     public class Consignee
     {
-        //public Consignee(string name, string add1, string add2, string add3, string add4, string postcode, string tel){
-        //    this.ConsigneeName = name;
-        //    this.Address1 = add1;
-        //    this.Address2 = add2;
-        //    this.Address3 = add3;
-        //    this.Address4 = add4;
-        //    this.Postcode = postcode;
-        //    this.Telephone = tel;
-        //}
-        //public Consignee()
-        //{
-            
-        //}
         public int ConsigneeId { get; set; }
         [Required]
         public String ConsigneeName { get; set; }
@@ -223,13 +200,20 @@ namespace AspnetIdentitySample.Models
     public class Certificate
     {
         public int CertificateId { get; set; }
+        [Required]
         public int ConsignorId { get; set; }
+        [Required]
         public int ConsigneeId { get; set; }
+        [Required]
+        public List<int> PetIDs { get; set; }
         public Consignor Consignor { get; set; }
         public Consignee Consignee { get; set; }
         public virtual ICollection<Pet> Pets { get; set; }
+        [Required]
         public String CountryOfOrigin { get; set; }
+        [Required]
         public String ISOCode { get; set; }
+        [Required]
         public String CommodityDescription { get; set; }
         public virtual ApplicationUser User { get; set; }
     }
