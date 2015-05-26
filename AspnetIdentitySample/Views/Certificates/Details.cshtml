@@ -27,6 +27,34 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.Consignor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Consignor.ConsignorName)<br />
+            @Html.DisplayFor(model => model.Consignor.Address1)<br />
+            @Html.DisplayFor(model => model.Consignor.Address2)<br />
+            @Html.DisplayFor(model => model.Consignor.Address3)<br />
+            @Html.DisplayFor(model => model.Consignor.Address4)<br />
+            @Html.DisplayFor(model => model.Consignor.Postcode)<br />
+            @Html.DisplayFor(model => model.Consignor.Telephone)<br />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Consignee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Consignee.ConsigneeName)<br />
+            @Html.DisplayFor(model => model.Consignee.Address1)<br />
+            @Html.DisplayFor(model => model.Consignee.Address2)<br />
+            @Html.DisplayFor(model => model.Consignee.Address3)<br />
+            @Html.DisplayFor(model => model.Consignee.Address4)<br />
+            @Html.DisplayFor(model => model.Consignee.Postcode)<br />
+            @Html.DisplayFor(model => model.Consignee.Telephone)<br />
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.CommodityDescription)
         </dt>
 
@@ -35,6 +63,41 @@
         </dd>
 
     </dl>
+    <table class="table">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Microchip Number
+            </th>
+            <th>
+                Breed
+            </th>
+            <th>
+                Date of Birth
+            </th>
+        </tr>
+
+        @foreach (var item in Model.Pets)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MicrochipNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Breed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                </td>
+            </tr>
+        }
+
+    </table>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.CertificateId }) |

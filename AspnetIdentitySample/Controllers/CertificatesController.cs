@@ -56,6 +56,8 @@ namespace AspnetIdentitySample.Controllers
             {
                 return HttpNotFound();
             }
+            certificate.Consignor = db.Consignors.Find(certificate.ConsignorId);
+            certificate.Consignee = db.Consignees.Find(certificate.ConsigneeId);
             return View(certificate);
         }
 
