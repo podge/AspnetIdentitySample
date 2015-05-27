@@ -30,6 +30,9 @@ else
         <th>
             @Html.DisplayNameFor(model => model.CommodityDescription)
         </th>
+        <th>
+            Paid
+        </th>
         <th></th>
     </tr>
 
@@ -46,11 +49,21 @@ else
                 @Html.DisplayFor(modelItem => item.CommodityDescription)
             </td>
             <td>
+                @if (item.Paid)
+                {
+                    <text>Yes</text>
+                }
+                else
+                {
+                    <text>&nbsp;</text>
+                }
+            </td>
+            <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.CertificateId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.CertificateId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.CertificateId }) |
                 @if(!item.Paid)
                 {
+                    @Html.ActionLink("Delete", "Delete", new { id = item.CertificateId }) <text>|</text>
                     @Html.ActionLink("Pay", "Charge", new { id = item.CertificateId })
                 }
                 else

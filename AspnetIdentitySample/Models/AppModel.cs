@@ -29,11 +29,6 @@ namespace AspnetIdentitySample.Models
     public class Pet
     {
         public int Id { get; set; }
-        //public string Description { get; set; }
-        //public bool IsDone { get; set; }
-        //public virtual ApplicationUser User { get; set; }
-
-        //public int PetID { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
@@ -65,6 +60,7 @@ namespace AspnetIdentitySample.Models
         public virtual Species Species { get; set; }
         public virtual Gender Gender { get; set; }
         public virtual IdentificationSystem IdentificationSystem { get; set; }
+        public virtual ICollection<Certificate> Certificates { get; set; }
         [Required]
         [Display(Name = "Species")]
         public int SpeciesId { get; set; }
@@ -213,7 +209,6 @@ namespace AspnetIdentitySample.Models
         public int Pet3 { get; set; }
         public int Pet4 { get; set; }
         public int Pet5 { get; set; }
-        public ICollection<Pet> Pets { get; set; }
         [Required]
         public String CountryOfOrigin { get; set; }
         [Required]
@@ -222,6 +217,7 @@ namespace AspnetIdentitySample.Models
         public String CommodityDescription { get; set; }
         public bool Paid { get; set; }
         public virtual ApplicationUser User { get; set; }
+        public virtual ICollection<Pet> Pets { get; set; }
     }
     public class PetFile
     {
@@ -265,15 +261,12 @@ namespace AspnetIdentitySample.Models
             base.OnModelCreating(modelBuilder);
 
             // Change the name of the table to be Users instead of AspNetUsers
-            modelBuilder.Entity<IdentityUser>()
-                .ToTable("Users");
-            modelBuilder.Entity<ApplicationUser>()
-                .ToTable("Users");
+            modelBuilder.Entity<IdentityUser>().ToTable("Users");
+            modelBuilder.Entity<ApplicationUser>().ToTable("Users");
             //modelBuilder.Entity<Pet>().HasMany(p => p.RabiesVaccinations).WithOptional().WillCascadeOnDelete();
             //modelBuilder.Entity<Pet>().HasMany(p => p.FAVNBloodTests).WithOptional().WillCascadeOnDelete();
             modelBuilder.Entity<Pet>().HasMany(p => p.PetFiles).WithOptional().WillCascadeOnDelete();
-
-        }
+      }
 
         public DbSet<Pet> Pets { get; set; }
         public DbSet<MyUserInfo> MyUserInfo { get; set; }
@@ -284,10 +277,8 @@ namespace AspnetIdentitySample.Models
         public DbSet<Gender> Gender { get; set; }
         public DbSet<IdentificationSystem> IdentificationSystem { get; set; }
         public DbSet<Certificate> Certificate { get; set; }
-
-        public System.Data.Entity.DbSet<AspnetIdentitySample.Models.Consignee> Consignees { get; set; }
-
-        public System.Data.Entity.DbSet<AspnetIdentitySample.Models.Consignor> Consignors { get; set; }
+        public DbSet<Consignee> Consignees { get; set; }
+        public DbSet<Consignor> Consignors { get; set; }
     }
 
     public class ValidateDateRange : ValidationAttribute

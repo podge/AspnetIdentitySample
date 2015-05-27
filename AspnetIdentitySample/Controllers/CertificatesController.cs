@@ -42,7 +42,7 @@ namespace AspnetIdentitySample.Controllers
             ViewBag.pets = db.Pets.Count(s => s.User.Id == currentUser.Id);
             ViewBag.consignors = db.Consignors.Count(s => s.User.Id == currentUser.Id);
             ViewBag.consignees = db.Consignees.Count(s => s.User.Id == currentUser.Id);
-            
+
             return View(db.Certificate.ToList().Where(s => s.User.Id == currentUser.Id));
         }
 
@@ -73,11 +73,13 @@ namespace AspnetIdentitySample.Controllers
 
             int selectedConsignor = 0, selectedConsignee = 0;
 
-            if(consignorList.AsQueryable().Count() == 1 ){
+            if (consignorList.AsQueryable().Count() == 1)
+            {
                 selectedConsignor = consignorList.First().ConsignorId;
             }
 
-            if(consigneeList.AsQueryable().Count() == 1 ){
+            if (consigneeList.AsQueryable().Count() == 1)
+            {
                 selectedConsignee = consigneeList.First().ConsigneeId;
             }
 
@@ -90,7 +92,7 @@ namespace AspnetIdentitySample.Controllers
             Certificate cert = new Certificate();
             cert.Paid = false;
             cert.Pets = pets.ToList();
-            
+
             return View(cert);
         }
 
@@ -103,7 +105,7 @@ namespace AspnetIdentitySample.Controllers
         {
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             certificate.User = currentUser;
-            
+
             certificate.Consignor = db.Consignors.Find(certificate.ConsignorId);
             certificate.Consignee = db.Consignees.Find(certificate.ConsigneeId);
 
@@ -316,15 +318,18 @@ namespace AspnetIdentitySample.Controllers
             int yy = 150;
             foreach (Pet item in cert.Pets)
             {
-                cb.ShowTextAligned(Element.ALIGN_LEFT, item.Species.ScientificName, 60, yy, 0);
-                cb.ShowTextAligned(Element.ALIGN_LEFT, item.Gender.GenderName, 110, yy, 0);
-                cb.ShowTextAligned(Element.ALIGN_LEFT, item.IdentificationSystem.IdentificationSystemName, 145, yy, 0);
-                cb.ShowTextAligned(Element.ALIGN_LEFT, item.Colour, 190, yy, 0);
-                cb.ShowTextAligned(Element.ALIGN_LEFT, item.Breed, 240, yy, 0);
-                cb.ShowTextAligned(Element.ALIGN_LEFT, item.DateOfMicrochipping.ToShortDateString(), 320, yy, 0);
-                cb.ShowTextAligned(Element.ALIGN_LEFT, item.MicrochipNumber, 400, yy, 0);
-                cb.ShowTextAligned(Element.ALIGN_LEFT, item.DateOfBirth.ToShortDateString(), 480, yy, 0);
-                yy -= 10;
+                if (item != null)
+                {
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, item.Species.ScientificName, 60, yy, 0);
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, item.Gender.GenderName, 110, yy, 0);
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, item.IdentificationSystem.IdentificationSystemName, 145, yy, 0);
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, item.Colour, 190, yy, 0);
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, item.Breed, 240, yy, 0);
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, item.DateOfMicrochipping.ToShortDateString(), 320, yy, 0);
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, item.MicrochipNumber, 400, yy, 0);
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, item.DateOfBirth.ToShortDateString(), 480, yy, 0);
+                    yy -= 10;
+                }
             }
             cb.EndText();
 
@@ -344,28 +349,47 @@ namespace AspnetIdentitySample.Controllers
             yy = 515;
             foreach (Pet item in cert.Pets)
             {
-                var orderedRVList = item.RabiesVaccinations.OrderByDescending(x => DateTime.Parse(x.DateOfValidityFrom.ToShortDateString())).ToList();
-                var orderedBTList = item.FAVNBloodTests.OrderByDescending(x => DateTime.Parse(x.DateOfBloodtest.ToShortDateString())).ToList();
-                cb.ShowTextAligned(Element.ALIGN_LEFT, item.MicrochipNumber, 106, yy, 0);
-                cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().DateOfRabiesVaccination.ToShortDateString(), 186, yy, 0);
-                cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().Manufacturer, 242, yy, 0);
-                cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().BatchNo, 294, yy, 0);
-                cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().DateOfValidityFrom.ToShortDateString(), 350, yy, 0);
-                cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().DateOfValidityTo.ToShortDateString(), 407, yy, 0);
-                cb.ShowTextAligned(Element.ALIGN_LEFT, orderedBTList.First().DateOfBloodtest.ToShortDateString(), 490, yy, 0);
-
-                yy -= 15;
+                if (item != null)
+                {
+                    var orderedRVList = item.RabiesVaccinations.OrderByDescending(x => DateTime.Parse(x.DateOfValidityFrom.ToShortDateString())).ToList();
+                    var orderedBTList = item.FAVNBloodTests.OrderByDescending(x => DateTime.Parse(x.DateOfBloodtest.ToShortDateString())).ToList();
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, item.MicrochipNumber, 106, yy, 0);
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().DateOfRabiesVaccination.ToShortDateString(), 186, yy, 0);
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().Manufacturer, 242, yy, 0);
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().BatchNo, 294, yy, 0);
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().DateOfValidityFrom.ToShortDateString(), 350, yy, 0);
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, orderedRVList.First().DateOfValidityTo.ToShortDateString(), 407, yy, 0);
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, orderedBTList.First().DateOfBloodtest.ToShortDateString(), 490, yy, 0);
+                    yy -= 15;
+                }
             }
 
             // Anti-Echinococcus Treatment for dogs only
             yy = 280;
-            foreach (Pet item in cert.Pets.Where(p => p.Species.ScientificName == "Canine"))
-            {
-                cb.ShowTextAligned(Element.ALIGN_LEFT, item.MicrochipNumber, 106, yy, 0);
 
-                yy -= 15;
+            List<Pet> dogPets = new List<Pet>(); ;
+
+            try
+            {
+                dogPets = cert.Pets.Where(p => p.Species.ScientificName == "Canine").ToList();
             }
-            
+            catch
+            {
+                // No dogs
+            }              
+
+            if (dogPets != null)
+            {
+                foreach (Pet item in dogPets)
+                {
+                    if (item != null)
+                    {
+                        cb.ShowTextAligned(Element.ALIGN_LEFT, item.MicrochipNumber, 106, yy, 0);
+                        yy -= 15;
+                    }
+                }
+            }
+
             cb.EndText();
             page = writer.GetImportedPage(reader, 3);
             cb.AddTemplate(page, 0, 0);
@@ -389,14 +413,16 @@ namespace AspnetIdentitySample.Controllers
             document.NewPage();
             cb.SetFontAndSize(bf, 10);
             cb.BeginText();
-            
+
             // Written Declaration
             yy = 505;
             foreach (Pet item in cert.Pets)
             {
-                cb.ShowTextAligned(Element.ALIGN_LEFT, item.MicrochipNumber, 120, yy, 0);
-
-                yy -= 18;
+                if (item != null)
+                {
+                    cb.ShowTextAligned(Element.ALIGN_LEFT, item.MicrochipNumber, 120, yy, 0);
+                    yy -= 18;
+                }                
             }
 
             cb.EndText();
@@ -479,7 +505,7 @@ namespace AspnetIdentitySample.Controllers
 
             if (chargeId != "")
             {
-                int certId = Convert.ToInt32(RouteData.Values["id"]); 
+                int certId = Convert.ToInt32(RouteData.Values["id"]);
                 Certificate Cert = db.Certificate.Find(certId);
                 Cert.PetIDs = getListPetIds(Cert);
                 Cert.User = currentUser;
@@ -489,7 +515,7 @@ namespace AspnetIdentitySample.Controllers
                 db.Entry(Cert).State = EntityState.Modified;
                 db.SaveChanges();
             }
-            
+
             // You should do something with the chargeId --> Persist it maybe?
             // Get pets, consignors and consignees for current user
             // Warn if user needs to create any of these objects
@@ -529,12 +555,13 @@ namespace AspnetIdentitySample.Controllers
                 {
                     // Problem
                 }
-                 
+
                 return stripeCharge.Id;
             });
         }
 
-        public List<int> getListPetIds(Certificate cert){
+        public List<int> getListPetIds(Certificate cert)
+        {
             List<int> Pets = new List<int>();
             Pets.Add(cert.Pet1);
             Pets.Add(cert.Pet2);
@@ -555,7 +582,8 @@ namespace AspnetIdentitySample.Controllers
             return Pets;
         }
 
-        public Pet getPet(int id){
+        public Pet getPet(int id)
+        {
             return db.Pets.Find(id);
         }
 
