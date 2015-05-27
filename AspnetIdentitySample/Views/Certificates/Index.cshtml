@@ -49,8 +49,14 @@ else
                 @Html.ActionLink("Edit", "Edit", new { id = item.CertificateId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.CertificateId }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.CertificateId }) |
-                @Html.ActionLink("Pay", "Charge", new { id = item.CertificateId }) |
-                @Html.ActionLink("Download Cert", "Download", new { id = item.CertificateId })
+                @if(!item.Paid)
+                {
+                    @Html.ActionLink("Pay", "Charge", new { id = item.CertificateId })
+                }
+                else
+                {
+                    @Html.ActionLink("Download Cert", "Download", new { id = item.CertificateId })
+                }                
             </td>
         </tr>
     }

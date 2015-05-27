@@ -90,7 +90,7 @@ namespace AspnetIdentitySample.Controllers
             Certificate cert = new Certificate();
             cert.Paid = false;
             cert.Pets = pets.ToList();
-
+            
             return View(cert);
         }
 
@@ -110,9 +110,31 @@ namespace AspnetIdentitySample.Controllers
             if (certificate.PetIDs != null && certificate.PetIDs.Count > 0 && certificate.PetIDs.Count <= 5)
             {
                 List<Pet> certPets = new List<Pet>();
+                int petCount = 1;
                 foreach (int item in certificate.PetIDs)
                 {
                     certPets.Add(db.Pets.Find(item));
+                    switch (petCount)
+                    {
+                        case 1:
+                            certificate.Pet1 = item;
+                            break;
+                        case 2:
+                            certificate.Pet2 = item;
+                            break;
+                        case 3:
+                            certificate.Pet3 = item;
+                            break;
+                        case 4:
+                            certificate.Pet4 = item;
+                            break;
+                        case 5:
+                            certificate.Pet5 = item;
+                            break;
+                        default:
+                            break;
+                    }
+                    petCount++;
                 }
                 certificate.Pets = certPets;
             }
@@ -252,6 +274,8 @@ namespace AspnetIdentitySample.Controllers
 
         private void doPdf(Certificate cert)
         {
+            cert.Pets = getListPets(cert);
+
             string oldFile = HttpContext.Server.MapPath(originalFile);
             string newFile = HttpContext.Server.MapPath(copyOfOriginal);
 
@@ -451,18 +475,22 @@ namespace AspnetIdentitySample.Controllers
                 // exception
             }
 
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
+
             if (chargeId != "")
             {
-                var certId = RouteData.Values["id"];
+                int certId = Convert.ToInt32(RouteData.Values["id"]); 
                 Certificate Cert = db.Certificate.Find(certId);
+                Cert.PetIDs = getListPetIds(Cert);
+                Cert.User = currentUser;
                 Cert.Paid = true;
-                db.Certificate.Add(Cert);
+                Cert.CertificateId = certId;
+                //db.Certificate.Add(Cert);
+                db.Entry(Cert).State = EntityState.Modified;
                 db.SaveChanges();
             }
             
             // You should do something with the chargeId --> Persist it maybe?
-
-            var currentUser = manager.FindById(User.Identity.GetUserId());
             // Get pets, consignors and consignees for current user
             // Warn if user needs to create any of these objects
 
@@ -504,6 +532,31 @@ namespace AspnetIdentitySample.Controllers
                  
                 return stripeCharge.Id;
             });
+        }
+
+        public List<int> getListPetIds(Certificate cert){
+            List<int> Pets = new List<int>();
+            Pets.Add(cert.Pet1);
+            Pets.Add(cert.Pet2);
+            Pets.Add(cert.Pet3);
+            Pets.Add(cert.Pet4);
+            Pets.Add(cert.Pet5);
+            return Pets;
+        }
+
+        public List<Pet> getListPets(Certificate cert)
+        {
+            List<Pet> Pets = new List<Pet>();
+            Pets.Add(getPet(cert.Pet1));
+            Pets.Add(getPet(cert.Pet2));
+            Pets.Add(getPet(cert.Pet3));
+            Pets.Add(getPet(cert.Pet4));
+            Pets.Add(getPet(cert.Pet5));
+            return Pets;
+        }
+
+        public Pet getPet(int id){
+            return db.Pets.Find(id);
         }
 
     }

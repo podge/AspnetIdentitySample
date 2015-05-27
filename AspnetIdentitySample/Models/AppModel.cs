@@ -208,13 +208,19 @@ namespace AspnetIdentitySample.Models
         public List<int> PetIDs { get; set; }
         public Consignor Consignor { get; set; }
         public Consignee Consignee { get; set; }
-        public virtual ICollection<Pet> Pets { get; set; }
+        public int Pet1 { get; set; }
+        public int Pet2 { get; set; }
+        public int Pet3 { get; set; }
+        public int Pet4 { get; set; }
+        public int Pet5 { get; set; }
+        public ICollection<Pet> Pets { get; set; }
         [Required]
         public String CountryOfOrigin { get; set; }
         [Required]
         public String ISOCode { get; set; }
         [Required]
         public String CommodityDescription { get; set; }
+        public bool Paid { get; set; }
         public virtual ApplicationUser User { get; set; }
     }
     public class PetFile
@@ -235,6 +241,8 @@ namespace AspnetIdentitySample.Models
         public string Token { get; set; }
         [Required]
         public double Amount { get; set; }
+        [Required]
+        public string Email { get; set; }
 
         // These fields are optional and are not 
         // required for the creation of the token
