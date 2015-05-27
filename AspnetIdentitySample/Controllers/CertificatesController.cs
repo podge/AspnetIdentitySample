@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
 using System.IO;
+using Stripe;
+using System.Web.Routing;
 
 namespace AspnetIdentitySample.Controllers
 {
@@ -410,6 +412,49 @@ namespace AspnetIdentitySample.Controllers
             fs.Close();
             writer.Close();
             reader.Close();
+        }
+
+        public ActionResult Charge()
+        {
+            ViewBag.Message = "Learn how to process payments with Stripe";
+
+            return View(new StripeChargeModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Charge(StripeChargeModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var chargeId = await ProcessPayment(model);
+            // You should do something with the chargeId --> Persist it maybe?
+
+            return View("Index");
+        }
+
+        private async Task<string> ProcessPayment(StripeChargeModel model)
+        {
+            return await Task.Run(() =>
+            {
+                var myCharge = new StripeChargeCreateOptions
+                {
+                    // convert the amount of £12.50 to pennies i.e. 1250
+                    Amount = (int)(model.Amount * 100),
+                    Currency = "gbp",
+                    Description = "Description for test charge",
+                    CardId = model.Token
+                    //TokenId = model.Token
+                };
+
+                var chargeService = new StripeChargeService("sk_test_OnzP859ZOl0l8x4XOUZqc8aK");
+                var stripeCharge = chargeService.Create(myCharge);
+
+                return stripeCharge.Id;
+            });
         }
 
     }
