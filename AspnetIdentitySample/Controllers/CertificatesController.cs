@@ -88,6 +88,7 @@ namespace AspnetIdentitySample.Controllers
                        select s;
 
             Certificate cert = new Certificate();
+            cert.Paid = false;
             cert.Pets = pets.ToList();
 
             return View(cert);
@@ -423,17 +424,55 @@ namespace AspnetIdentitySample.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Charge(StripeChargeModel model)
+        public async Task<ActionResult> Charge(FormCollection form)
         {
-            if (!ModelState.IsValid)
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(model);
+            //}
+
+            var token = form.Get("stripeToken");
+            var tokenType = form.Get("stripeTokenType");
+            var email = form.Get("stripeEmail");
+
+            StripeChargeModel scm = new StripeChargeModel();
+            scm.Token = token;
+            scm.Amount = 10; // €10
+            scm.Email = email;
+
+            string chargeId = "1";
+
+            try
             {
-                return View(model);
+                chargeId = await ProcessPayment(scm);
+            }
+            catch
+            {
+                // exception
             }
 
-            var chargeId = await ProcessPayment(model);
+            if (chargeId != "")
+            {
+                var certId = RouteData.Values["id"];
+                Certificate Cert = db.Certificate.Find(certId);
+                Cert.Paid = true;
+                db.Certificate.Add(Cert);
+                db.SaveChanges();
+            }
+            
             // You should do something with the chargeId --> Persist it maybe?
 
-            return View("Index");
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+            // Get pets, consignors and consignees for current user
+            // Warn if user needs to create any of these objects
+
+            ViewBag.pets = db.Pets.Count(s => s.User.Id == currentUser.Id);
+            ViewBag.consignors = db.Consignors.Count(s => s.User.Id == currentUser.Id);
+            ViewBag.consignees = db.Consignees.Count(s => s.User.Id == currentUser.Id);
+
+            //return View(db.Certificate.ToList().Where(s => s.User.Id == currentUser.Id));
+
+            return View("Index", db.Certificate.ToList().Where(s => s.User.Id == currentUser.Id));
         }
 
         private async Task<string> ProcessPayment(StripeChargeModel model)
@@ -444,15 +483,25 @@ namespace AspnetIdentitySample.Controllers
                 {
                     // convert the amount of £12.50 to pennies i.e. 1250
                     Amount = (int)(model.Amount * 100),
-                    Currency = "gbp",
-                    Description = "Description for test charge",
-                    CardId = model.Token
-                    //TokenId = model.Token
+                    Currency = "EUR",
+                    Description = "Annex IV Certificate for Importing Pets into the EU",
+                    CardId = model.Token,
+                    ReceiptEmail = model.Email
                 };
 
                 var chargeService = new StripeChargeService("sk_test_OnzP859ZOl0l8x4XOUZqc8aK");
-                var stripeCharge = chargeService.Create(myCharge);
 
+                StripeCharge stripeCharge = new StripeCharge();
+
+                try
+                {
+                    stripeCharge = chargeService.Create(myCharge);
+                }
+                catch
+                {
+                    // Problem
+                }
+                 
                 return stripeCharge.Id;
             });
         }
