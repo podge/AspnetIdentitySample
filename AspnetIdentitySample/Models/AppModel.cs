@@ -215,6 +215,7 @@ namespace AspnetIdentitySample.Models
         public String ISOCode { get; set; }
         [Required]
         public String CommodityDescription { get; set; }
+        public bool Paid { get; set; }
         public virtual ApplicationUser User { get; set; }
     }
     public class PetFile
@@ -235,6 +236,8 @@ namespace AspnetIdentitySample.Models
         public string Token { get; set; }
         [Required]
         public double Amount { get; set; }
+        [Required]
+        public string Email { get; set; }
 
         // These fields are optional and are not 
         // required for the creation of the token
