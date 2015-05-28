@@ -14,7 +14,7 @@ namespace AspnetIdentitySample.Models
         // HomeTown will be stored in the same table as Users
         public string HomeTown { get; set; }
         public virtual ICollection<Pet> Pets { get; set; }
-  
+
         // FirstName & LastName will be stored in a different table called MyUserInfo
         public virtual MyUserInfo MyUserInfo { get; set; }
     }
@@ -147,7 +147,7 @@ namespace AspnetIdentitySample.Models
         [Required]
         public String Postcode { get; set; }
         [Required]
-        public virtual Country Country { get; set;}
+        public virtual Country Country { get; set; }
         [Required]
         public String Telephone { get; set; }
         public virtual ApplicationUser User { get; set; }
@@ -172,13 +172,13 @@ namespace AspnetIdentitySample.Models
         [Required]
         public String Postcode { get; set; }
         [Required]
-        public virtual Country Country { get; set;}
+        public virtual Country Country { get; set; }
         [Required]
         public String Telephone { get; set; }
         public virtual ApplicationUser User { get; set; }
         public string DropdownName
         {
-            get{ return ConsigneeName + " " + Address1 + " " + Address2 + " " + Address3 + " " + Address4 + " " + Postcode;}
+            get { return ConsigneeName + " " + Address1 + " " + Address2 + " " + Address3 + " " + Address4 + " " + Postcode; }
         }
     }
     public class Species
@@ -256,7 +256,11 @@ namespace AspnetIdentitySample.Models
     public class Country
     {
         public int CountryId { get; set; }
-        public String CountryName { get; set; 
+        public String CountryName
+        {
+            get;
+            set;
+        }
     }
     public class MyDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -275,7 +279,7 @@ namespace AspnetIdentitySample.Models
             //modelBuilder.Entity<Pet>().HasMany(p => p.RabiesVaccinations).WithOptional().WillCascadeOnDelete();
             //modelBuilder.Entity<Pet>().HasMany(p => p.FAVNBloodTests).WithOptional().WillCascadeOnDelete();
             modelBuilder.Entity<Pet>().HasMany(p => p.PetFiles).WithOptional().WillCascadeOnDelete();
-      }
+        }
 
         public DbSet<Pet> Pets { get; set; }
         public DbSet<MyUserInfo> MyUserInfo { get; set; }
@@ -306,7 +310,7 @@ namespace AspnetIdentitySample.Models
             }
             else
             {
-                String error="";
+                String error = "";
                 if (DateGiven < Pet.DateOfBirth)
                 {
                     error = "Date must be after the pets date of birth " + Pet.DateOfBirth + ".";
@@ -315,10 +319,8 @@ namespace AspnetIdentitySample.Models
                 {
                     error = "Date can not be in the future.";
                 }
-            return new ValidationResult(error);                
+                return new ValidationResult(error);
             }
         }
     }
-
-
 }
