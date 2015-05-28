@@ -139,6 +139,8 @@ namespace AspnetIdentitySample.Controllers
                     petCount++;
                 }
                 certificate.Pets = certPets;
+                // Calculate Irregularities for all pets in the certificate
+                certificate = doIrregularities(certificate);
             }
             else if (certificate.PetIDs == null || certificate.PetIDs.Count == 0)
             {
@@ -585,6 +587,27 @@ namespace AspnetIdentitySample.Controllers
         public Pet getPet(int id)
         {
             return db.Pets.Find(id);
+        }
+
+        public Certificate doIrregularities(Certificate certificate)
+        {
+            foreach (Pet item in certificate.Pets)
+            {
+                item.Irregularities = new List<Irregularity>();
+                // Check if Rabies Vaccination has been given
+                if (item.RabiesVaccinations.Count < 1)
+                {
+                    Irregularity irreg = new Irregularity();
+                    irreg.IrregularityCode = 1;
+                    irreg.IrregularityText = "Pet does not have a rabies vaccination";
+                    irreg.DateRaised = new DateTime(2015, 05, 29);
+                    irreg.DateResolved = new DateTime(2015, 05, 29);
+                    item.Irregularities.Add(irreg);
+                    //db.Irregularities.Add(irreg);
+                    //db.SaveChanges();
+                }
+            }
+            return certificate;
         }
 
     }

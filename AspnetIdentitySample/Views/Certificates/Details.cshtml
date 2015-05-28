@@ -95,6 +95,24 @@
                     @Html.DisplayFor(modelItem => item.DateOfBirth)
                 </td>
             </tr>
+            foreach (Irregularity irreg in item.Irregularities)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => irreg.IrregularityCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => irreg.IrregularityText)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => irreg.DateRaised)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => irreg.DateResolved)
+                    </td>
+                </tr>
+            }
+
         }
 
     </table>

@@ -30,10 +30,11 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("My Profile", "Profile", "Home")</li>
                     <li>@Html.ActionLink("Pets", "Index", "Pets")</li>
+                    <li>@Html.ActionLink("Rabies Vaccinations", "Index", "Rabiesvaccinations")</li>
+                    <li>@Html.ActionLink("Bloodtests", "Index", "Bloodtests")</li>
                     <li>@Html.ActionLink("Consignors", "Index", "Consignors")</li>
                     <li>@Html.ActionLink("Consignees", "Index", "Consignees")</li>
                     <li>@Html.ActionLink("Certificates", "Index", "Certificates")</li>
-                    <li>@Html.ActionLink("Certification", "Index", "CertGenerator")</li>
                     @if (User.IsInRole("Admin"))
                     {
                         <li>@Html.ActionLink("All Pets", "All", "Pets")</li>

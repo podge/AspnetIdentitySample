@@ -61,6 +61,7 @@ namespace AspnetIdentitySample.Models
         public virtual Gender Gender { get; set; }
         public virtual IdentificationSystem IdentificationSystem { get; set; }
         public virtual ICollection<Certificate> Certificates { get; set; }
+        public virtual ICollection<Irregularity> Irregularities { get; set; }
         [Required]
         [Display(Name = "Species")]
         public int SpeciesId { get; set; }
@@ -146,8 +147,8 @@ namespace AspnetIdentitySample.Models
         public String Address4 { get; set; }
         [Required]
         public String Postcode { get; set; }
-        [Required]
-        public virtual Country Country { get; set; }
+        //[Required]
+        //public virtual Country Country { get; set; }
         [Required]
         public String Telephone { get; set; }
         public virtual ApplicationUser User { get; set; }
@@ -171,8 +172,8 @@ namespace AspnetIdentitySample.Models
         public String Address4 { get; set; }
         [Required]
         public String Postcode { get; set; }
-        [Required]
-        public virtual Country Country { get; set; }
+        //[Required]
+        //public virtual Country Country { get; set; }
         [Required]
         public String Telephone { get; set; }
         public virtual ApplicationUser User { get; set; }
@@ -262,6 +263,24 @@ namespace AspnetIdentitySample.Models
             set;
         }
     }
+    public class Irregularity
+    {
+        public int IrregularityId { get; set; }
+        [Required]
+        public int IrregularityCode { get; set; }
+        [Required]
+        public string IrregularityText { get; set; }
+        [Required]
+        [Display(Name = "Date Raised")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime DateRaised { get; set; }
+        [Display(Name = "Date Resolved")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime DateResolved { get; set; }
+        public virtual ICollection<Pet> Pets { get; set; }
+    }
     public class MyDbContext : IdentityDbContext<ApplicationUser>
     {
         public MyDbContext()
@@ -292,6 +311,7 @@ namespace AspnetIdentitySample.Models
         public DbSet<Certificate> Certificate { get; set; }
         public DbSet<Consignee> Consignees { get; set; }
         public DbSet<Consignor> Consignors { get; set; }
+        public DbSet<Irregularity> Irregularities { get; set; }
     }
 
     public class ValidateDateRange : ValidationAttribute
