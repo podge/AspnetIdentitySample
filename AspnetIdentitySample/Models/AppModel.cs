@@ -147,6 +147,8 @@ namespace AspnetIdentitySample.Models
         [Required]
         public String Postcode { get; set; }
         [Required]
+        public virtual Country Country { get; set;}
+        [Required]
         public String Telephone { get; set; }
         public virtual ApplicationUser User { get; set; }
         public string DropdownName
@@ -169,6 +171,8 @@ namespace AspnetIdentitySample.Models
         public String Address4 { get; set; }
         [Required]
         public String Postcode { get; set; }
+        [Required]
+        public virtual Country Country { get; set;}
         [Required]
         public String Telephone { get; set; }
         public virtual ApplicationUser User { get; set; }
@@ -248,6 +252,11 @@ namespace AspnetIdentitySample.Models
         public string AddressCity { get; set; }
         public string AddressPostcode { get; set; }
         public string AddressCountry { get; set; }
+    }
+    public class Country
+    {
+        public int CountryId { get; set; }
+        public String CountryName { get; set; 
     }
     public class MyDbContext : IdentityDbContext<ApplicationUser>
     {
