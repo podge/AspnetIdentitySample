@@ -36,7 +36,9 @@ namespace AspnetIdentitySample.Controllers
         {
             var currentUser = manager.FindById(User.Identity.GetUserId());
             var rabiesVaccinations = db.RabiesVaccinations.Include(r => r.Pet);
-            ViewBag.PetID = new SelectList(db.Pets.Where(r => r.User.Id == currentUser.Id), "Id", "Name", id);
+            SelectList petList = new SelectList(db.Pets.Where(r => r.User.Id == currentUser.Id), "Id", "Name", id);
+            ViewBag.PetID = petList;
+            ViewBag.PetCount = petList.ToList().Count;
 
             // Only show vaccinations from the current user
             if (!User.IsInRole("Admin"))
@@ -78,11 +80,11 @@ namespace AspnetIdentitySample.Controllers
         }
 
         // GET: RabiesVaccination/Create
-        public ActionResult Create(int? id)
+        public async Task<ActionResult> Create(int? id)
         {
-            //ViewBag.PetID = new SelectList(db.Pets.Where(r => r.Id == id), "Id", "Name", id);
-            ViewBag.PetID = new SelectList(db.Pets, "Id", "Name", id);
-            ViewBag.id = id;         // Defines ViewBag
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
+            ViewBag.PetID = new SelectList(db.Pets.Where(r => r.User.Id == currentUser.Id), "Id", "Name", id);
+            ViewBag.id = id;
             return View();
         }
 
@@ -93,6 +95,7 @@ namespace AspnetIdentitySample.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "RabiesVaccinationID,Manufacturer,BatchNo,DateOfRabiesVaccination,DateOfValidityFrom,DateOfValidityTo,PetID")] RabiesVaccination rabiesVaccination)
         {
+            var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             if (rabiesVaccination.PetID == 0)
             {
                 ModelState.AddModelError("PetID", "You must select a pet.");
@@ -105,7 +108,7 @@ namespace AspnetIdentitySample.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PetID = new SelectList(db.Pets, "Id", "Name", rabiesVaccination.PetID);
+            ViewBag.PetID = new SelectList(db.Pets.Where(r => r.User.Id == currentUser.Id), "Id", "Name", rabiesVaccination.PetID);
             return View(rabiesVaccination);
         }
 
@@ -212,7 +215,8 @@ namespace AspnetIdentitySample.Controllers
                 DateTime dobPlus12 = pet.DateOfBirth.AddDays(84);
                 if (rVax.DateOfRabiesVaccination.CompareTo(dobPlus12) < 0)
                 {
-                    ModelState.AddModelError("", "Pet must be at least 12 weeks old when vaccinated.");
+                    string dob = pet.DateOfBirth.ToString("dd-MMM-yyyy");
+                    ModelState.AddModelError("", "Pet must be at least 12 weeks old when vaccinated. " + pet.Name + " was born on " + dob + ".");
                 }
                 // Validity period must be at least one year
                 if (rVax.DateOfValidityTo.CompareTo(rVax.DateOfValidityFrom.AddYears(1)) < 0)
