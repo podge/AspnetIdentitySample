@@ -95,6 +95,7 @@ namespace AspnetIdentitySample.Models
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOfValidityTo { get; set; }
         [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "You must select a pet.")]
         [Display(Name = "Pet")]
         public int PetID { get; set; }
 
@@ -324,23 +325,30 @@ namespace AspnetIdentitySample.Models
             DateTime DateGiven = (DateTime)value;
             RabiesVaccination rvax = (RabiesVaccination)validationContext.ObjectInstance;
             Pet Pet = db.Pets.FirstOrDefault(x => x.Id == rvax.PetID);
-            if (DateGiven >= Pet.DateOfBirth && DateGiven <= DateTime.Today)
+            if (Pet != null)
             {
-                return ValidationResult.Success;
+                if (DateGiven >= Pet.DateOfBirth && DateGiven <= DateTime.Today)
+                {
+                    return ValidationResult.Success;
+                }
+                else
+                {
+                    String error = "";
+                    if (DateGiven < Pet.DateOfBirth)
+                    {
+                        error = "Date must be after the pets date of birth " + Pet.DateOfBirth + ".";
+                    }
+                    else if (DateGiven > DateTime.Today)
+                    {
+                        error = "Date can not be in the future.";
+                    }
+                    return new ValidationResult(error);
+                }
             }
             else
             {
-                String error = "";
-                if (DateGiven < Pet.DateOfBirth)
-                {
-                    error = "Date must be after the pets date of birth " + Pet.DateOfBirth + ".";
-                }
-                else if (DateGiven > DateTime.Today)
-                {
-                    error = "Date can not be in the future.";
-                }
-                return new ValidationResult(error);
-            }
+                return ValidationResult.Success;
+            }            
         }
     }
 }

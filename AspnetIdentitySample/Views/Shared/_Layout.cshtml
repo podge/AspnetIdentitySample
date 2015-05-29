@@ -38,9 +38,9 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <li>@Html.ActionLink("All Pets", "All", "Pets")</li>
-                        <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
+                        @*<li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
                         <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
-                        <li>@Html.ActionLink("Validation", "Index", "Validation")</li>
+                        <li>@Html.ActionLink("Validation", "Index", "Validation")</li>*@
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

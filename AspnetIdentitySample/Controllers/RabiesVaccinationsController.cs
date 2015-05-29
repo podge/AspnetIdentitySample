@@ -36,7 +36,7 @@ namespace AspnetIdentitySample.Controllers
         {
             var currentUser = manager.FindById(User.Identity.GetUserId());
             var rabiesVaccinations = db.RabiesVaccinations.Include(r => r.Pet);
-            ViewBag.PetID = new SelectList(db.Pets, "Id", "Name", id); //.Where(r => r.Pet.User.Id == currentUser.Id);
+            ViewBag.PetID = new SelectList(db.Pets.Where(r => r.User.Id == currentUser.Id), "Id", "Name", id);
 
             // Only show vaccinations from the current user
             if (!User.IsInRole("Admin"))
@@ -93,6 +93,11 @@ namespace AspnetIdentitySample.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "RabiesVaccinationID,Manufacturer,BatchNo,DateOfRabiesVaccination,DateOfValidityFrom,DateOfValidityTo,PetID")] RabiesVaccination rabiesVaccination)
         {
+            if (rabiesVaccination.PetID == 0)
+            {
+                ModelState.AddModelError("PetID", "You must select a pet.");
+            }
+            rabiesVaccinationValidation(rabiesVaccination);
             if (ModelState.IsValid)
             {
                 db.RabiesVaccinations.Add(rabiesVaccination);
@@ -132,6 +137,7 @@ namespace AspnetIdentitySample.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "RabiesVaccinationID,Manufacturer,BatchNo,DateOfRabiesVaccination,DateOfValidityFrom,DateOfValidityTo,PetID")] RabiesVaccination rabiesVaccination)
         {
+            rabiesVaccinationValidation(rabiesVaccination);
             if (ModelState.IsValid)
             {
                 db.Entry(rabiesVaccination).State = EntityState.Modified;
@@ -180,6 +186,45 @@ namespace AspnetIdentitySample.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public void rabiesVaccinationValidation(RabiesVaccination rVax)
+        {
+            // Get Pet Details
+            Pet pet = db.Pets.Find(rVax.PetID);
+            if (pet != null)
+            {
+                // Date Valid From must be after Date Given
+                if (rVax.DateOfValidityFrom.CompareTo(rVax.DateOfRabiesVaccination) < 0)
+                {
+                    ModelState.AddModelError("", "Date Valid From must be on or after Date Given.");
+                } else if (rVax.DateOfValidityFrom.CompareTo(rVax.DateOfRabiesVaccination.AddMonths(1)) > 0)
+                {
+                    // Date Valid From must be no more than a month after Date Given
+                    ModelState.AddModelError("", "Date Valid From must be within a month of Date Given.");
+                }
+                // Date Valid To must be after Date Given
+                if (rVax.DateOfValidityTo.CompareTo(rVax.DateOfRabiesVaccination) < 0)
+                {
+                    ModelState.AddModelError("", "Date Valid To must be after Date Given.");
+                }
+                // Pet must be at least 12 weeks old when vaccinated
+                DateTime dobPlus12 = pet.DateOfBirth.AddDays(84);
+                if (rVax.DateOfRabiesVaccination.CompareTo(dobPlus12) < 0)
+                {
+                    ModelState.AddModelError("", "Pet must be at least 12 weeks old when vaccinated.");
+                }
+                // Validity period must be at least one year
+                if (rVax.DateOfValidityTo.CompareTo(rVax.DateOfValidityFrom.AddYears(1)) < 0)
+                {
+                    ModelState.AddModelError("", "Validity period must be at least one year.");
+                }
+
+                if (rVax.DateOfValidityTo.CompareTo(rVax.DateOfValidityFrom.AddYears(3)) > 0)
+                {
+                    ModelState.AddModelError("", "Validity period cannot be greater than three years.");
+                }
+            }           
         }
     }
 }
