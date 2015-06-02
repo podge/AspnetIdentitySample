@@ -173,7 +173,111 @@ namespace AspnetIdentitySample
                 context.Bloodtests.Add(bt);
             }
 
-            context.SaveChanges();            
+            context.SaveChanges();
+            
+            // Countries
+            // EU Member States
+            context.Countries.Add(new Country("Austria", "IE", Country.CountryType.EU));
+            context.Countries.Add(new Country("Belgium", "BE", Country.CountryType.EU));
+            context.Countries.Add(new Country("Bulgaria", "BG", Country.CountryType.EU));
+            context.Countries.Add(new Country("Croatia", "HR", Country.CountryType.EU));
+            context.Countries.Add(new Country("Cyprus", "CY", Country.CountryType.EU));
+            context.Countries.Add(new Country("Czech Republic", "CZ", Country.CountryType.EU));
+            context.Countries.Add(new Country("Denmark", "DK", Country.CountryType.EU));
+            context.Countries.Add(new Country("Estonia", "EE", Country.CountryType.EU));
+            context.Countries.Add(new Country("Finland", "FI", Country.CountryType.EU));
+            context.Countries.Add(new Country("France", "FR", Country.CountryType.EU));
+            context.Countries.Add(new Country("Germany", "DE", Country.CountryType.EU));
+            context.Countries.Add(new Country("Greece", "EL", Country.CountryType.EU));
+            context.Countries.Add(new Country("Hungary", "HU", Country.CountryType.EU));
+            context.Countries.Add(new Country("Ireland", "IE", Country.CountryType.EU));
+            context.Countries.Add(new Country("Italy", "IT", Country.CountryType.EU));
+            context.Countries.Add(new Country("Latvia", "LV", Country.CountryType.EU));
+            context.Countries.Add(new Country("Lithuania", "LT", Country.CountryType.EU));
+            context.Countries.Add(new Country("Luxembourg", "LU", Country.CountryType.EU));
+            context.Countries.Add(new Country("Malta", "MT", Country.CountryType.EU));
+            context.Countries.Add(new Country("Netherlands", "NL", Country.CountryType.EU));
+            context.Countries.Add(new Country("Poland", "PL", Country.CountryType.EU));
+            context.Countries.Add(new Country("Portugal", "PT", Country.CountryType.EU));
+            context.Countries.Add(new Country("Romania", "RO", Country.CountryType.EU));
+            context.Countries.Add(new Country("Slovakia", "SK", Country.CountryType.EU));
+            context.Countries.Add(new Country("Slovenia", "SI", Country.CountryType.EU));
+            context.Countries.Add(new Country("Spain", "ES", Country.CountryType.EU));
+            context.Countries.Add(new Country("Sweden", "SE", Country.CountryType.EU));
+            context.Countries.Add(new Country("United Kingdom", "UK", Country.CountryType.EU));
+            
+            // Territories
+            context.Countries.Add(new Country("Andorra", "AD", Country.CountryType.LR));
+            context.Countries.Add(new Country("Switzerland", "CH", Country.CountryType.LR));
+            context.Countries.Add(new Country("Faeroe Islands", "FO", Country.CountryType.LR));
+            context.Countries.Add(new Country("Gibraltar", "GI", Country.CountryType.LR));
+            context.Countries.Add(new Country("Greenland", "GL", Country.CountryType.LR));
+            context.Countries.Add(new Country("Iceland", "IS", Country.CountryType.LR));
+            context.Countries.Add(new Country("Liechtenstein", "LI", Country.CountryType.LR));
+            context.Countries.Add(new Country("Monaco", "MC", Country.CountryType.LR));
+            context.Countries.Add(new Country("Norway", "NO", Country.CountryType.LR));
+            context.Countries.Add(new Country("San Marino", "SM", Country.CountryType.LR));
+            context.Countries.Add(new Country("Vatican City State", "VA", Country.CountryType.LR));
+
+            // Low Risk Third Countries
+            context.Countries.Add(new Country("Ascension Island", "AC", Country.CountryType.LR));
+
+            context.Countries.Add(new Country("United Arab Emirates", "AE", Country.CountryType.LR));
+            context.Countries.Add(new Country("Antigua and Barbuda", "AG", Country.CountryType.LR));
+            context.Countries.Add(new Country("Argentina", "AR", Country.CountryType.LR));
+            context.Countries.Add(new Country("Australia", "AU", Country.CountryType.LR));
+            context.Countries.Add(new Country("Aruba", "AW", Country.CountryType.LR));
+            context.Countries.Add(new Country("Bosnia and Herzegovina", "BA", Country.CountryType.LR));
+            context.Countries.Add(new Country("Barbados", "BB", Country.CountryType.LR));
+            context.Countries.Add(new Country("Bahrain", "BH", Country.CountryType.LR));
+            context.Countries.Add(new Country("Bermuda", "BM", Country.CountryType.LR));
+            context.Countries.Add(new Country("Bonaire, Sint Eustatius and Saba (the BES Islands)", "BQ", Country.CountryType.LR));
+            context.Countries.Add(new Country("Belarus", "BY", Country.CountryType.LR));
+            context.Countries.Add(new Country("Canada", "CA", Country.CountryType.LR));
+            context.Countries.Add(new Country("Chile", "CL", Country.CountryType.LR));
+            context.Countries.Add(new Country("Curaçao", "CW", Country.CountryType.LR));
+            context.Countries.Add(new Country("Fiji", "FJ", Country.CountryType.LR));
+            context.Countries.Add(new Country("Falkland Islands", "FK", Country.CountryType.LR));
+            context.Countries.Add(new Country("Hong Kong", "HK", Country.CountryType.LR));
+            context.Countries.Add(new Country("Jamaica", "JM", Country.CountryType.LR));
+            context.Countries.Add(new Country("Japan", "JP", Country.CountryType.LR));
+            context.Countries.Add(new Country("Saint Kitts and Nevis", "KN", Country.CountryType.LR));
+            context.Countries.Add(new Country("Cayman Islands", "KY", Country.CountryType.LR));
+            context.Countries.Add(new Country("Saint Lucia", "LC", Country.CountryType.LR));
+            context.Countries.Add(new Country("Montserrat", "MS", Country.CountryType.LR));
+            context.Countries.Add(new Country("Mauritius", "MU", Country.CountryType.LR));
+            context.Countries.Add(new Country("Mexico", "MX", Country.CountryType.LR));
+            context.Countries.Add(new Country("Malaysia", "MY", Country.CountryType.LR));
+            context.Countries.Add(new Country("New Caledonia", "NC", Country.CountryType.LR));
+            context.Countries.Add(new Country("New Zealand", "NZ", Country.CountryType.LR));
+            context.Countries.Add(new Country("French Polynesia", "PF", Country.CountryType.LR));
+            context.Countries.Add(new Country("Saint Pierre and Miquelon", "PM", Country.CountryType.LR));
+            context.Countries.Add(new Country("Russia", "RU", Country.CountryType.LR));
+            context.Countries.Add(new Country("Singapore", "SG", Country.CountryType.LR));
+            context.Countries.Add(new Country("Saint Helena", "SH", Country.CountryType.LR));
+            context.Countries.Add(new Country("Sint Maarten", "SX", Country.CountryType.LR));
+            context.Countries.Add(new Country("Trinidad and Tobago", "TT", Country.CountryType.LR));
+            context.Countries.Add(new Country("Taiwan", "TW", Country.CountryType.LR));
+
+            context.Countries.Add(new Country("United States of America", "US", Country.CountryType.LR));
+
+            context.Countries.Add(new Country("American Samoa", "AS", Country.CountryType.LR));
+            context.Countries.Add(new Country("Guam", "GU", Country.CountryType.LR));
+            context.Countries.Add(new Country("Northern Mariana Islands", "MP", Country.CountryType.LR));
+            context.Countries.Add(new Country("Puerto Rico", "PR", Country.CountryType.LR));
+            context.Countries.Add(new Country("US Virgin Islands", "VI", Country.CountryType.LR));
+            context.Countries.Add(new Country("Saint Vincent and the Grenadines", "VC", Country.CountryType.LR));
+            context.Countries.Add(new Country("British Virgin Islands", "VG", Country.CountryType.LR));
+            context.Countries.Add(new Country("Vanuatu", "VU", Country.CountryType.LR));
+            context.Countries.Add(new Country("Wallis and Futuna", "WF", Country.CountryType.LR));
+            context.Countries.Add(new Country("Mayotte", "YT", Country.CountryType.LR));
+
+
+            // High Risk Third Countries
+            context.Countries.Add(new Country("China", "CN", Country.CountryType.HR));
+
+            context.SaveChanges();
+
         }
     }
 }

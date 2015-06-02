@@ -258,10 +258,16 @@ namespace AspnetIdentitySample.Models
     public class Country
     {
         public int CountryId { get; set; }
-        public String CountryName
+        public string CountryName { get; set; }
+        public string CountryISOCode { get; set; }
+        public CountryType Location { get; set; } // EU LR or HR
+        public enum CountryType { EU, LR, HR}
+
+        public Country(string name, string iso, CountryType location)
         {
-            get;
-            set;
+            this.CountryName = name;
+            this.CountryISOCode = iso;
+            this.Location = location;
         }
     }
     public class Irregularity
@@ -313,6 +319,7 @@ namespace AspnetIdentitySample.Models
         public DbSet<Consignee> Consignees { get; set; }
         public DbSet<Consignor> Consignors { get; set; }
         public DbSet<Irregularity> Irregularities { get; set; }
+        public DbSet<Country> Countries { get; set; }
     }
 
     public class ValidateDateRange : ValidationAttribute
