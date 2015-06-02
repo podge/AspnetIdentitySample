@@ -137,6 +137,7 @@ namespace AspnetIdentitySample.Models
     {
         public int ConsignorId { get; set; }
         [Required]
+        [Display(Name = "Consignor")]
         public String ConsignorName { get; set; }
         [Required]
         public String Address1 { get; set; }
@@ -148,8 +149,11 @@ namespace AspnetIdentitySample.Models
         public String Address4 { get; set; }
         [Required]
         public String Postcode { get; set; }
-        //[Required]
-        //public virtual Country Country { get; set; }
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "You must select a country.")]
+        [Display(Name = "Country")]
+        public int CountryId { get; set; }
+        public virtual Country Country { get; set; }
         [Required]
         public String Telephone { get; set; }
         public virtual ApplicationUser User { get; set; }
@@ -262,7 +266,12 @@ namespace AspnetIdentitySample.Models
         public string CountryISOCode { get; set; }
         public CountryType Location { get; set; } // EU LR or HR
         public enum CountryType { EU, LR, HR}
+        public virtual List<Consignor> Consignors { get; set; }
+        //public virtual List<Consignee> Consignees { get; set; }
+        public Country()
+        {
 
+        }
         public Country(string name, string iso, CountryType location)
         {
             this.CountryName = name;

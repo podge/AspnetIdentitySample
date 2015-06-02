@@ -85,10 +85,8 @@ namespace AspnetIdentitySample
             IdentificationSystem tattoo = new IdentificationSystem();
             tattoo.IdentificationSystemName = "Tattoo";
 
-
             // Create Pets
             ICollection<Pet> pets = new List<Pet>();
-
 
             for(int i=1; i<=3; i++){
                 Pet Pet = new Pet();
@@ -120,61 +118,6 @@ namespace AspnetIdentitySample
 
             adminresult = UserManager.Create(user, "123456");
 
-            Consignor Consignor = new Consignor();
-            Consignor.ConsignorName = "Consignor Lavin";
-            Consignor.Address1 = "Address1";
-            Consignor.Address2 = "Address2";
-            Consignor.Address3 = "Address3";
-            Consignor.Address4 = "Address4";
-            Consignor.Postcode = "Postcode";
-            Consignor.Telephone = "123456789";
-            Consignor.User = user;
-
-            context.Consignors.Add(Consignor);
-            context.SaveChanges();
-
-            Consignee Consignee = new Consignee();
-            Consignee.ConsigneeName = "Consignee Lavin";
-            Consignee.Address1 = "Address1";
-            Consignee.Address2 = "Address2";
-            Consignee.Address3 = "Address3";
-            Consignee.Address4 = "Address4";
-            Consignee.Postcode = "Postcode";
-            Consignee.Telephone = "123456789";
-            Consignee.User = user;
-
-            context.Consignees.Add(Consignee);
-            context.SaveChanges();
-
-
-            // Rabies Vaccinations
-            var myPets = from s in context.Pets
-                       where (s.User.Id == user.Id)
-                       select s;
-           
-            foreach (Pet item in myPets)
-            {
-                RabiesVaccination rv = new RabiesVaccination();
-                rv.BatchNo = "batch";
-                rv.DateOfRabiesVaccination = new DateTime(2015, 01, 01);
-                rv.DateOfValidityFrom = new DateTime(2015, 01, 01);
-                rv.DateOfValidityTo = new DateTime(2016, 01, 01);
-                rv.Manufacturer = "Nobivac";
-                rv.Pet = item;
-                rv.PetID = item.Id;
-                context.RabiesVaccinations.Add(rv);
-
-                Bloodtest bt = new Bloodtest();
-                bt.DateOfBloodtest = new DateTime(2015, 02, 01);
-                bt.Pet = item;
-                bt.PetID = item.Id;
-                bt.Result = true;
-
-                context.Bloodtests.Add(bt);
-            }
-
-            context.SaveChanges();
-            
             // Countries
             // EU Member States
             context.Countries.Add(new Country("Austria", "IE", Country.CountryType.EU));
@@ -275,6 +218,62 @@ namespace AspnetIdentitySample
 
             // High Risk Third Countries
             context.Countries.Add(new Country("China", "CN", Country.CountryType.HR));
+
+            context.SaveChanges();
+
+            Consignor Consignor = new Consignor();
+            Consignor.ConsignorName = "Consignor Lavin";
+            Consignor.Address1 = "Address1";
+            Consignor.Address2 = "Address2";
+            Consignor.Address3 = "Address3";
+            Consignor.Address4 = "Address4";
+            Consignor.Postcode = "Postcode";
+            Consignor.Telephone = "123456789";
+            Consignor.CountryId = 1;
+            Consignor.User = user;
+
+            context.Consignors.Add(Consignor);
+            context.SaveChanges();
+
+            Consignee Consignee = new Consignee();
+            Consignee.ConsigneeName = "Consignee Lavin";
+            Consignee.Address1 = "Address1";
+            Consignee.Address2 = "Address2";
+            Consignee.Address3 = "Address3";
+            Consignee.Address4 = "Address4";
+            Consignee.Postcode = "Postcode";
+            Consignee.Telephone = "123456789";
+            Consignee.User = user;
+
+            context.Consignees.Add(Consignee);
+            context.SaveChanges();
+
+
+            // Rabies Vaccinations
+            var myPets = from s in context.Pets
+                       where (s.User.Id == user.Id)
+                       select s;
+           
+            foreach (Pet item in myPets)
+            {
+                RabiesVaccination rv = new RabiesVaccination();
+                rv.BatchNo = "batch";
+                rv.DateOfRabiesVaccination = new DateTime(2015, 01, 01);
+                rv.DateOfValidityFrom = new DateTime(2015, 01, 01);
+                rv.DateOfValidityTo = new DateTime(2016, 01, 01);
+                rv.Manufacturer = "Nobivac";
+                rv.Pet = item;
+                rv.PetID = item.Id;
+                context.RabiesVaccinations.Add(rv);
+
+                Bloodtest bt = new Bloodtest();
+                bt.DateOfBloodtest = new DateTime(2015, 02, 01);
+                bt.Pet = item;
+                bt.PetID = item.Id;
+                bt.Result = true;
+
+                context.Bloodtests.Add(bt);
+            }
 
             context.SaveChanges();
 

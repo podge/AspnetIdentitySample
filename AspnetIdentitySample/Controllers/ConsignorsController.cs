@@ -48,6 +48,7 @@ namespace AspnetIdentitySample
         // GET: Consignors/Create
         public ActionResult Create()
         {
+            ViewBag.CountryId = new SelectList(db.Countries, "CountryId", "CountryName");
             return View();
         }
 
@@ -56,17 +57,18 @@ namespace AspnetIdentitySample
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ConsignorId,ConsignorName,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignor consignor)
+        public async Task<ActionResult> Create([Bind(Include = "ConsignorId,ConsignorName,Address1,Address2,Address3,Address4,Postcode,CountryId,Telephone")] Consignor consignor)
         {
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             consignor.User = currentUser;
+            consignor.Country = db.Countries.Find(consignor.CountryId);
             if (ModelState.IsValid)
             {
                 db.Consignors.Add(consignor);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            ViewBag.CountryId = new SelectList(db.Countries, "CountryId", "CountryName");
             return View(consignor);
         }
 
@@ -82,6 +84,7 @@ namespace AspnetIdentitySample
             {
                 return HttpNotFound();
             }
+            ViewBag.CountryId = new SelectList(db.Countries, "CountryId", "CountryName");
             return View(consignor);
         }
 
@@ -90,7 +93,7 @@ namespace AspnetIdentitySample
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ConsignorId,ConsignorName,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignor consignor)
+        public ActionResult Edit([Bind(Include = "ConsignorId,ConsignorName,Address1,Address2,Address3,Address4,Postcode,CountryId,Telephone")] Consignor consignor)
         {
             if (ModelState.IsValid)
             {
@@ -98,6 +101,7 @@ namespace AspnetIdentitySample
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.CountryId = new SelectList(db.Countries, "CountryId", "CountryName");
             return View(consignor);
         }
 
