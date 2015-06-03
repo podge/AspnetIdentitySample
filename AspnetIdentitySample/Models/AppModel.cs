@@ -318,8 +318,8 @@ namespace AspnetIdentitySample.Models
             //modelBuilder.Entity<Pet>().HasMany(p => p.RabiesVaccinations).WithOptional().WillCascadeOnDelete();
             //modelBuilder.Entity<Pet>().HasMany(p => p.FAVNBloodTests).WithOptional().WillCascadeOnDelete();
             modelBuilder.Entity<Pet>().HasMany(p => p.PetFiles).WithOptional().WillCascadeOnDelete();
-            modelBuilder.Entity<Consignor>().HasRequired(c => c.Country).WithOptional().WillCascadeOnDelete(false);
-            modelBuilder.Entity<Consignee>().HasRequired(c => c.Country).WithOptional().WillCascadeOnDelete(false);
+            modelBuilder.Entity<Consignor>().HasRequired(c => c.Country).WithMany().WillCascadeOnDelete(false);
+            modelBuilder.Entity<Consignee>().HasRequired(c => c.Country).WithMany().WillCascadeOnDelete(false);
         }
 
         public DbSet<Pet> Pets { get; set; }

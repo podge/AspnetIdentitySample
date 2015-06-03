@@ -17,10 +17,10 @@
         @Html.HiddenFor(model => model.ConsigneeId)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ConsigneeName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.Name)
+                @Html.EditorFor(model => model.ConsigneeName)
+                @Html.ValidationMessageFor(model => model.ConsigneeName)
             </div>
         </div>
 
@@ -57,10 +57,18 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PostCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Postcode, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PostCode)
-                @Html.ValidationMessageFor(model => model.PostCode)
+                @Html.EditorFor(model => model.Postcode)
+                @Html.ValidationMessageFor(model => model.Postcode)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Country, "Country", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CountryId", String.Empty)
+                @Html.ValidationMessageFor(model => model.Country)
             </div>
         </div>
 

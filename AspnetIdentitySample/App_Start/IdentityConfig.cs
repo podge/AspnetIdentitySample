@@ -242,7 +242,7 @@ namespace AspnetIdentitySample
             Consignee.Address3 = "Address3";
             Consignee.Address4 = "Address4";
             Consignee.Postcode = "Postcode";
-            Consignor.CountryId = 1;
+            Consignee.CountryId = 1;
             Consignee.Telephone = "123456789";
             Consignee.User = user;
 

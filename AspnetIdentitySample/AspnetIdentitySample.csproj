@@ -171,6 +171,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Common\Common.cs" />
+    <Compile Include="Controllers\BaseConController.cs" />
     <Compile Include="Controllers\CertificatesController.cs" />
     <Compile Include="Controllers\ConsignorsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />

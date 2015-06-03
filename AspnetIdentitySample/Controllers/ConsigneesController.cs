@@ -10,18 +10,15 @@ using AspnetIdentitySample.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
+using AspnetIdentitySample.Controllers;
 
 namespace AspnetIdentitySample.Views.CertGenerator
 {
-    public class ConsigneesController : Controller
+    public class ConsigneesController : BaseConController
     {
-        private MyDbContext db;
-        private UserManager<ApplicationUser> manager;
-
         public ConsigneesController()
         {
-            db = new MyDbContext();
-            manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+
         }
 
         // GET: Consignees
@@ -49,7 +46,7 @@ namespace AspnetIdentitySample.Views.CertGenerator
         // GET: Consignees/Create
         public ActionResult Create()
         {
-            ViewBag.CountryId = new SelectList(Common.Common.getEUCountries(), "CountryId", "CountryName");
+            ViewBag.CountryId = new SelectList(getEUCountries(), "CountryId", "CountryName");
             return View();
         }
 
@@ -68,7 +65,7 @@ namespace AspnetIdentitySample.Views.CertGenerator
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CountryId = new SelectList(Common.Common.getEUCountries(), "CountryId", "CountryName");
+            ViewBag.CountryId = new SelectList(getEUCountries(), "CountryId", "CountryName");
             return View(consignee);
         }
 
@@ -84,6 +81,7 @@ namespace AspnetIdentitySample.Views.CertGenerator
             {
                 return HttpNotFound();
             }
+            ViewBag.CountryId = new SelectList(getEUCountries(), "CountryId", "CountryName", consignee.CountryId);
             return View(consignee);
         }
 

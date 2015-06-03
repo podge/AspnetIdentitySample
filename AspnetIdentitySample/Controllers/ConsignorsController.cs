@@ -10,10 +10,11 @@ using AspnetIdentitySample.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
+using AspnetIdentitySample.Controllers;
 
 namespace AspnetIdentitySample
 {
-    public class ConsignorsController : Controller
+    public class ConsignorsController : BaseConController
     {
         private MyDbContext db;
         private UserManager<ApplicationUser> manager;
@@ -48,7 +49,7 @@ namespace AspnetIdentitySample
         // GET: Consignors/Create
         public ActionResult Create()
         { 
-            ViewBag.CountryId = new SelectList(Common.Common.get3rdCountries(), "CountryId", "CountryName");
+            ViewBag.CountryId = new SelectList(get3rdCountries(), "CountryId", "CountryName");
             return View();
         }
 
@@ -68,7 +69,7 @@ namespace AspnetIdentitySample
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CountryId = new SelectList(Common.Common.get3rdCountries(), "CountryId", "CountryName");
+            ViewBag.CountryId = new SelectList(get3rdCountries(), "CountryId", "CountryName");
             return View(consignor);
         }
 
@@ -84,7 +85,7 @@ namespace AspnetIdentitySample
             {
                 return HttpNotFound();
             }
-            ViewBag.CountryId = new SelectList(Common.Common.get3rdCountries(), "CountryId", "CountryName", consignor.CountryId);
+            ViewBag.CountryId = new SelectList(get3rdCountries(), "CountryId", "CountryName", consignor.CountryId);
             return View(consignor);
         }
 
@@ -101,7 +102,7 @@ namespace AspnetIdentitySample
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CountryId = new SelectList(Common.Common.get3rdCountries(), "CountryId", "CountryName");
+            ViewBag.CountryId = new SelectList(get3rdCountries(), "CountryId", "CountryName");
             return View(consignor);
         }
 
