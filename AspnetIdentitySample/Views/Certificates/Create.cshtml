@@ -9,20 +9,13 @@
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Certificate</h4>
         <hr />
         @Html.ValidationSummary(true)
-        <div class="form-group">
-            @Html.LabelFor(model => model.CountryOfOrigin, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CountryOfOrigin)
-                @Html.ValidationMessageFor(model => model.CountryOfOrigin)
-            </div>
-        </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.ConsignorId, "Consignor", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("ConsignorId", String.Empty)
@@ -36,92 +29,96 @@
                 @Html.DropDownList("ConsigneeId", String.Empty)
                 @Html.ValidationMessageFor(model => model.ConsigneeId)
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             <table class="table table-striped table-hover">
                 <tr>
-                    <th colspan="7">Select Pets</th>
+                    <th>Consignor</th>
+                    <th>Consignee</th>
                 </tr>
                 <tr>
-                    <th>
-                        Select
-                    </th>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Species
-                    </th>
-                    <th>
-                        Gender
-                    </th>
-                    <th>
-                        Breed
-                    </th>
-                    <th>
-                        Date of Birth
-                    </th>
-                    <th>
-                        Microchip Number
-                    </th>
+                    <td>
+                            @Html.DropDownList("ConsignorId", String.Empty)
+                            @Html.ValidationMessageFor(model => model.ConsignorId)
+                    </td>
+                    <td>
+                            @Html.DropDownList("ConsigneeId", String.Empty)
+                            @Html.ValidationMessageFor(model => model.ConsigneeId)
+                    </td>
                 </tr>
 
-                @foreach (var item in Model.Pets)
-                {
-                    <tr>
-                        <td>
-                            @*<input type="checkbox" name="selected_@item.Id" value="@item.Id" />*@
-                            <input type="checkbox" name="PetIDs" value="@item.Id" />
-                        </td>
-                        <td>
-                            <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Species.SpeciesName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Gender.GenderName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Breed)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DateOfBirth)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.MicrochipNumber)
-                        </td>
-
-                    </tr>
-                }
             </table>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ISOCode, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ISOCode)
-                @Html.ValidationMessageFor(model => model.ISOCode)
-            </div>
-        </div>
+                <div class="form-group">
+                    <table class="table table-striped table-hover">
+                        <tr>
+                            <th colspan="7">Select Pets</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                Select
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Species
+                            </th>
+                            <th>
+                                Gender
+                            </th>
+                            <th>
+                                Breed
+                            </th>
+                            <th>
+                                Date of Birth
+                            </th>
+                            <th>
+                                Microchip Number
+                            </th>
+                        </tr>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CommodityDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CommodityDescription)
-                @Html.ValidationMessageFor(model => model.CommodityDescription)
-            </div>
-        </div>
+                        @foreach (var item in Model.Pets)
+                {
+                            <tr>
+                                <td>
+                                    @*<input type="checkbox" name="selected_@item.Id" value="@item.Id" />*@
+                                    <input type="checkbox" name="PetIDs" value="@item.Id" />
+                                </td>
+                                <td>
+                                    <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Species.SpeciesName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Gender.GenderName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Breed)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MicrochipNumber)
+                                </td>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
+                            </tr>
+                }
+                    </table>
+                </div>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create Certificate" class="btn btn-default" />
+                    </div>
+                </div>
+        </div>
+        }
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>

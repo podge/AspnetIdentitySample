@@ -43,7 +43,10 @@ namespace AspnetIdentitySample.Controllers
             ViewBag.consignors = db.Consignors.Count(s => s.User.Id == currentUser.Id);
             ViewBag.consignees = db.Consignees.Count(s => s.User.Id == currentUser.Id);
 
-            return View(db.Certificate.ToList().Where(s => s.User.Id == currentUser.Id));
+            IEnumerable<Certificate> listCerts = db.Certificate.Include(x => x.Consignee).Include(y => y.Consignor);
+            listCerts = listCerts.ToList().Where(s => s.User.Id == currentUser.Id);
+
+            return View(listCerts);
         }
 
         // GET: Certificates/Details/5
@@ -101,11 +104,10 @@ namespace AspnetIdentitySample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "PetIDs,CertificateId,ConsignorId,ConsigneeId,CountryOfOrigin,ISOCode,CommodityDescription")] Certificate certificate)
+        public async Task<ActionResult> Create([Bind(Include = "PetIDs,CertificateId,ConsignorId,ConsigneeId")] Certificate certificate)
         {
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             certificate.User = currentUser;
-
             certificate.Consignor = db.Consignors.Find(certificate.ConsignorId);
             certificate.Consignee = db.Consignees.Find(certificate.ConsigneeId);
 
@@ -139,6 +141,22 @@ namespace AspnetIdentitySample.Controllers
                     petCount++;
                 }
                 certificate.Pets = certPets;
+                // Set default variables
+                certificate.CountryOfOrigin = certificate.Consignor.Country.CountryName;
+                certificate.ISOCode = "ISOCODE0001";
+                if (certPets.Count() > 1)
+                {
+                    certificate.CommodityDescription = "Domestic pets";
+                }
+                else if (certPets.Count() == 1)
+                {
+                    certificate.CommodityDescription = "Domestic pet";
+                }
+                else
+                {
+                    certificate.CommodityDescription = "Domestic pet(s)";
+                }
+                
                 // Calculate Irregularities for all pets in the certificate
                 certificate = doIrregularities(certificate);
             }

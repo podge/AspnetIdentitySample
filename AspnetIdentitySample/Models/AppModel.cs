@@ -223,11 +223,8 @@ namespace AspnetIdentitySample.Models
         public int Pet3 { get; set; }
         public int Pet4 { get; set; }
         public int Pet5 { get; set; }
-        [Required]
         public String CountryOfOrigin { get; set; }
-        [Required]
         public String ISOCode { get; set; }
-        [Required]
         public String CommodityDescription { get; set; }
         public bool Paid { get; set; }
         public virtual ApplicationUser User { get; set; }

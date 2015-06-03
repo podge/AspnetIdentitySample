@@ -22,10 +22,10 @@ else
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CountryOfOrigin)
+            Origin
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ISOCode)
+            Destination
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CommodityDescription)
@@ -40,10 +40,10 @@ else
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.CountryOfOrigin)
+                @Html.DisplayFor(modelItem => item.Consignor.Country.CountryName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ISOCode)
+                @Html.DisplayFor(modelItem => item.Consignee.Country.CountryName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CommodityDescription)
