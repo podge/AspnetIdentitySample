@@ -47,8 +47,8 @@ namespace AspnetIdentitySample
 
         // GET: Consignors/Create
         public ActionResult Create()
-        {
-            ViewBag.CountryId = new SelectList(db.Countries, "CountryId", "CountryName");
+        { 
+            ViewBag.CountryId = new SelectList(get3rdCountries(), "CountryId", "CountryName");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace AspnetIdentitySample
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CountryId = new SelectList(db.Countries, "CountryId", "CountryName");
+            ViewBag.CountryId = new SelectList(get3rdCountries(), "CountryId", "CountryName");
             return View(consignor);
         }
 
@@ -84,7 +84,7 @@ namespace AspnetIdentitySample
             {
                 return HttpNotFound();
             }
-            ViewBag.CountryId = new SelectList(db.Countries, "CountryId", "CountryName");
+            ViewBag.CountryId = new SelectList(get3rdCountries(), "CountryId", "CountryName", consignor.CountryId);
             return View(consignor);
         }
 
@@ -101,7 +101,7 @@ namespace AspnetIdentitySample
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CountryId = new SelectList(db.Countries, "CountryId", "CountryName");
+            ViewBag.CountryId = new SelectList(get3rdCountries(), "CountryId", "CountryName");
             return View(consignor);
         }
 
@@ -138,6 +138,41 @@ namespace AspnetIdentitySample
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public List<Country> getEUCountries(){
+            List<Country> Countries = new List<Country>();
+            Countries.AddRange(db.Countries.Where(c => c.Location == Country.CountryType.EU));
+            return Countries.OrderBy(c => c.CountryName).ToList();
+        }
+
+        public List<Country> getLowRiskCountries()
+        {
+            List<Country> Countries = new List<Country>();
+            Countries.AddRange(db.Countries.Where(c => c.Location == Country.CountryType.LR));
+            return Countries.OrderBy(c => c.CountryName).ToList();
+        }
+
+        public List<Country> getHighRiskCountries()
+        {
+            List<Country> Countries = new List<Country>();
+            Countries.AddRange(db.Countries.Where(c => c.Location == Country.CountryType.HR));
+            return Countries.OrderBy(c => c.CountryName).ToList();
+        }
+
+        public List<Country> getAllCountries()
+        {
+            List<Country> Countries = new List<Country>();
+            Countries.AddRange(db.Countries);
+            return Countries.OrderBy(c => c.CountryName).ToList();
+        }
+
+        public List<Country> get3rdCountries()
+        {
+            List<Country> Countries = new List<Country>();
+            Countries.AddRange(db.Countries.Where(c => c.Location == Country.CountryType.LR));
+            Countries.AddRange(db.Countries.Where(c => c.Location == Country.CountryType.HR));
+            return Countries.OrderBy(c => c.CountryName).ToList();
         }
     }
 }

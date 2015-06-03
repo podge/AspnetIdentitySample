@@ -229,7 +229,7 @@ namespace AspnetIdentitySample
             Consignor.Address4 = "Address4";
             Consignor.Postcode = "Postcode";
             Consignor.Telephone = "123456789";
-            Consignor.CountryId = 1;
+            Consignor.CountryId = 78;
             Consignor.User = user;
 
             context.Consignors.Add(Consignor);
