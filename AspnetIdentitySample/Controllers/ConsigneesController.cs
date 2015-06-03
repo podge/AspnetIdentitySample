@@ -49,6 +49,7 @@ namespace AspnetIdentitySample.Views.CertGenerator
         // GET: Consignees/Create
         public ActionResult Create()
         {
+            ViewBag.CountryId = new SelectList(Common.Common.getEUCountries(), "CountryId", "CountryName");
             return View();
         }
 
@@ -57,7 +58,7 @@ namespace AspnetIdentitySample.Views.CertGenerator
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ConsigneeId,ConsigneeName,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignee consignee)
+        public async Task<ActionResult> Create([Bind(Include = "ConsigneeId,ConsigneeName,Address1,Address2,Address3,Address4,Postcode,CountryId,Telephone")] Consignee consignee)
         {
             var currentUser = await manager.FindByIdAsync(User.Identity.GetUserId());
             consignee.User = currentUser;
@@ -67,7 +68,7 @@ namespace AspnetIdentitySample.Views.CertGenerator
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            ViewBag.CountryId = new SelectList(Common.Common.getEUCountries(), "CountryId", "CountryName");
             return View(consignee);
         }
 
@@ -91,7 +92,7 @@ namespace AspnetIdentitySample.Views.CertGenerator
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ConsigneeId,ConsigneeName,Address1,Address2,Address3,Address4,Postcode,Telephone")] Consignee consignee)
+        public ActionResult Edit([Bind(Include = "ConsigneeId,ConsigneeName,Address1,Address2,Address3,Address4,Postcode,CountryId,Telephone")] Consignee consignee)
         {
             if (ModelState.IsValid)
             {

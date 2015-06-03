@@ -228,8 +228,8 @@ namespace AspnetIdentitySample
             Consignor.Address3 = "Address3";
             Consignor.Address4 = "Address4";
             Consignor.Postcode = "Postcode";
-            Consignor.Telephone = "123456789";
             Consignor.CountryId = 78;
+            Consignor.Telephone = "123456789";
             Consignor.User = user;
 
             context.Consignors.Add(Consignor);
@@ -242,6 +242,7 @@ namespace AspnetIdentitySample
             Consignee.Address3 = "Address3";
             Consignee.Address4 = "Address4";
             Consignee.Postcode = "Postcode";
+            Consignor.CountryId = 1;
             Consignee.Telephone = "123456789";
             Consignee.User = user;
 

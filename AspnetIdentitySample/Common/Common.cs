@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AspnetIdentitySample.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,18 +11,49 @@ namespace AspnetIdentitySample.Common
 {
     public class Common
     {
-        public static IEnumerable<SelectListItem> GetCountryList()
-        {
-            IList<SelectListItem> items = new List<SelectListItem>
-            {
-                new SelectListItem{Text = "United States", Value = "B"},
-                new SelectListItem{Text = "Canada", Value = "B"},
-                new SelectListItem{Text = "United Kingdom", Value = "B"},
-                new SelectListItem{Text = "Texas", Value = "B"},
-                new SelectListItem{Text = "Washington", Value = "B"}
+        private static MyDbContext db;
+        private static UserManager<ApplicationUser> manager;
 
-            };
-            return items;
+        public Common()
+        {
+            db = new MyDbContext();
+            manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+        }
+
+        public static List<Country> getEUCountries()
+        {
+            List<Country> Countries = new List<Country>();
+            Countries.AddRange(db.Countries.Where(c => c.Location == Country.CountryType.EU));
+            return Countries.OrderBy(c => c.CountryName).ToList();
+        }
+
+        public static List<Country> getLowRiskCountries()
+        {
+            List<Country> Countries = new List<Country>();
+            Countries.AddRange(db.Countries.Where(c => c.Location == Country.CountryType.LR));
+            return Countries.OrderBy(c => c.CountryName).ToList();
+        }
+
+        public static List<Country> getHighRiskCountries()
+        {
+            List<Country> Countries = new List<Country>();
+            Countries.AddRange(db.Countries.Where(c => c.Location == Country.CountryType.HR));
+            return Countries.OrderBy(c => c.CountryName).ToList();
+        }
+
+        public static List<Country> getAllCountries()
+        {
+            List<Country> Countries = new List<Country>();
+            Countries.AddRange(db.Countries);
+            return Countries.OrderBy(c => c.CountryName).ToList();
+        }
+
+        public static List<Country> get3rdCountries()
+        {
+            List<Country> Countries = new List<Country>();
+            Countries.AddRange(db.Countries.Where(c => c.Location == Country.CountryType.LR));
+            Countries.AddRange(db.Countries.Where(c => c.Location == Country.CountryType.HR));
+            return Countries.OrderBy(c => c.CountryName).ToList();
         }
     }
 }
