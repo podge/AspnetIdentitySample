@@ -34,8 +34,12 @@ namespace AspnetIdentitySample.Controllers
         // GET: Certificates
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
             var currentUser = manager.FindById(User.Identity.GetUserId());
-
+            
             // Get pets, consignors and consignees for current user
             // Warn if user needs to create any of these objects
 
@@ -115,9 +119,23 @@ namespace AspnetIdentitySample.Controllers
             {
                 List<Pet> certPets = new List<Pet>();
                 int petCount = 1;
+                // List species
+                int dogCount=0, catCount=0;
                 foreach (int item in certificate.PetIDs)
                 {
-                    certPets.Add(db.Pets.Find(item));
+                    Pet Pet = db.Pets.Find(item);
+                    certPets.Add(Pet);
+
+                    // Count dogs and cats
+                    if (Pet.Species.ScientificName == "Canine")
+                    {
+                        dogCount++;
+                    }
+                    else if (Pet.Species.ScientificName == "Feline")
+                    {
+                        catCount++;
+                    }
+
                     switch (petCount)
                     {
                         case 1:
@@ -146,17 +164,38 @@ namespace AspnetIdentitySample.Controllers
                 certificate.ISOCode = "ISOCODE0001";
                 if (certPets.Count() > 1)
                 {
-                    certificate.CommodityDescription = "Domestic pets";
+                    certificate.CommodityDescription = "Domestic pets - ";
                 }
                 else if (certPets.Count() == 1)
                 {
-                    certificate.CommodityDescription = "Domestic pet";
+                    certificate.CommodityDescription = "Domestic pet - ";
                 }
                 else
                 {
-                    certificate.CommodityDescription = "Domestic pet(s)";
+                    certificate.CommodityDescription = "Domestic pet(s) - ";
                 }
-                
+
+                string desc ="";
+                if (dogCount == 1)
+                {
+                    desc = "one dog";
+                }
+                else if (dogCount > 1)
+                {
+                    desc = NumericToWords(dogCount) + " dogs";
+                }
+                if (dogCount > 0 & catCount > 0)
+                {
+                    desc = desc + " and ";
+                }
+                if(catCount == 1){
+                    desc = desc + "one cat";
+                } else if(catCount > 1){
+                    desc = desc + NumericToWords(catCount) + " cats";
+                }
+                desc = desc + ".";
+                certificate.CommodityDescription = certificate.CommodityDescription + desc;
+
                 // Calculate Irregularities for all pets in the certificate
                 certificate = doIrregularities(certificate);
             }
@@ -546,7 +585,9 @@ namespace AspnetIdentitySample.Controllers
 
             //return View(db.Certificate.ToList().Where(s => s.User.Id == currentUser.Id));
 
-            return View("Index", db.Certificate.ToList().Where(s => s.User.Id == currentUser.Id));
+            IEnumerable<Certificate> listCerts = db.Certificate.Include(x => x.Consignee).Include(y => y.Consignor);
+
+            return View("Index", listCerts.ToList().Where(s => s.User.Id == currentUser.Id));
         }
 
         private async Task<string> ProcessPayment(StripeChargeModel model)
@@ -641,6 +682,25 @@ namespace AspnetIdentitySample.Controllers
                 }
             }
             return certificate;
+        }
+
+        public string NumericToWords(int i)
+        {
+            switch (i)
+            {
+                case 1:
+                    return "one";
+                case 2:
+                    return "two";
+                case 3:
+                    return "three";
+                case 4:
+                    return "four";
+                case 5:
+                    return "five";
+                default:
+                    return null;
+            }
         }
 
     }

@@ -28,12 +28,15 @@ else
             Destination
         </th>
         <th>
+            Quantity
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.CommodityDescription)
         </th>
         <th>
             Paid
         </th>
-        <th></th>
+        <th>Actions</th>
     </tr>
 
     @foreach (var item in Model)
@@ -46,6 +49,9 @@ else
                 @Html.DisplayFor(modelItem => item.Consignee.Country.CountryName)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Pets.Count)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.CommodityDescription)
             </td>
             <td>
@@ -55,7 +61,7 @@ else
                 }
                 else
                 {
-                    <text>&nbsp;</text>
+                    <text>Not paid</text>
                 }
             </td>
             <td>
