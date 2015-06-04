@@ -594,11 +594,26 @@ namespace AspnetIdentitySample.Controllers
         public List<Pet> getListPets(Certificate cert)
         {
             List<Pet> Pets = new List<Pet>();
-            Pets.Add(getPet(cert.Pet1));
-            Pets.Add(getPet(cert.Pet2));
-            Pets.Add(getPet(cert.Pet3));
-            Pets.Add(getPet(cert.Pet4));
-            Pets.Add(getPet(cert.Pet5));
+            if (cert.Pet1 != 0)
+            {
+                Pets.Add(getPet(cert.Pet1));
+            }
+            if (cert.Pet2 != 0)
+            {
+                Pets.Add(getPet(cert.Pet2));
+            }
+            if (cert.Pet3 != 0)
+            {
+                Pets.Add(getPet(cert.Pet3));
+            }
+            if (cert.Pet4 != 0)
+            {
+                Pets.Add(getPet(cert.Pet4));
+            }
+            if (cert.Pet5 != 0)
+            {
+                Pets.Add(getPet(cert.Pet5));
+            }
             return Pets;
         }
 
