@@ -14,6 +14,7 @@ using AspnetIdentitySample.Controllers;
 
 namespace AspnetIdentitySample.Views.CertGenerator
 {
+    [Authorize]
     public class ConsigneesController : BaseConController
     {
         public ConsigneesController()

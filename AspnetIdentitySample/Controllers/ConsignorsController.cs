@@ -14,6 +14,7 @@ using AspnetIdentitySample.Controllers;
 
 namespace AspnetIdentitySample
 {
+    [Authorize]
     public class ConsignorsController : BaseConController
     {
         private MyDbContext db;

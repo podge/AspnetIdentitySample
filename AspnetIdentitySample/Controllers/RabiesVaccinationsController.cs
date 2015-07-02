@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace AspnetIdentitySample.Controllers
 {
+    [Authorize]
     public class RabiesVaccinationsController : Controller
     {
         private MyDbContext db = new MyDbContext();
@@ -23,13 +24,6 @@ namespace AspnetIdentitySample.Controllers
             db = new MyDbContext();
             manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
         }
-
-        // GET: RabiesVaccination
-        //public async Task<ActionResult> Index()
-        //{
-        //    var rabiesVaccinations = db.RabiesVaccinations.Include(r => r.Pet);
-        //    return View(await rabiesVaccinations.ToListAsync());
-        //}
 
         // GET: RabiesVaccination/1
         public async Task<ActionResult> Index(int? id)

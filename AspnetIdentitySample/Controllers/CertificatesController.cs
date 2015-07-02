@@ -18,6 +18,7 @@ using System.Web.Routing;
 
 namespace AspnetIdentitySample.Controllers
 {
+    [Authorize]
     public class CertificatesController : Controller
     {
         string originalFile = "~/Documents/uk_cert.pdf";

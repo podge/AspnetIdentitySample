@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace AspnetIdentitySample.Controllers
 {
+    [Authorize]
     public class BloodtestsController : Controller
     {
         private MyDbContext db;
